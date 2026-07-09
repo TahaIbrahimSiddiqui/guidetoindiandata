@@ -133,7 +133,7 @@ export function LandingExperience() {
               <button
                 type="button"
                 onClick={enter}
-                className="group inline-flex items-center gap-3 border border-[#F3E4C9]/30 bg-transparent px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F3E4C9] transition-all duration-500 hover:border-[#F3E4C9] hover:bg-[#F3E4C9] hover:text-[#0A2947]"
+                className="group inline-flex min-h-12 items-center gap-3 border border-[#F3E4C9]/30 bg-transparent px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F3E4C9] transition-all duration-500 hover:border-[#F3E4C9] hover:bg-[#F3E4C9] hover:text-[#0A2947] focus-visible:outline-offset-4"
               >
                 Enter the graph
                 <span
@@ -145,7 +145,7 @@ export function LandingExperience() {
               </button>
               <Link
                 href="/explore"
-                className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#D3D4C0] link-underline hover:text-[#F3E4C9]"
+                className="inline-flex min-h-11 items-center text-[11px] font-medium uppercase tracking-[0.18em] text-[#D3D4C0] link-underline hover:text-[#F3E4C9]"
               >
                 Skip to catalog
               </Link>

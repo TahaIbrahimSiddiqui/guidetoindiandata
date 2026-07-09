@@ -2,50 +2,90 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AccessBadge } from "@/components/AccessBadge";
 import { AcademicBadgeList } from "@/components/AcademicBadge";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getWaveForDataset } from "@/data/series";
 import type { Dataset } from "@/types/dataset";
 
 export function DatasetCard({ dataset }: { dataset: Dataset }) {
   const meta = getWaveForDataset(dataset.slug);
   const isAcademic = dataset.sourceKind && dataset.sourceKind !== "government";
+  const vars = dataset.keyVariables.slice(0, 3);
 
   return (
-    <Link
-      href={`/datasets/${dataset.slug}`}
-      className="group flex h-full flex-col border border-obsidian-border bg-obsidian-panel p-6 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-[#F3E4C9]/35 hover:bg-[#0f3558]"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#C4A574]">
-            {meta
-              ? `${meta.series.shortTitle} · ${meta.wave.yearLabel}`
-              : isAcademic
-                ? dataset.sourceKind === "github-community"
-                  ? "GitHub / Community"
-                  : "Academic / Dataverse"
-                : dataset.shortTitle}
-          </p>
-          <h3 className="font-display mt-3 text-xl font-semibold leading-tight tracking-tight text-[#F3E4C9] transition-colors group-hover:text-white">
-            {dataset.title}
-          </h3>
-        </div>
-        <ArrowUpRight
-          className="mt-1 h-4 w-4 shrink-0 text-[#D3D4C0]/50 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#F3E4C9]"
-          aria-hidden
-        />
-      </div>
+    <Link href={`/datasets/${dataset.slug}`} className="group block h-full">
+      <Card className="h-full rounded-none bg-card py-0 ring-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:bg-secondary/40 group-focus-visible:ring-2 group-focus-visible:ring-ring">
+        <CardHeader className="relative gap-0 border-b border-border/60 px-6 pt-6 pb-0">
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ring/0 to-transparent transition-all duration-500 group-hover:via-ring/50"
+            aria-hidden
+          />
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-accent-foreground">
+                {meta
+                  ? `${meta.series.shortTitle} · ${meta.wave.yearLabel}`
+                  : isAcademic
+                    ? dataset.sourceKind === "github-community"
+                      ? "GitHub / Community"
+                      : "Academic / Dataverse"
+                    : dataset.shortTitle}
+              </p>
+              <CardTitle className="font-display mt-3 text-xl font-semibold leading-tight tracking-tight text-card-foreground transition-colors duration-300 group-hover:text-white">
+                {dataset.title}
+              </CardTitle>
+            </div>
+            <span className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground/50 transition-all duration-300 group-hover:border-ring/40 group-hover:text-foreground">
+              <ArrowUpRight
+                className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden
+              />
+            </span>
+          </div>
+          <CardDescription className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+            {dataset.bestFor}
+          </CardDescription>
+        </CardHeader>
 
-      <p className="mt-4 line-clamp-2 flex-1 text-sm leading-relaxed text-[#D3D4C0]/90">
-        {dataset.bestFor}
-      </p>
+        <CardContent className="px-6 pt-4">
+          {vars.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {vars.map((v) => (
+                <Badge
+                  key={v}
+                  variant="outline"
+                  className="max-w-[10rem] truncate border-border font-normal text-muted-foreground"
+                >
+                  {v}
+                </Badge>
+              ))}
+              {dataset.keyVariables.length > 3 && (
+                <Badge
+                  variant="outline"
+                  className="border-border font-normal text-muted-foreground/60"
+                >
+                  +{dataset.keyVariables.length - 3}
+                </Badge>
+              )}
+            </div>
+          )}
+        </CardContent>
 
-      <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-obsidian-border pt-4">
-        <AccessBadge accessType={dataset.accessType} />
-        <AcademicBadgeList badges={dataset.academicBadges} />
-        <span className="text-[10px] uppercase tracking-[0.12em] text-[#D3D4C0]/60">
-          {dataset.sizeTier}
-        </span>
-      </div>
+        <CardFooter className="mt-auto flex flex-wrap items-center gap-2 border-t border-border bg-transparent px-6 py-4">
+          <AccessBadge accessType={dataset.accessType} />
+          <AcademicBadgeList badges={dataset.academicBadges} />
+          <span className="ml-auto text-[10px] uppercase tracking-[0.12em] text-muted-foreground/55">
+            {dataset.sizeTier}
+          </span>
+        </CardFooter>
+      </Card>
     </Link>
   );
 }

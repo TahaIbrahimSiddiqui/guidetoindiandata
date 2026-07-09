@@ -16,19 +16,22 @@ export default function ClustersPage() {
       <header className="mb-12 max-w-3xl">
         <p className="page-kicker">Taxonomy</p>
         <h1 className="page-title">Themes</h1>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#D3D4C0]">
+        <p className="page-lede">
           Twenty-two domain lenses—from population to GitHub community data.
           Open a theme to browse related catalog records.
         </p>
       </header>
 
-      <div className="grid gap-px bg-obsidian-border sm:grid-cols-2">
+      <div className="grid-hairline sm:grid-cols-2">
         {clusters.map((cluster, index) => {
           const members = datasets.filter(
-            (d) => normalizeClusterId(d.cluster) === cluster.id
+            (d) => normalizeClusterId(d.cluster) === cluster.id,
           );
           return (
-            <section key={cluster.id} className="bg-obsidian-panel p-6 sm:p-8">
+            <section
+              key={cluster.id}
+              className="group bg-obsidian-panel p-6 transition-colors duration-300 hover:bg-[#0f3558] sm:p-8"
+            >
               {index === 3 && (
                 <div className="mb-6 sm:col-span-2">
                   <InContentAd />
@@ -38,8 +41,9 @@ export default function ClustersPage() {
                 <div>
                   <div className="flex items-center gap-3">
                     <span
-                      className="h-2.5 w-2.5 rotate-45"
+                      className="h-2.5 w-2.5 rotate-45 transition-transform duration-300 group-hover:scale-110"
                       style={{ backgroundColor: cluster.color }}
+                      aria-hidden
                     />
                     <h2 className="font-display text-xl font-semibold tracking-tight text-[#F3E4C9]">
                       {cluster.name}
@@ -51,7 +55,7 @@ export default function ClustersPage() {
                 </div>
                 <Link
                   href={`/explore?cluster=${cluster.id}`}
-                  className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] link-underline"
+                  className="inline-flex min-h-9 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] link-underline"
                 >
                   Browse {members.length} →
                 </Link>

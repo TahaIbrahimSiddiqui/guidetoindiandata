@@ -64,6 +64,13 @@ export type VariableEntry = {
   group?: string;
 };
 
+/** Official or community guide for using a dataset. */
+export type GuideLink = {
+  title: string;
+  url: string;
+  kind?: "official" | "user-guide" | "codebook" | "tutorial" | "video" | "portal" | "report";
+};
+
 export type Dataset = {
   slug: string;
   title: string;
@@ -85,6 +92,8 @@ export type Dataset = {
   variables?: VariableEntry[];
   variablesSource?: string;
   variablesUrl?: string;
+  /** How-to guides, codebooks, and tutorials for using this dataset. */
+  guides?: GuideLink[];
   bestFor: string;
   limitations: string;
   pairsWith: string[];

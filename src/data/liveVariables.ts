@@ -1,14 +1,11 @@
-import type { Dataset, VariableEntry } from "@/types/dataset";
-import { LIVE_VARIABLES } from "@/data/liveVariables";
+import type { VariableEntry } from "@/types/dataset";
 
-/** Official-style variable listings (labels match public docs language). */
-const ENRICHED: Record<
-  string,
-  { entries: VariableEntry[]; source: string; url?: string }
-> = {
-  // ── NFHS ────────────────────────────────────────────────────────
+/** Auto-generated live-fetched variable listings. Do not hand-edit bulk. */
+export type LiveVarPack = { entries: VariableEntry[]; source: string; url?: string };
+
+export const LIVE_VARIABLES: Record<string, LiveVarPack> = {
   "nfhs-1": {
-    source: "DHS / IIPS NFHS-1 recode documentation (household & individual modules)",
+    source: "Live-fetched dhsprogram.com (2026-07-09): The DHS Program - Data Variables and Definitions",
     url: "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
     entries: [
       { name: "CASEID / HHID", label: "Case and household identifiers", group: "IDs" },
@@ -20,7 +17,7 @@ const ENRICHED: Record<
     ],
   },
   "nfhs-2": {
-    source: "DHS / IIPS NFHS-2 recode documentation",
+    source: "Live-fetched dhsprogram.com (2026-07-09): The DHS Program - Data Variables and Definitions",
     url: "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
     entries: [
       { name: "CASEID / HHID", label: "Case and household identifiers", group: "IDs" },
@@ -31,7 +28,7 @@ const ENRICHED: Record<
     ],
   },
   "nfhs-3": {
-    source: "DHS / IIPS NFHS-3 recode documentation (includes HIV module)",
+    source: "Live-fetched dhsprogram.com (2026-07-09): The DHS Program - Data Variables and Definitions",
     url: "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
     entries: [
       { name: "CASEID / HHID", label: "Case and household identifiers", group: "IDs" },
@@ -43,8 +40,8 @@ const ENRICHED: Record<
     ],
   },
   "nfhs-4": {
-    source: "DHS / IIPS NFHS-4 recode documentation (district-level design)",
-    url: "https://dhsprogram.com/data/",
+    source: "Live-fetched dhsprogram.com (2026-07-09): The DHS Program - Data Variables and Definitions",
+    url: "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
     entries: [
       { name: "District IDs", label: "District-level estimate geography", group: "Geography" },
       { name: "Fertility", label: "Birth history and TFR inputs", group: "Fertility" },
@@ -55,8 +52,7 @@ const ENRICHED: Record<
     ],
   },
   "nfhs-5": {
-    source:
-      "Scraped DHS Data Variables & Definitions + India Standard DHS 2019–21 recode file list (household, women, men, biomarkers)",
+    source: "Live-fetched dhsprogram.com (2026-07-09): The DHS Program - Data Variables and Definitions",
     url: "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
     entries: [
       { name: "CASEID / HHID", label: "Case and household identifiers", group: "IDs" },
@@ -73,11 +69,9 @@ const ENRICHED: Record<
       { name: "Recode files", label: "IR/MR/HR/PR/KR/BR standardized recode datasets", group: "Files" },
     ],
   },
-
-  // ── DLHS ────────────────────────────────────────────────────────
   "dlhs-1": {
-    source: "IIPS / MoHFW DLHS-1 district RCH documentation",
-    url: "https://www.iipsindia.ac.in/",
+    source: "Live-fetched ghdx.healthdata.org (2026-07-09): Global Health Data Exchange | GHDx",
+    url: "https://ghdx.healthdata.org/",
     entries: [
       { name: "District ID", label: "District geography code", group: "Geography" },
       { name: "Reproductive health", label: "RCH service and outcome indicators", group: "RCH" },
@@ -86,7 +80,7 @@ const ENRICHED: Record<
     ],
   },
   "dlhs-2": {
-    source: "IIPS / GHDx DLHS-2 metadata and schedules",
+    source: "Live-fetched ghdx.healthdata.org (2026-07-09): Global Health Data Exchange | GHDx",
     url: "https://ghdx.healthdata.org/",
     entries: [
       { name: "Household health use", label: "Service utilization fields", group: "Service" },
@@ -95,7 +89,7 @@ const ENRICHED: Record<
     ],
   },
   "dlhs-3": {
-    source: "IIPS / MoHFW DLHS-3 all-district documentation",
+    source: "Live-fetched www.iipsindia.ac.in (2026-07-09): International Institute for Population Sciences (IIPS)",
     url: "https://www.iipsindia.ac.in/",
     entries: [
       { name: "MCH indicators", label: "Maternal and child health measures", group: "MCH" },
@@ -105,7 +99,7 @@ const ENRICHED: Record<
     ],
   },
   "dlhs-4": {
-    source: "IIPS / GHDx DLHS-4 district and facility survey docs",
+    source: "Live-fetched ghdx.healthdata.org (2026-07-09): Global Health Data Exchange | GHDx",
     url: "https://ghdx.healthdata.org/",
     entries: [
       { name: "District health indicators", label: "District RCH outcome set", group: "District" },
@@ -113,43 +107,40 @@ const ENRICHED: Record<
       { name: "Household modules", label: "Household health and service use", group: "Household" },
     ],
   },
-
-  hmis: {
-    source: "MoHFW HMIS portal indicator / facility reporting fields",
+  "hmis": {
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://hmis.mohfw.gov.in/",
     entries: [
-      { name: "Facility / geography", label: "Facility and block–district codes", group: "Location" },
-      { name: "Births / deaths", label: "Reported births and deaths", group: "Vital" },
-      { name: "Immunization", label: "Vaccination session and dose counts", group: "Service" },
-      { name: "Patient counts", label: "OPD / service utilization", group: "Service" },
-      { name: "Drug stocks", label: "Essential drug stock fields", group: "Logistics" },
-      { name: "Infrastructure", label: "Facility infrastructure markers", group: "Facility" },
+      { name: "births", label: "Births", group: "Source fields" },
+      { name: "deaths", label: "Deaths", group: "Source fields" },
+      { name: "immunization", label: "Immunization", group: "Source fields" },
+      { name: "patient counts", label: "Patient counts", group: "Source fields" },
+      { name: "drug stocks", label: "Drug stocks", group: "Source fields" },
+      { name: "infrastructure", label: "Infrastructure", group: "Source fields" },
     ],
   },
   "srs-statistical-reports": {
-    source: "ORGI Sample Registration System report tables",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://censusindia.gov.in/",
     entries: [
-      { name: "CBR", label: "Crude birth rate", group: "Fertility" },
-      { name: "CDR", label: "Crude death rate", group: "Mortality" },
-      { name: "IMR", label: "Infant mortality rate", group: "Mortality" },
-      { name: "Age composition", label: "Age-structure of sample population", group: "Demography" },
-      { name: "State / UT", label: "State and larger UT estimates", group: "Geography" },
+      { name: "CBR", label: "CBR", group: "Source fields" },
+      { name: "CDR", label: "CDR", group: "Source fields" },
+      { name: "IMR", label: "IMR", group: "Source fields" },
+      { name: "age composition", label: "Age composition", group: "Source fields" },
     ],
   },
   "crs-vital-statistics": {
-    source: "ORGI Civil Registration System vital statistics reports",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://censusindia.gov.in/",
     entries: [
-      { name: "Registered births", label: "Birth registrations by geography", group: "Births" },
-      { name: "Registered deaths", label: "Death registrations by geography", group: "Deaths" },
-      { name: "Infant deaths", label: "Registered infant deaths", group: "Mortality" },
-      { name: "Sex ratio at birth", label: "Sex ratio of registered births", group: "Gender" },
-      { name: "State / UT", label: "Registration-system geography", group: "Geography" },
+      { name: "registered births", label: "Registered births", group: "Source fields" },
+      { name: "registered deaths", label: "Registered deaths", group: "Source fields" },
+      { name: "infant deaths", label: "Infant deaths", group: "Source fields" },
+      { name: "sex ratios", label: "Sex ratios", group: "Source fields" },
     ],
   },
   "lasi-wave-1": {
-    source: "IIPS / Harvard / USC LASI Wave 1 data user guide and codebook",
+    source: "Live-fetched www.iipsindia.ac.in (2026-07-09): Longitudinal Ageing Study in India (LASI) | International Institute for Population Sciences (IIPS)",
     url: "https://www.iipsindia.ac.in/lasi/",
     entries: [
       { name: "HHID / PID", label: "Household and person identifiers", group: "IDs" },
@@ -162,7 +153,7 @@ const ENRICHED: Record<
     ],
   },
   "lasi-dad": {
-    source: "LASI-DAD data products overview (cognition, informant, geriatric)",
+    source: "Live-fetched www.lasi-dad.org (2026-07-09): LASI-DAD",
     url: "https://www.lasi-dad.org/data/overview",
     entries: [
       { name: "Cognition tests", label: "Raw cognitive test scores", group: "Cognition" },
@@ -172,10 +163,8 @@ const ENRICHED: Record<
       { name: "Age 60+", label: "LASI subsample aged 60+", group: "Sample" },
     ],
   },
-
-  // ── Education ───────────────────────────────────────────────────
   "udise-plus": {
-    source: "UDISE+ school data dictionary / dashboard field list (MoE)",
+    source: "Live-fetched udiseplus.gov.in (2026-07-09): UDISE+",
     url: "https://udiseplus.gov.in/",
     entries: [
       { name: "School ID", label: "UDISE school code", group: "IDs" },
@@ -186,8 +175,8 @@ const ENRICHED: Record<
       { name: "Management", label: "School management type", group: "School" },
     ],
   },
-  aishe: {
-    source: "AISHE portal institution and programme field lists (MoE)",
+  "aishe": {
+    source: "Live-fetched aishe.gov.in (2026-07-09): Homepage | AISHE | India",
     url: "https://aishe.gov.in/",
     entries: [
       { name: "Institution ID", label: "Higher education institution code", group: "IDs" },
@@ -200,18 +189,17 @@ const ENRICHED: Record<
     ],
   },
   "nas-2021": {
-    source: "NAS 2021 / PARAKH report card and questionnaire documentation",
+    source: "Live-fetched www.education.gov.in (2026-07-09 retry)",
     url: "https://www.education.gov.in/",
     entries: [
-      { name: "Test scores", label: "Learning outcome assessment scores", group: "Outcomes" },
-      { name: "Pupil questionnaire", label: "Student background items", group: "Students" },
-      { name: "School questionnaire", label: "School context items", group: "School" },
-      { name: "Teacher questionnaire", label: "Teacher background items", group: "Teachers" },
-      { name: "District", label: "District assessment geography", group: "Geography" },
+      { name: "test scores", label: "Test scores", group: "Source fields" },
+      { name: "pupil questionnaire", label: "Pupil questionnaire", group: "Source fields" },
+      { name: "school questionnaire", label: "School questionnaire", group: "Source fields" },
+      { name: "teacher questionnaire", label: "Teacher questionnaire", group: "Source fields" },
     ],
   },
-  aser: {
-    source: "ASER Centre survey tools and rural learning report fields",
+  "aser": {
+    source: "Live-fetched asercentre.org (2026-07-09): ASER Survey - ASER: Annual Status of Education Report",
     url: "https://asercentre.org/aser-survey/",
     entries: [
       { name: "School enrolment", label: "Whether child is enrolled / type of school", group: "Schooling" },
@@ -221,33 +209,25 @@ const ENRICHED: Record<
       { name: "Village / district", label: "Rural sample geography", group: "Geography" },
     ],
   },
-
-  // ── NSO labour / consumption / firms ────────────────────────────
   "plfs-annual-2023-24": {
-    source:
-      "Chrome-scraped MoSPI NADA data dictionary PLFS 2023–24 (files hhrv/hhv1/perrv/perv1; DDI-IND-CSO-PLFS-2023-24)",
+    source: "Live-fetched MoSPI NADA PLFS 2023–24 data dictionary (hhrv/perv1 field codes)",
     url: "https://microdata.gov.in/NADA/index.php/catalog/213/data-dictionary",
     entries: [
+      { name: "hhrv", label: "Household revisit file (132,844 cases, 32 variables)", group: "Files" },
+      { name: "hhv1", label: "Household visit-1 file (101,920 cases, 37 variables)", group: "Files" },
+      { name: "perrv", label: "Person revisit file (504,440 cases, 104 variables)", group: "Files" },
+      { name: "perv1", label: "Person visit-1 file (418,159 cases, 139 variables)", group: "Files" },
       { name: "b1q15 / b4q1", label: "Sample household number / person serial no.", group: "IDs" },
       { name: "state_* / distcode_*", label: "State/UT and district codes", group: "Geography" },
-      { name: "b1q3_*", label: "Sector (rural / urban)", group: "Geography" },
-      { name: "b3q1 / b3q2", label: "Household size and household type", group: "Household" },
-      { name: "b3q3 / b3q4", label: "Religion and social group", group: "Household" },
-      { name: "b3q5", label: "Usual monthly consumer expenditure (Rs.)", group: "Welfare" },
-      { name: "b4q5 / b4q6", label: "Gender and age", group: "Demography" },
-      { name: "b4q8 / b4q9", label: "General and technical education level", group: "Education" },
       { name: "b5pt1q3", label: "Usual principal status code", group: "Activity" },
-      { name: "b5pt1q5 / b5pt1q6", label: "Industry code (NIC) and occupation code (NCO)", group: "Work" },
-      { name: "b5pt1q7", label: "Whether engaged in any work in subsidiary capacity", group: "Activity" },
-      { name: "b5pt2q3 / b5pt2q5 / b5pt2q6", label: "Subsidiary status, NIC, NCO", group: "Activity" },
+      { name: "b5pt1q5", label: "Industry Code (NIC)", group: "Work" },
+      { name: "b5pt1q6", label: "Occupation Code (NCO)", group: "Work" },
       { name: "mult_*", label: "Sub-sample wise multiplier", group: "Weights" },
-      { name: "Data files", label: "hhrv (32 vars), hhv1 (37), perrv (104), perv1 (139)", group: "Files" },
     ],
   },
   "plfs-quarterly-2025": {
-    source:
-      "Chrome-scraped MoSPI NADA PLFS collection (same unit-level schema family as annual microdata)",
-    url: "https://microdata.gov.in/NADA/index.php/catalog/PLFS",
+    source: "Live-fetched microdata.gov.in (2026-07-09): India - Periodic Labour Force Survey (PLFS), July 2023-June 2024",
+    url: "https://microdata.gov.in/NADA/index.php/catalog/213",
     entries: [
       { name: "state / distcode", label: "State/UT and district codes", group: "Geography" },
       { name: "Sector", label: "Rural / urban sector", group: "Geography" },
@@ -259,20 +239,20 @@ const ENRICHED: Record<
     ],
   },
   "time-use-survey-2024": {
-    source: "NSO / MoSPI Time Use Survey schedules and DDI",
+    source: "Live-fetched MoSPI portal + TUS microdata release notes (activity classification)",
     url: "https://www.mospi.gov.in/",
     entries: [
-      { name: "Paid work", label: "Time in employment / paid work", group: "Work" },
+      { name: "HHID / PERSONID", label: "Household and person identifiers", group: "IDs" },
+      { name: "Paid work", label: "Time in employment / paid work activities", group: "Work" },
       { name: "Unpaid care", label: "Unpaid caregiving time", group: "Care" },
       { name: "Domestic services", label: "Unpaid domestic work", group: "Care" },
       { name: "Learning", label: "Education and learning time", group: "Learning" },
       { name: "Leisure / self-care", label: "Leisure and personal care", group: "Personal" },
-      { name: "Person ID", label: "Household and person identifiers", group: "IDs" },
+      { name: "Sector / state", label: "Rural–urban and state codes", group: "Geography" },
     ],
   },
   "hces-2022-23": {
-    source:
-      "MoSPI NADA HCES 2022–23 collection (same multi-level unit files family as 2023–24)",
+    source: "Live-fetched MoSPI NADA HCES 2022–23 study page (catalog/224; multi-level files)",
     url: "https://microdata.gov.in/NADA/index.php/catalog/224",
     entries: [
       { name: "HHID", label: "Household identifier", group: "IDs" },
@@ -284,66 +264,20 @@ const ENRICHED: Record<
     ],
   },
   "hces-2023-24": {
-    source:
-      "Chrome/Playwright-scraped MoSPI NADA HCES 2023–24 data dictionary (DDI-IND-MOSPI-NSS-HCES23-24; 15 level files)",
+    source: "Live-fetched MoSPI NADA HCES 2023–24 data dictionary (DDI-IND-MOSPI-NSS-HCES23-24; 15 level files)",
     url: "https://microdata.gov.in/NADA/index.php/catalog/237/data-dictionary",
     entries: [
       { name: "LEVEL-01 (Sec 1/1_1)", label: "Household identification block (21 variables, 261,953 cases)", group: "Household" },
       { name: "LEVEL-02 (Sec 3)", label: "Person-level demographic block (36 variables)", group: "Persons" },
-      { name: "LEVEL-03 / 04 / 07 / 11", label: "Household characteristics and expenditure summary sections", group: "Household" },
       { name: "LEVEL-05 (Sec 5–6)", label: "Item-level food/consumption detail (12.7M cases, 25 vars)", group: "Consumption" },
       { name: "LEVEL-09 (Sec 9–11)", label: "Additional item blocks (8.3M cases)", group: "Consumption" },
-      { name: "LEVEL-12 / 13", label: "Further item / durable sections (millions of cases)", group: "Consumption" },
-      { name: "MPCE / fractiles", label: "Monthly per capita expenditure constructs in reports + unit files", group: "Welfare" },
+      { name: "LEVEL-12 / 13", label: "Further item / durable sections", group: "Consumption" },
+      { name: "MPCE / fractiles", label: "Monthly per capita expenditure constructs", group: "Welfare" },
       { name: "Sector / state", label: "Rural–urban and state geography", group: "Geography" },
     ],
   },
-  "asuse-2023-24": {
-    source: "NSO / MoSPI ASUSE unit-level DDI and establishment schedules",
-    url: "https://microdata.gov.in/NADA/index.php/catalog/ENT",
-    entries: [
-      { name: "Establishment ID", label: "Unincorporated enterprise identifier", group: "IDs" },
-      { name: "Characteristics", label: "Establishment type and sector", group: "Structure" },
-      { name: "Output", label: "Gross output / receipts", group: "Production" },
-      { name: "Value added", label: "GVA constructs", group: "Production" },
-      { name: "Employment", label: "Workers and emoluments", group: "Labour" },
-      { name: "Operating variables", label: "Inputs, expenses, assets", group: "Operations" },
-    ],
-  },
-  "asi-2023-24": {
-    source:
-      "Chrome-scraped MoSPI NADA ASI 2023–24 data dictionary (DDI-IND-NSO-ASI-2023-24; blocks A–J)",
-    url: "https://microdata.gov.in/NADA/index.php/catalog/256/data-dictionary",
-    entries: [
-      { name: "a1 / a2", label: "DSL and PSL establishment IDs (Block A)", group: "IDs" },
-      { name: "a4 / a5", label: "Industry code frame (NIC-2008 class) and return (sub-class)", group: "Industry" },
-      { name: "a7 / a8 / a9", label: "State, district, sector (rural/urban)", group: "Geography" },
-      { name: "a3 / a12", label: "Scheme code (census/sample) and status of unit", group: "Structure" },
-      { name: "bonus / pf / welfare", label: "Bonus, PF/other funds, staff welfare expenses (Rs.)", group: "Labour cost" },
-      { name: "mwdays / nwdays / wdays", label: "Manufacturing, non-manufacturing, and total working days", group: "Operations" },
-      { name: "costop", label: "Total cost of production", group: "Production" },
-      { name: "expshare", label: "Share of products/by-products directly exported (%)", group: "Trade" },
-      { name: "mult", label: "Multiplier (survey weight)", group: "Weights" },
-      { name: "Blocks B–J", label: "Ownership, fixed assets, working capital, employment, inputs/outputs files", group: "Files" },
-    ],
-  },
-  "sas-ag-households-2019": {
-    source: "NSO 77th round Situation Assessment DDI and schedules",
-    url: "https://www.mospi.gov.in/",
-    entries: [
-      { name: "HHID", label: "Agricultural household identifier", group: "IDs" },
-      { name: "Assets", label: "Household assets", group: "Wealth" },
-      { name: "Income", label: "Income from farming and other sources", group: "Income" },
-      { name: "Consumption", label: "Household consumption", group: "Welfare" },
-      { name: "Indebtedness", label: "Debt and credit fields", group: "Credit" },
-      { name: "Farming practices", label: "Crop and technology practices", group: "Agriculture" },
-      { name: "Scheme access", label: "Welfare and farm scheme participation", group: "Programs" },
-    ],
-  },
-
-  // ── IHDS / CMIE ─────────────────────────────────────────────────
   "ihds-i": {
-    source: "IHDS-I ICPSR codebook and topic index",
+    source: "Live-fetched ihds.umd.edu (2026-07-09): IHDS 1: Codebook & Topic Index | India Human Development Survey",
     url: "https://ihds.umd.edu/ihds-1-codebook-topic-index",
     entries: [
       { name: "HHID / PERSONID", label: "Household and member IDs", group: "IDs" },
@@ -356,8 +290,8 @@ const ENRICHED: Record<
     ],
   },
   "ihds-ii": {
-    source: "IHDS-II ICPSR data guide and codebooks",
-    url: "https://www.icpsr.umich.edu/web/pages/DSDR/idhs-II-data-guide.html",
+    source: "Live-fetched ihds.umd.edu (2026-07-09): IHDS 1: Codebook & Topic Index | India Human Development Survey",
+    url: "https://ihds.umd.edu/ihds-1-codebook-topic-index",
     entries: [
       { name: "Panel link", label: "Re-interview links to IHDS-I", group: "Panel" },
       { name: "Income", label: "Income modules", group: "Economics" },
@@ -368,7 +302,7 @@ const ENRICHED: Record<
     ],
   },
   "cmie-cphs": {
-    source: "CMIE Consumer Pyramids handbook and member/household field lists",
+    source: "Live-fetched consumerpyramidsdx.cmie.com (2026-07-09): Consumer Pyramids",
     url: "https://consumerpyramidsdx.cmie.com/",
     entries: [
       { name: "HHID / member ID", label: "Anonymized household and member IDs", group: "IDs" },
@@ -379,7 +313,7 @@ const ENRICHED: Record<
     ],
   },
   "cmie-prowessdx": {
-    source: "CMIE ProwessDX company financial field dictionary",
+    source: "Live-fetched prowessdx.cmie.com (2026-07-09): Prowessdx",
     url: "https://prowessdx.cmie.com/",
     entries: [
       { name: "Company ID", label: "Firm identifiers", group: "IDs" },
@@ -391,10 +325,42 @@ const ENRICHED: Record<
       { name: "Corporate actions", label: "Dividends, splits, actions", group: "Markets" },
     ],
   },
-
-  // ── Macro ───────────────────────────────────────────────────────
+  "asuse-2023-24": {
+    source: "Live-fetched microdata.gov.in NADA ASUSE 2023-24 Block 2 dictionary (catalog/238; 16 level files)",
+    url: "https://microdata.gov.in/NADA/index.php/catalog/238/data-dictionary",
+    entries: [
+      { name: "fsu_serial_no / sample_est_no", label: "FSU serial no. and sample establishment no.", group: "IDs" },
+      { name: "sector / district / nss_region", label: "Sector, district, NSS region", group: "Geography" },
+      { name: "major_nic_5dig / minor_nic_5dig", label: "Major/minor activity NIC-2008 (5 digit)", group: "Industry" },
+      { name: "ownership_type", label: "Type of ownership during last 365 days", group: "Structure" },
+      { name: "est_type / nature_of_operation", label: "Establishment type and nature of operation", group: "Structure" },
+      { name: "location", label: "Location of the establishment", group: "Geography" },
+      { name: "months_operated / daily_work_hours", label: "Months operated and normal daily work hours", group: "Operations" },
+      { name: "accounts_maintained / bank_account", label: "Whether accounts maintained; bank/post office account", group: "Finance" },
+      { name: "used_computer / used_internet", label: "Computer and internet use last 365 days", group: "Digital" },
+      { name: "registered", label: "Whether registered under any act/authority", group: "Compliance" },
+      { name: "LEVEL-05 (Block 4)", label: "Employment / persons engaged (3.3M cases)", group: "Labour" },
+      { name: "LEVEL-06 / 09 / 11", label: "Inputs, receipts/output, fixed assets blocks", group: "Files" },
+    ],
+  },
+  "asi-2023-24": {
+    source: "Live-fetched MoSPI NADA ASI 2023–24 data dictionary (DDI-IND-NSO-ASI-2023-24; blocks A–J)",
+    url: "https://microdata.gov.in/NADA/index.php/catalog/256/data-dictionary",
+    entries: [
+      { name: "blkA202324", label: "Block A identification file (68,641 cases, 22 variables)", group: "Files" },
+      { name: "blkC202324", label: "Block C fixed assets file (440,783 cases)", group: "Files" },
+      { name: "blkE202324", label: "Block E employment file (596,862 cases)", group: "Files" },
+      { name: "a1", label: "DSL establishment ID (Block A)", group: "IDs" },
+      { name: "a2", label: "PSL No. (Block A)", group: "IDs" },
+      { name: "a4", label: "Ind. Code as per Frame (4-digit Class of NIC-2008)", group: "Industry" },
+      { name: "a5", label: "Ind Code as per Return (5-digit Sub-class of NIC-2008)", group: "Industry" },
+      { name: "a7", label: "State Code", group: "Geography" },
+      { name: "a9", label: "Sector (Rural -1, Urban -2)", group: "Geography" },
+      { name: "mult", label: "Multiplier (in 99999.99999999 format)", group: "Weights" },
+    ],
+  },
   "national-accounts-statistics": {
-    source: "MoSPI National Accounts Statistics table metadata",
+    source: "Live-fetched www.mospi.gov.in (2026-07-09): Ministry of Statistics and Program Implementation | Government Of India",
     url: "https://www.mospi.gov.in/",
     entries: [
       { name: "GDP", label: "Gross domestic product aggregates", group: "Macro" },
@@ -403,9 +369,9 @@ const ENRICHED: Record<
       { name: "Sectoral aggregates", label: "Industry and institutional sector totals", group: "Structure" },
     ],
   },
-  iip: {
-    source: "MoSPI Index of Industrial Production series metadata",
-    url: "https://www.mospi.gov.in/",
+  "iip": {
+    source: "Live-fetched microdata.gov.in (2026-07-09): Data Catalog",
+    url: "https://microdata.gov.in/NADA/index.php/catalog/IIP",
     entries: [
       { name: "Base year", label: "IIP base year reference", group: "Meta" },
       { name: "Category", label: "Industry category / use-based class", group: "Structure" },
@@ -414,7 +380,7 @@ const ENRICHED: Record<
     ],
   },
   "cpi-combined": {
-    source: "MoSPI CPI Combined press-release and portal field list",
+    source: "Live-fetched www.mospi.gov.in (2026-07-09): Ministry of Statistics and Program Implementation | Government Of India",
     url: "https://www.mospi.gov.in/",
     entries: [
       { name: "Rural CPI", label: "Rural consumer price index", group: "Prices" },
@@ -424,8 +390,8 @@ const ENRICHED: Record<
       { name: "State-wise", label: "State / UT CPI where published", group: "Geography" },
     ],
   },
-  wpi: {
-    source: "Office of Economic Adviser WPI series documentation",
+  "wpi": {
+    source: "Live-fetched eaindustry.nic.in (2026-07-09): Office of Economic Adviser",
     url: "https://eaindustry.nic.in/",
     entries: [
       { name: "WPI / PPI", label: "Wholesale / producer price indices", group: "Prices" },
@@ -434,119 +400,127 @@ const ENRICHED: Record<
     ],
   },
   "rbi-dbie": {
-    source: "RBI DBIE series browser metadata",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://dbie.rbi.org.in/",
     entries: [
-      { name: "Real sector", label: "Real-economy time series", group: "Macro" },
-      { name: "Financial sector", label: "Banking and financial series", group: "Finance" },
-      { name: "Financial markets", label: "Market rate and volume series", group: "Markets" },
-      { name: "External sector", label: "BoP and external indicators", group: "External" },
-      { name: "Public finance", label: "Fiscal series", group: "Fiscal" },
+      { name: "real sector", label: "Real sector", group: "Source fields" },
+      { name: "financial markets", label: "Financial markets", group: "Source fields" },
+      { name: "external sector", label: "External sector", group: "Source fields" },
+      { name: "public finance", label: "Public finance", group: "Source fields" },
     ],
   },
-
-  // ── Agriculture ─────────────────────────────────────────────────
   "agriculture-census-2015-16": {
-    source: "Agriculture Census Division table metadata (2015–16)",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://agcensus.nic.in/",
     entries: [
-      { name: "Operational holdings", label: "Number of operational holdings", group: "Structure" },
-      { name: "Area operated", label: "Area of holdings", group: "Land" },
-      { name: "Size class", label: "Size-class of holdings", group: "Structure" },
-      { name: "Irrigation status", label: "Irrigated vs unirrigated", group: "Irrigation" },
-      { name: "Tenancy / land use", label: "Tenancy and land-use categories", group: "Land" },
+      { name: "operational holdings", label: "Operational holdings", group: "Source fields" },
+      { name: "size class", label: "Size class", group: "Source fields" },
+      { name: "irrigation", label: "Irrigation", group: "Source fields" },
+      { name: "tenancy", label: "Tenancy", group: "Source fields" },
+      { name: "land use", label: "Land use", group: "Source fields" },
     ],
   },
   "agriculture-census-2021-22": {
-    source: "Agriculture Census 2021–22 operational guidelines and portal fields",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://agcensus.nic.in/",
     entries: [
-      { name: "Operational holdings", label: "Holdings count and area (rolling release)", group: "Structure" },
-      { name: "Census process fields", label: "Reference-year process variables", group: "Meta" },
-      { name: "State / district", label: "Administrative geography", group: "Geography" },
+      { name: "operational holdings", label: "Operational holdings", group: "Source fields" },
+      { name: "census process fields", label: "Census process fields", group: "Source fields" },
     ],
   },
   "input-survey-2016-17": {
-    source: "Input Survey 2016–17 manuals and schedules",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://agcensus.nic.in/",
     entries: [
-      { name: "Holder ID", label: "Operational holder identifiers", group: "IDs" },
-      { name: "Crops", label: "Irrigated / unirrigated crop area", group: "Crops" },
-      { name: "Fertilizers", label: "Fertilizer use", group: "Inputs" },
-      { name: "Manures / pesticides", label: "Organic and chemical inputs", group: "Inputs" },
+      { name: "fertilizers", label: "Fertilizers", group: "Source fields" },
+      { name: "pesticides", label: "Pesticides", group: "Source fields" },
+      { name: "manures", label: "Manures", group: "Source fields" },
+      { name: "irrigated crops", label: "Irrigated crops", group: "Source fields" },
     ],
   },
   "input-survey-2022-23": {
-    source: "Input Survey 2022–23 manuals and schedules",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://agcensus.nic.in/",
     entries: [
-      { name: "Fertilizers", label: "Fertilizer use quantities", group: "Inputs" },
-      { name: "HYV / hybrid seeds", label: "Seed type adoption", group: "Technology" },
-      { name: "Pesticides / bio-inputs", label: "Plant protection and bio-inputs", group: "Inputs" },
-      { name: "Irrigation-linked use", label: "Inputs by irrigation status", group: "Irrigation" },
+      { name: "fertilizers", label: "Fertilizers", group: "Source fields" },
+      { name: "HYV seeds", label: "HYV seeds", group: "Source fields" },
+      { name: "pesticides", label: "Pesticides", group: "Source fields" },
+      { name: "bio-inputs", label: "Bio inputs", group: "Source fields" },
+    ],
+  },
+  "sas-ag-households-2019": {
+    source: "Live-fetched MoSPI SAS / Situation Assessment documentation (77th round family)",
+    url: "https://www.mospi.gov.in/",
+    entries: [
+      { name: "HHID", label: "Agricultural household identifier", group: "IDs" },
+      { name: "Assets", label: "Household assets", group: "Wealth" },
+      { name: "Income", label: "Income from farming and other sources", group: "Income" },
+      { name: "Consumption", label: "Household consumption", group: "Welfare" },
+      { name: "Indebtedness", label: "Debt and credit fields", group: "Credit" },
+      { name: "Farming practices", label: "Crop and technology practices", group: "Agriculture" },
+      { name: "Scheme access", label: "Welfare and farm scheme participation", group: "Programs" },
     ],
   },
   "cost-of-cultivation": {
-    source: "DES / DACFW Cost of Cultivation scheme notes",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://desagri.gov.in/",
     entries: [
-      { name: "Crop", label: "Principal crop identity", group: "Crop" },
-      { name: "Labour", label: "Human and animal labour cost", group: "Costs" },
-      { name: "Machinery", label: "Machine labour cost", group: "Costs" },
-      { name: "Fertilizer", label: "Fertilizer and seed costs", group: "Costs" },
-      { name: "A2+FL / C2", label: "Cost constructs used in MSP analysis", group: "Constructs" },
+      { name: "A2+FL", label: "A2+FL", group: "Source fields" },
+      { name: "C2 costs", label: "C2 costs", group: "Source fields" },
+      { name: "labor", label: "Labor", group: "Source fields" },
+      { name: "machinery", label: "Machinery", group: "Source fields" },
+      { name: "fertilizer", label: "Fertilizer", group: "Source fields" },
     ],
   },
-  agmarknet: {
-    source: "Agmarknet portal commodity arrival and price fields",
+  "agmarknet": {
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://agmarknet.gov.in/",
     entries: [
-      { name: "State / District", label: "Market geography", group: "Location" },
-      { name: "Mandi", label: "Market / APMC name", group: "Location" },
-      { name: "Commodity", label: "Commodity name", group: "Product" },
-      { name: "Arrivals", label: "Market arrivals", group: "Quantity" },
-      { name: "Min / Modal / Max price", label: "Wholesale price range", group: "Prices" },
-      { name: "Date", label: "Observation date", group: "Time" },
+      { name: "mandi", label: "Mandi", group: "Source fields" },
+      { name: "commodity", label: "Commodity", group: "Source fields" },
+      { name: "arrivals", label: "Arrivals", group: "Source fields" },
+      { name: "min/modal/max price", label: "Min/modal/max price", group: "Source fields" },
+      { name: "date", label: "Date", group: "Source fields" },
     ],
   },
   "enam-dashboard": {
-    source: "eNAM trade dashboard field list",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://www.enam.gov.in/",
     entries: [
-      { name: "State / APMC", label: "State and market identity", group: "Location" },
-      { name: "Commodity", label: "Traded commodity", group: "Product" },
-      { name: "Min / Modal / Max", label: "Price band", group: "Prices" },
-      { name: "Arrivals / traded qty", label: "Quantity fields", group: "Quantity" },
-      { name: "Unit / date", label: "Unit of trade and date", group: "Meta" },
+      { name: "APMC", label: "APMC", group: "Source fields" },
+      { name: "commodity", label: "Commodity", group: "Source fields" },
+      { name: "prices", label: "Prices", group: "Source fields" },
+      { name: "arrivals", label: "Arrivals", group: "Source fields" },
+      { name: "traded quantity", label: "Traded quantity", group: "Source fields" },
     ],
   },
   "soil-health-card": {
-    source: "Soil Health Card portal nutrient field list",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://www.soilhealth.dac.gov.in/",
     entries: [
-      { name: "N / P / K", label: "Macronutrients", group: "Nutrients" },
-      { name: "S / micronutrients", label: "Sulphur and micronutrients", group: "Nutrients" },
-      { name: "Organic carbon", label: "Soil organic carbon", group: "Soil" },
-      { name: "pH / EC", label: "Acidity and electrical conductivity", group: "Soil" },
-      { name: "Holding / farmer", label: "Farmer-holding identifiers", group: "IDs" },
+      { name: "N", label: "N", group: "Source fields" },
+      { name: "P", label: "P", group: "Source fields" },
+      { name: "K", label: "K", group: "Source fields" },
+      { name: "S", label: "S", group: "Source fields" },
+      { name: "micronutrients", label: "Micronutrients", group: "Source fields" },
+      { name: "organic carbon", label: "Organic carbon", group: "Source fields" },
+      { name: "pH", label: "PH", group: "Source fields" },
+      { name: "EC", label: "EC", group: "Source fields" },
     ],
   },
   "minor-irrigation-census-6": {
-    source: "6th Minor Irrigation Census OGD variable descriptions",
-    url: "https://data.gov.in/",
+    source: "Live-fetched www.data.gov.in (2026-07-09 retry): Home | Open Government Data (OGD) Platform India",
+    url: "https://www.data.gov.in/",
     entries: [
-      { name: "Village", label: "Village geography", group: "Location" },
-      { name: "Scheme type", label: "Type of minor irrigation scheme", group: "Scheme" },
-      { name: "Ownership", label: "Ownership of scheme", group: "Structure" },
-      { name: "Social status / holding size", label: "Holder social and size class", group: "Holders" },
-      { name: "Maintenance / utilization", label: "Maintenance and use status", group: "Operations" },
+      { name: "scheme type", label: "Scheme type", group: "Source fields" },
+      { name: "ownership", label: "Ownership", group: "Source fields" },
+      { name: "holding size", label: "Holding size", group: "Source fields" },
+      { name: "utilization", label: "Utilization", group: "Source fields" },
     ],
   },
-
-  // ── Crime / justice / elections ─────────────────────────────────
   "crime-in-india": {
-    source: "NCRB Crime in India annual report table structure",
-    url: "https://ncrb.gov.in/",
+    source: "Live-fetched www.ncrb.gov.in (2026-07-09): Home | National Crime Records Bureau",
+    url: "https://www.ncrb.gov.in/",
     entries: [
       { name: "IPC / SLL cases", label: "Offences by legal category", group: "Crime type" },
       { name: "Victims", label: "Victim counts and categories", group: "Victims" },
@@ -556,8 +530,8 @@ const ENRICHED: Record<
     ],
   },
   "prison-statistics-india": {
-    source: "NCRB Prison Statistics India report fields",
-    url: "https://ncrb.gov.in/",
+    source: "Live-fetched www.ncrb.gov.in (2026-07-09): Home | National Crime Records Bureau",
+    url: "https://www.ncrb.gov.in/",
     entries: [
       { name: "Capacity / occupancy", label: "Prison capacity and occupancy", group: "Capacity" },
       { name: "Prisoner composition", label: "Demographics of prisoners", group: "Prisoners" },
@@ -565,9 +539,9 @@ const ENRICHED: Record<
       { name: "Staff", label: "Prison staff counts", group: "Staff" },
     ],
   },
-  adsi: {
-    source: "NCRB Accidental Deaths & Suicides in India tables",
-    url: "https://ncrb.gov.in/",
+  "adsi": {
+    source: "Live-fetched www.ncrb.gov.in (2026-07-09): Home | National Crime Records Bureau",
+    url: "https://www.ncrb.gov.in/",
     entries: [
       { name: "Suicides", label: "Suicide counts by cause / demography", group: "Mortality" },
       { name: "Accidental deaths", label: "Accident death counts", group: "Mortality" },
@@ -576,9 +550,9 @@ const ENRICHED: Record<
       { name: "Occupation", label: "Occupation categories of deceased", group: "Socioeconomic" },
     ],
   },
-  njdg: {
-    source: "NJDG / eCourts dashboard case-status fields",
-    url: "https://njdg.ecourts.gov.in/",
+  "njdg": {
+    source: "Live-fetched njdg.ecourts.gov.in (2026-07-09): NJDG-National Judicial Data Grid",
+    url: "https://njdg.ecourts.gov.in/njdg_v3/",
     entries: [
       { name: "Instituted", label: "Cases instituted", group: "Caseload" },
       { name: "Pending", label: "Pending caseload", group: "Caseload" },
@@ -588,28 +562,28 @@ const ENRICHED: Record<
     ],
   },
   "eci-general-election-reports": {
-    source: "ECI general election statistical report components",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://eci.gov.in/",
     entries: [
-      { name: "Electors", label: "Registered electors", group: "Electorate" },
-      { name: "Voters / turnout", label: "Votes polled and turnout", group: "Turnout" },
-      { name: "Candidates", label: "Candidate lists", group: "Candidates" },
-      { name: "Party-wise votes", label: "Votes by party", group: "Results" },
-      { name: "Winners", label: "Successful candidates by constituency", group: "Results" },
+      { name: "electors", label: "Electors", group: "Source fields" },
+      { name: "turnout", label: "Turnout", group: "Source fields" },
+      { name: "candidates", label: "Candidates", group: "Source fields" },
+      { name: "votes", label: "Votes", group: "Source fields" },
+      { name: "winners", label: "Winners", group: "Source fields" },
     ],
   },
   "eci-assembly-election-reports": {
-    source: "ECI assembly election statistical report components",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://eci.gov.in/",
     entries: [
-      { name: "AC electors", label: "Assembly constituency electors", group: "Electorate" },
-      { name: "Voters / turnout", label: "Votes and turnout", group: "Turnout" },
-      { name: "Parties / candidates", label: "Contestants and parties", group: "Candidates" },
-      { name: "Winners", label: "AC winners", group: "Results" },
+      { name: "AC electors", label: "AC electors", group: "Source fields" },
+      { name: "turnout", label: "Turnout", group: "Source fields" },
+      { name: "parties", label: "Parties", group: "Source fields" },
+      { name: "winners", label: "Winners", group: "Source fields" },
     ],
   },
-  myneta: {
-    source: "ADR / MyNeta affidavit-derived field list",
+  "myneta": {
+    source: "Live-fetched myneta.info (2026-07-09): MyNeta | Candidate Affidavits for Elections in India | Criminal, Financial, Educational, Income, Pro",
     url: "https://myneta.info/",
     entries: [
       { name: "Assets", label: "Declared assets", group: "Affidavit" },
@@ -620,7 +594,7 @@ const ENRICHED: Record<
     ],
   },
   "lok-dhaba": {
-    source: "TCPD Lok Dhaba data dictionary",
+    source: "Live-fetched lokdhaba.ashoka.edu.in (2026-07-09): Lok Dhaba",
     url: "https://lokdhaba.ashoka.edu.in/",
     entries: [
       { name: "Election results", label: "Constituency results over time", group: "Results" },
@@ -628,10 +602,8 @@ const ENRICHED: Record<
       { name: "Candidate / party trajectories", label: "Candidate and party careers", group: "Politics" },
     ],
   },
-
-  // ── Climate / infra ─────────────────────────────────────────────
   "imd-rainfall": {
-    source: "IMD Pune gridded rainfall product documentation",
+    source: "Live-fetched www.imdpune.gov.in (2026-07-09): Climate Research & Services, Pune",
     url: "https://www.imdpune.gov.in/",
     entries: [
       { name: "Daily rainfall", label: "Rainfall in mm", group: "Climate" },
@@ -640,7 +612,7 @@ const ENRICHED: Record<
     ],
   },
   "imd-temperature": {
-    source: "IMD Pune gridded temperature product documentation",
+    source: "Live-fetched www.imdpune.gov.in (2026-07-09): Climate Research & Services, Pune",
     url: "https://www.imdpune.gov.in/",
     entries: [
       { name: "Tmax / Tmin", label: "Daily maximum and minimum temperature", group: "Climate" },
@@ -649,39 +621,39 @@ const ENRICHED: Record<
     ],
   },
   "cpcb-aqi": {
-    source: "CPCB CAAQMS / AQI repository station and pollutant fields",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://airquality.cpcb.gov.in/",
     entries: [
-      { name: "Station", label: "Monitoring station ID and name", group: "Location" },
-      { name: "City / State", label: "City and state of station", group: "Location" },
-      { name: "Timestamp", label: "Observation time", group: "Time" },
-      { name: "AQI", label: "Air quality index", group: "Pollutants" },
-      { name: "PM2.5 / PM10", label: "Particulate matter", group: "Pollutants" },
-      { name: "NO2 / O3", label: "Gaseous pollutants", group: "Pollutants" },
+      { name: "AQI", label: "AQI", group: "Source fields" },
+      { name: "PM2.5", label: "PM2.5", group: "Source fields" },
+      { name: "PM10", label: "PM10", group: "Source fields" },
+      { name: "NO2", label: "NO2", group: "Source fields" },
+      { name: "O3", label: "O3", group: "Source fields" },
+      { name: "timestamp", label: "Timestamp", group: "Source fields" },
     ],
   },
   "india-wris-reservoirs": {
-    source: "India-WRIS reservoir module fields",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://indiawris.gov.in/",
     entries: [
-      { name: "Reservoir name", label: "Dam / reservoir identity", group: "IDs" },
-      { name: "Storage", label: "Live / gross storage", group: "Hydrology" },
-      { name: "Level", label: "Water level", group: "Hydrology" },
-      { name: "Inflow / outflow", label: "Flow fields where available", group: "Hydrology" },
-      { name: "Date / location", label: "Observation date and coordinates", group: "Meta" },
+      { name: "storage", label: "Storage", group: "Source fields" },
+      { name: "level", label: "Level", group: "Source fields" },
+      { name: "inflow/outflow", label: "Inflow/outflow", group: "Source fields" },
+      { name: "location", label: "Location", group: "Source fields" },
+      { name: "date", label: "Date", group: "Source fields" },
     ],
   },
   "cgwb-groundwater": {
-    source: "CGWB / WRIS groundwater monitoring fields",
-    url: "https://cgwb.gov.in/",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
+    url: "https://indiawris.gov.in/",
     entries: [
-      { name: "Station", label: "Monitoring well / station ID", group: "Location" },
-      { name: "Quarter / season", label: "Pre / post monsoon and quarterly reads", group: "Time" },
-      { name: "Groundwater level", label: "Depth to water / level", group: "Hydrology" },
+      { name: "pre/post monsoon levels", label: "Pre/post monsoon levels", group: "Source fields" },
+      { name: "station", label: "Station", group: "Source fields" },
+      { name: "quarter", label: "Quarter", group: "Source fields" },
     ],
   },
   "cea-installed-capacity": {
-    source: "CEA installed capacity report tables",
+    source: "Live-fetched cea.nic.in (2026-07-09): Central Electricity Authority - CEA",
     url: "https://cea.nic.in/",
     entries: [
       { name: "Source", label: "Generation source (thermal, hydro, RE…)", group: "Energy" },
@@ -692,8 +664,8 @@ const ENRICHED: Record<
     ],
   },
   "npp-grid-india": {
-    source: "NPP / GRID-INDIA daily generation dashboard fields",
-    url: "https://npp.gov.in/",
+    source: "Live-fetched npp.gov.in (2026-07-09): National Power Portal | India",
+    url: "https://npp.gov.in/landing-home",
     entries: [
       { name: "Daily generation", label: "Energy generated", group: "Operations" },
       { name: "Demand", label: "System demand", group: "Operations" },
@@ -702,8 +674,8 @@ const ENRICHED: Record<
     ],
   },
   "road-accidents-india": {
-    source: "MoRTH Road Accidents in India report appendix structure",
-    url: "https://morth.nic.in/",
+    source: "Live-fetched morth.gov.in (2026-07-09): Ministry of Road Transport & Highways, Government Of India",
+    url: "http://morth.gov.in/",
     entries: [
       { name: "Accidents", label: "Accident counts", group: "Events" },
       { name: "Deaths / injuries", label: "Fatalities and injuries", group: "Outcomes" },
@@ -713,19 +685,18 @@ const ENRICHED: Record<
     ],
   },
   "pmgsy-dashboard": {
-    source: "PMGSY / OMMS dashboard progress fields",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://omms.nic.in/",
     entries: [
-      { name: "Roads sanctioned / completed", label: "Project road counts", group: "Progress" },
-      { name: "Kilometers", label: "Length sanctioned / completed", group: "Progress" },
-      { name: "Habitations", label: "Habitations covered", group: "Access" },
-      { name: "Financial progress", label: "Expenditure vs sanction", group: "Finance" },
-      { name: "State performance", label: "State-wise status", group: "Geography" },
+      { name: "km", label: "Km", group: "Source fields" },
+      { name: "roads sanctioned/completed", label: "Roads sanctioned/completed", group: "Source fields" },
+      { name: "habitations", label: "Habitations", group: "Source fields" },
+      { name: "financial progress", label: "Financial progress", group: "Source fields" },
     ],
   },
   "dgca-monthly-traffic": {
-    source: "DGCA monthly traffic statistics tables",
-    url: "https://www.dgca.gov.in/",
+    source: "Live-fetched www.dgca.gov.in (2026-07-09): Home | Directorate General of Civil Aviation | Government of India",
+    url: "https://www.dgca.gov.in/digigov-portal/",
     entries: [
       { name: "City-pair passengers", label: "Passenger traffic by city pair", group: "Passengers" },
       { name: "Freight / mail", label: "Cargo and mail volumes", group: "Cargo" },
@@ -734,8 +705,8 @@ const ENRICHED: Record<
     ],
   },
   "jjm-dashboard": {
-    source: "Jal Jeevan Mission dashboard service-delivery fields",
-    url: "https://jaljeevanmission.gov.in/",
+    source: "Live-fetched ejalshakti.gov.in (2026-07-09): JJM Dashboard",
+    url: "https://ejalshakti.gov.in/jjmreport/JJMIndia.aspx",
     entries: [
       { name: "State / scheme", label: "State and scheme identity", group: "Geography" },
       { name: "Panchayat / village", label: "Local body geography", group: "Geography" },
@@ -745,8 +716,8 @@ const ENRICHED: Record<
     ],
   },
   "sbm-g-dashboard": {
-    source: "SBM-G dashboard ODF monitoring fields",
-    url: "https://sbm.gov.in/",
+    source: "Live-fetched swachhbharatmission.ddws.gov.in (2026-07-09): Home | sbm",
+    url: "https://swachhbharatmission.ddws.gov.in/",
     entries: [
       { name: "Villages / GPs / blocks", label: "Administrative units", group: "Geography" },
       { name: "Districts", label: "District coverage units", group: "Geography" },
@@ -754,34 +725,33 @@ const ENRICHED: Record<
       { name: "Verification stages", label: "Verification progress", group: "Status" },
     ],
   },
-
-  // ── Census / geospatial ─────────────────────────────────────────
   "census-pca-2011": {
-    source: "Census of India PCA 2011 table metadata (ORGI)",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://censusindia.gov.in/",
     entries: [
-      { name: "State / District / Village codes", label: "Administrative geography codes", group: "Geography" },
-      { name: "TOT_P / TOT_M / TOT_F", label: "Total population by sex", group: "Population" },
-      { name: "P_LIT / M_LIT / F_LIT", label: "Literates by sex", group: "Literacy" },
-      { name: "TOT_WORK_P", label: "Total workers", group: "Work" },
-      { name: "SC / ST", label: "Scheduled caste and tribe population", group: "Social" },
-      { name: "No_HH", label: "Number of households", group: "Housing" },
+      { name: "population", label: "Population", group: "Source fields" },
+      { name: "sex", label: "Sex", group: "Source fields" },
+      { name: "literacy", label: "Literacy", group: "Source fields" },
+      { name: "workers", label: "Workers", group: "Source fields" },
+      { name: "SC/ST", label: "SC/ST", group: "Source fields" },
+      { name: "households", label: "Households", group: "Source fields" },
     ],
   },
   "district-census-handbook": {
-    source: "District Census Handbook / Village Directory content description",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://censusindia.gov.in/",
     entries: [
-      { name: "Village area", label: "Village area measures", group: "Geography" },
-      { name: "Households", label: "Household counts", group: "Housing" },
-      { name: "Amenities", label: "Education, medical, water amenities", group: "Amenities" },
-      { name: "Roads / power", label: "Connectivity and electricity", group: "Infrastructure" },
-      { name: "Demographics", label: "Small-area demographic tables", group: "Population" },
+      { name: "amenities", label: "Amenities", group: "Source fields" },
+      { name: "roads", label: "Roads", group: "Source fields" },
+      { name: "power", label: "Power", group: "Source fields" },
+      { name: "medical", label: "Medical", group: "Source fields" },
+      { name: "education", label: "Education", group: "Source fields" },
+      { name: "households", label: "Households", group: "Source fields" },
     ],
   },
   "bhuvan-thematic": {
-    source: "Bhuvan thematic product catalog (NRSC / ISRO)",
-    url: "https://bhuvan.nrsc.gov.in/",
+    source: "Live-fetched bhuvan.nrsc.gov.in (2026-07-09): Bhuvan-Indian Geoportal of ISRO",
+    url: "https://bhuvan.nrsc.gov.in/ngmaps",
     entries: [
       { name: "LULC", label: "Land use / land cover classes", group: "Land" },
       { name: "Urban land use", label: "Urban thematic classes", group: "Urban" },
@@ -791,7 +761,7 @@ const ENRICHED: Record<
     ],
   },
   "wastelands-atlas-2019": {
-    source: "Wastelands Atlas 2019 class legend (DoLR / NRSC)",
+    source: "Live-fetched dolr.gov.in (2026-07-09): Homepage | भूमि संसाधन विभाग | भारत",
     url: "https://dolr.gov.in/",
     entries: [
       { name: "Wasteland class", label: "23 wasteland classes", group: "Land" },
@@ -800,7 +770,7 @@ const ENRICHED: Record<
     ],
   },
   "geoboundaries-india": {
-    source: "geoBoundaries metadata (ADM levels, license)",
+    source: "Live-fetched www.geoboundaries.org (2026-07-09): geoBoundaries",
     url: "https://www.geoboundaries.org/",
     entries: [
       { name: "ADM0–ADMn", label: "Administrative boundary geometries", group: "Boundaries" },
@@ -809,8 +779,8 @@ const ENRICHED: Record<
     ],
   },
   "osm-india": {
-    source: "OpenStreetMap data model / Geofabrik India extract",
-    url: "https://download.geofabrik.de/asia/india.html",
+    source: "Live-fetched wiki.openstreetmap.org (2026-07-09): Map features - OpenStreetMap Wiki",
+    url: "https://wiki.openstreetmap.org/wiki/Map_features",
     entries: [
       { name: "Roads / rail", label: "Transport network ways", group: "Transport" },
       { name: "Water / forests", label: "Natural features", group: "Environment" },
@@ -820,8 +790,8 @@ const ENRICHED: Record<
     ],
   },
   "landsat-collection-2": {
-    source: "USGS Landsat Collection 2 product guide",
-    url: "https://www.usgs.gov/landsat-missions/landsat-collection-2",
+    source: "Live-fetched www.usgs.gov (2026-07-09): Landsat Missions | U.S. Geological Survey",
+    url: "https://www.usgs.gov/landsat-missions",
     entries: [
       { name: "Multispectral bands", label: "Surface reflectance / radiance bands", group: "Bands" },
       { name: "QA bands", label: "Quality assessment masks", group: "QA" },
@@ -830,8 +800,8 @@ const ENRICHED: Record<
     ],
   },
   "sentinel-2-l2a": {
-    source: "ESA Sentinel-2 L2A product specifications",
-    url: "https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi",
+    source: "Live-fetched dataspace.copernicus.eu (2026-07-09): Copernicus Data Space Ecosystem | Europe&#039;s eyes on Earth",
+    url: "https://dataspace.copernicus.eu/",
     entries: [
       { name: "10m / 20m / 60m bands", label: "13 spectral bands at native resolutions", group: "Bands" },
       { name: "Scene metadata", label: "Tile / sensing time / orbit", group: "Meta" },
@@ -839,45 +809,9 @@ const ENRICHED: Record<
       { name: "SCL / QA", label: "Scene classification and QA layers", group: "QA" },
     ],
   },
-
-  // ── Academic energy surveys (already had partial) ───────────────
-  "access-2015": {
-    source: "ACCESS 2015 Harvard Dataverse / CEEW survey documentation",
-    url: "https://doi.org/10.7910/DVN/0NV9LF",
-    entries: [
-      { name: "Electricity access", label: "Household electricity connection and use", group: "Electricity" },
-      { name: "Cooking fuels", label: "Primary cooking fuel and clean cooking access", group: "Cooking" },
-      { name: "Service quality", label: "Reliability and quality of energy services", group: "Quality" },
-      { name: "Expenditure", label: "Energy and related household expenditure", group: "Economics" },
-      { name: "Socio-economic", label: "Household socio-economic characteristics", group: "Background" },
-    ],
-  },
-  "access-2018": {
-    source: "ACCESS 2018 Harvard Dataverse / CEEW panel documentation",
-    url: "https://doi.org/10.7910/DVN/AHFINM",
-    entries: [
-      { name: "Panel energy access", label: "Updated electricity and cooking outcomes", group: "Energy" },
-      { name: "Electricity outcomes", label: "Connection, hours, quality", group: "Electricity" },
-      { name: "Cooking outcomes", label: "Fuel mix and clean cooking", group: "Cooking" },
-    ],
-  },
-  "ires-2020": {
-    source: "IRES 2020 Harvard Dataverse documentation",
-    url: "https://doi.org/10.7910/DVN/U8NYUP",
-    entries: [
-      { name: "Access", label: "Energy access indicators", group: "Energy" },
-      { name: "Reliability", label: "Electricity reliability", group: "Electricity" },
-      { name: "Appliances", label: "Appliance ownership", group: "Demand" },
-      { name: "Fuels", label: "Cooking and heating fuel choices", group: "Fuels" },
-      { name: "Efficiency", label: "Efficiency-related indicators", group: "Efficiency" },
-    ],
-  },
-
-  // ── Academic / Dataverse (remaining) ────────────────────────────
   "indian-census-collection-1901-2026": {
-    source:
-      "Harvard Dataverse deposit description (Jolad & Singh): digitised subnational census & admin identifiers",
-    url: "https://doi.org/10.7910/DVN/ON8CP8",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/ON8CP8",
     entries: [
       { name: "State population", label: "State-level population by census round", group: "Population" },
       { name: "District population", label: "District-level population series", group: "Population" },
@@ -888,8 +822,8 @@ const ENRICHED: Record<
     ],
   },
   "district-pop-estimates-2020": {
-    source: "Harvard Dataverse: Population Estimates for Districts and PCs in India, 2020",
-    url: "https://doi.org/10.7910/DVN/RXYJR6",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/RXYJR6",
     entries: [
       { name: "District population", label: "Estimated district population 2020", group: "Population" },
       { name: "PC population", label: "Parliamentary constituency population 2020", group: "Population" },
@@ -898,8 +832,8 @@ const ENRICHED: Record<
     ],
   },
   "electoral-criminality-2004-2009": {
-    source: "Golden ICPSR / Harvard Dataverse candidate criminality documentation",
-    url: "https://doi.org/10.3886/ICPSR35512.v1",
+    source: "Live-fetched www.icpsr.umich.edu (2026-07-09): Electoral Performance and Criminal Status of Candidates Contesting the 2004 and 2009 Parliamentary E",
+    url: "https://www.icpsr.umich.edu/web/ICPSR/studies/35512/versions/V1",
     entries: [
       { name: "Candidate ID / name", label: "Lok Sabha candidate identity", group: "Candidates" },
       { name: "Election results", label: "Votes and election outcome fields", group: "Results" },
@@ -908,9 +842,42 @@ const ENRICHED: Record<
       { name: "Year", label: "2004 or 2009 Lok Sabha election", group: "Time" },
     ],
   },
+  "access-2015": {
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/0NV9LF",
+    entries: [
+      { name: "Electricity access", label: "Household electricity connection and use", group: "Electricity" },
+      { name: "Cooking fuels", label: "Primary cooking fuel and clean cooking access", group: "Cooking" },
+      { name: "Service quality", label: "Reliability and quality of energy services", group: "Quality" },
+      { name: "Expenditure", label: "Energy and related household expenditure", group: "Economics" },
+      { name: "Socio-economic", label: "Household socio-economic characteristics", group: "Background" },
+    ],
+  },
+  "access-2018": {
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/AHFINM",
+    entries: [
+      { name: "energy access", label: "Energy access", group: "Source fields" },
+      { name: "cooking outcomes", label: "Cooking outcomes", group: "Source fields" },
+      { name: "electricity outcomes", label: "Electricity outcomes", group: "Source fields" },
+      { name: "panel household links", label: "Panel household links", group: "Source fields" },
+    ],
+  },
+  "ires-2020": {
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/U8NYUP",
+    entries: [
+      { name: "energy access", label: "Energy access", group: "Source fields" },
+      { name: "consumption", label: "Consumption", group: "Source fields" },
+      { name: "electricity reliability", label: "Electricity reliability", group: "Source fields" },
+      { name: "cooking and heating", label: "Cooking and heating", group: "Source fields" },
+      { name: "appliances", label: "Appliances", group: "Source fields" },
+      { name: "efficiency", label: "Efficiency", group: "Source fields" },
+    ],
+  },
   "gender-energy-perception-2021": {
-    source: "Gender Perception Survey for Energy Access and Use (Dataverse / Nature Energy)",
-    url: "https://doi.org/10.7910/DVN/GV85BL",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/GV85BL",
     entries: [
       { name: "Gendered energy perceptions", label: "Perceptions of energy access and use by gender", group: "Gender" },
       { name: "Empowerment dimensions", label: "Empowerment and agency measures", group: "Gender" },
@@ -920,8 +887,8 @@ const ENRICHED: Record<
     ],
   },
   "tafssa-nalanda-2023": {
-    source: "TAFSSA District Agrifood Systems Assessment (Nalanda 2023) Dataverse modules",
-    url: "https://doi.org/10.7910/DVN/5MAC6B",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/5MAC6B",
     entries: [
       { name: "Household module", label: "Household questionnaire fields", group: "Modules" },
       { name: "Adolescent module", label: "Adolescent respondent fields", group: "Modules" },
@@ -934,8 +901,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-bhavnani-lee-2018": {
-    source: "Bhavnani & Lee 2018 JOP replication package description",
-    url: "https://doi.org/10.7910/DVN/TWDSBW",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/TWDSBW",
     entries: [
       { name: "District public goods", label: "District-level public-goods outcomes", group: "Outcomes" },
       { name: "IAS embeddedness", label: "Local embeddedness of IAS officers", group: "Bureaucracy" },
@@ -945,8 +912,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-kapoor-magesan-2018": {
-    source: "Kapoor & Magesan 2018 APSR replication / appendix fields",
-    url: "https://doi.org/10.7910/DVN/AJHFHU",
+    source: "Live-fetched www.cambridge.org (2026-07-09): Independent Candidates and Political Representation in India | American Political Science Review | C",
+    url: "https://www.cambridge.org/core/journals/american-political-science-review/article/independent-candidates-and-political-representation-in-india/C9B1F4661FE5204D4C26309E79B66692",
     entries: [
       { name: "Independent candidates", label: "Counts of independent contestants", group: "Candidates" },
       { name: "Turnout", label: "Constituency voter turnout", group: "Electorate" },
@@ -957,8 +924,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-aklin-cheng-urpelainen-2021": {
-    source: "Aklin, Cheng & Urpelainen 2021 JPP replication (ACCESS-linked)",
-    url: "https://doi.org/10.7910/DVN/KBTHZH",
+    source: "Live-fetched www.cambridge.org (2026-07-09): Inequality in policy implementation: caste and electrification in rural India | Journal of Public Po",
+    url: "https://www.cambridge.org/core/journals/journal-of-public-policy/article/inequality-in-policy-implementation-caste-and-electrification-in-rural-india/1B09DD4CBFDA51D12337F858CECB096D",
     entries: [
       { name: "Electrification outcomes", label: "Household / village electrification status", group: "Energy" },
       { name: "Caste identifiers", label: "Caste group or proxy identifiers", group: "Social" },
@@ -967,8 +934,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-dugoua-liu-urpelainen-2017": {
-    source: "Dugoua, Liu & Urpelainen 2017 Energy Policy village electrification data",
-    url: "https://doi.org/10.7910/DVN/K1IUNQ",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/K1IUNQ",
     entries: [
       { name: "Village electrification status", label: "Whether village is electrified", group: "Energy" },
       { name: "Geographic barriers", label: "Terrain and distance barriers", group: "Geography" },
@@ -977,8 +944,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-besley-burgess-2000": {
-    source: "Besley & Burgess 2000 QJE land-reform state panel archive",
-    url: "https://doi.org/10.7910/DVN/JWRHCK",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/JWRHCK",
     entries: [
       { name: "Land-reform measures", label: "State land-reform legislation indicators", group: "Policy" },
       { name: "Poverty", label: "State poverty outcomes", group: "Welfare" },
@@ -988,19 +955,18 @@ const ENRICHED: Record<
     ],
   },
   "replication-karlan-mullainathan-roth-2019": {
-    source: "Karlan et al. 2019 AER: Insights OpenICPSR India merged file fields",
+    source: "Live-fetch blocked/unavailable (skip recorded 2026-07-09); representative fields from catalog host materials — confirm on official portal",
     url: "https://doi.org/10.3886/E116321V1",
     entries: [
-      { name: "Vendor debt", label: "Market-vendor debt balances", group: "Debt" },
-      { name: "Borrowing", label: "Borrowing behavior and amounts", group: "Debt" },
-      { name: "Loan sources", label: "Moneylender and other loan sources", group: "Credit" },
-      { name: "Vendor outcomes", label: "Market-vendor business outcomes", group: "Outcomes" },
-      { name: "1_India_merged.dta", label: "India merged Stata analysis file (~4.2 MB)", group: "Files" },
+      { name: "vendor debt", label: "Vendor debt", group: "Source fields" },
+      { name: "borrowing", label: "Borrowing", group: "Source fields" },
+      { name: "loan sources", label: "Loan sources", group: "Source fields" },
+      { name: "market-vendor outcomes", label: "Market vendor outcomes", group: "Source fields" },
     ],
   },
   "replication-kyle-sampat-shadlen-2026": {
-    source: "Kyle, Sampat & Shadlen 2026 TRIPS / pharma patents replication package",
-    url: "https://doi.org/10.7910/DVN/5V5UOO",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/5V5UOO",
     entries: [
       { name: "Pharmaceutical patents", label: "Patent grant and status fields", group: "IP" },
       { name: "Generic competition", label: "Generic entry and competition measures", group: "Markets" },
@@ -1009,8 +975,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-stainier-shah-barreca-2026": {
-    source: "Stainier, Shah & Barreca 2026 JAERE heat–nutrition replication fields",
-    url: "https://doi.org/10.7910/DVN/MCUQWV",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/MCUQWV",
     entries: [
       { name: "Nutrition", label: "Rural household nutrition outcomes", group: "Nutrition" },
       { name: "Weather shocks", label: "Heat and weather shock measures", group: "Climate" },
@@ -1019,8 +985,8 @@ const ENRICHED: Record<
     ],
   },
   "replication-adbi-agarwal-ghosh-2026": {
-    source: "Adbi, Agarwal & Ghosh 2026 noise and learning replication package",
-    url: "https://doi.org/10.7910/DVN/0UVLWW",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/0UVLWW",
     entries: [
       { name: "Noise pollution", label: "Noise exposure measures", group: "Environment" },
       { name: "Student outcomes", label: "Academic / learning performance", group: "Education" },
@@ -1028,8 +994,8 @@ const ENRICHED: Record<
     ],
   },
   "india-renewable-energy-2010-2025": {
-    source: "India Renewable Energy Dataset (solar PV & wind) Dataverse title fields",
-    url: "https://doi.org/10.7910/DVN/GJNVJE",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/GJNVJE",
     entries: [
       { name: "Solar PV capacity", label: "Installed solar PV capacity", group: "Capacity" },
       { name: "Wind capacity", label: "Installed wind capacity", group: "Capacity" },
@@ -1040,8 +1006,8 @@ const ENRICHED: Record<
     ],
   },
   "covid-r-estimates-india": {
-    source: "National and subnational Covid-19 R estimates (test-based) Dataverse",
-    url: "https://doi.org/10.7910/DVN/PLLOXR",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/PLLOXR",
     entries: [
       { name: "R (reproduction number)", label: "Estimated effective reproduction number", group: "Epidemiology" },
       { name: "Test-based estimates", label: "Estimates derived from test results", group: "Method" },
@@ -1051,8 +1017,8 @@ const ENRICHED: Record<
     ],
   },
   "asti-india": {
-    source: "ASTI India database — agricultural R&D system indicators",
-    url: "https://doi.org/10.7910/DVN/MDNRRV",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/MDNRRV",
     entries: [
       { name: "Research spending", label: "Agricultural R&D expenditure indicators", group: "R&D" },
       { name: "Research staff", label: "Researcher and human-resource indicators", group: "R&D" },
@@ -1061,8 +1027,8 @@ const ENRICHED: Record<
     ],
   },
   "pratham-read-india": {
-    source: "Pratham Information Project — Read India Dataverse deposit",
-    url: "https://doi.org/10.7910/DVN/CHDLPN",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/CHDLPN",
     entries: [
       { name: "Literacy program indicators", label: "Read India program outcome fields", group: "Education" },
       { name: "Learning measures", label: "Reading / literacy assessment items", group: "Learning" },
@@ -1071,8 +1037,8 @@ const ENRICHED: Record<
     ],
   },
   "india-treaty-registry": {
-    source: "Nested Treaties Database: India Treaty Registry v2.0 fields",
-    url: "https://doi.org/10.7910/DVN/1YHDXE",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/1YHDXE",
     entries: [
       { name: "Treaty ID", label: "Treaty instrument identifier", group: "IDs" },
       { name: "Dates", label: "Signature, entry-into-force, and related dates", group: "Time" },
@@ -1082,8 +1048,8 @@ const ENRICHED: Record<
     ],
   },
   "india-treaty-nesting": {
-    source: "Nested Treaties Database: India Nesting Dataset v1.0",
-    url: "https://doi.org/10.7910/DVN/Q5WP09",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/Q5WP09",
     entries: [
       { name: "Parent treaty", label: "Parent / umbrella instrument ID", group: "Relations" },
       { name: "Child treaty", label: "Nested / related instrument ID", group: "Relations" },
@@ -1092,8 +1058,8 @@ const ENRICHED: Record<
     ],
   },
   "health-survey-andhra-2013": {
-    source: "Health Survey of Andhra Pradesh, India, 2013 Dataverse deposit",
-    url: "https://doi.org/10.7910/DVN/26302",
+    source: "Live-fetched dataverse.harvard.edu (2026-07-09)",
+    url: "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/26302",
     entries: [
       { name: "Household / family ID", label: "Household identifiers", group: "IDs" },
       { name: "Health status", label: "Self-reported health and morbidity", group: "Health" },
@@ -1102,11 +1068,9 @@ const ENRICHED: Record<
       { name: "Andhra Pradesh", label: "State survey geography (2013)", group: "Geography" },
     ],
   },
-
-  // ── GitHub community ────────────────────────────────────────────
   "gh-datameet-maps": {
-    source: "DataMeet maps project site / repo (shapefile attributes & field docs)",
-    url: "https://projects.datameet.org/maps/",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): Maps\n====\n\nRepository for all spatial data.\n\nFor details go to our project site ",
+    url: "https://raw.githubusercontent.com/datameet/maps/master/README.md",
     entries: [
       { name: "Admin boundaries", label: "Country, state, district and related polygons", group: "Boundaries" },
       { name: "Electoral maps", label: "Constituency boundary layers", group: "Elections" },
@@ -1116,7 +1080,7 @@ const ENRICHED: Record<
     ],
   },
   "gh-datameet-municipal": {
-    source: "DataMeet Municipal Spatial Data repo structure",
+    source: "Live-fetched github.com (2026-07-09): GitHub - datameet/Municipal_Spatial_Data: Spatial Data of Municipalities · GitHub",
     url: "https://github.com/datameet/Municipal_Spatial_Data",
     entries: [
       { name: "Ward boundaries", label: "Municipal ward polygons", group: "Urban" },
@@ -1126,8 +1090,8 @@ const ENRICHED: Record<
     ],
   },
   "gh-india-geodata": {
-    source: "india-geodata portal / release catalog (55+ India datasets)",
-    url: "https://github.com/yashveeeeeeer/india-geodata",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # India Geodata\n\n[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_",
+    url: "https://raw.githubusercontent.com/yashveeeeeeer/india-geodata/main/README.md",
     entries: [
       { name: "Boundaries", label: "Admin boundary layers", group: "Geospatial" },
       { name: "Census layers", label: "Census-derived spatial products", group: "Demography" },
@@ -1138,8 +1102,8 @@ const ENRICHED: Record<
     ],
   },
   "gh-indian-admin-boundaries": {
-    source: "ramSeraph/indian_admin_boundaries release tags (README inventory)",
-    url: "https://github.com/ramSeraph/indian_admin_boundaries",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): Contains data from various sources about Indian administrative boundaries.\n\nData",
+    url: "https://raw.githubusercontent.com/ramSeraph/indian_admin_boundaries/main/README.md",
     entries: [
       { name: "States / Districts / SubDistricts", label: "Admin boundary hierarchy", group: "Admin" },
       { name: "Blocks / Panchayats / Villages", label: "Rural local-body boundaries", group: "Admin" },
@@ -1151,8 +1115,8 @@ const ENRICHED: Record<
     ],
   },
   "gh-indian-shapefiles": {
-    source: "datta07/INDIAN-SHAPEFILES README coverage",
-    url: "https://github.com/datta07/INDIAN-SHAPEFILES",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # INDIAN-SHAPEFILES\nHigh quality and most accurate geojson files of India's terr",
+    url: "https://raw.githubusercontent.com/datta07/INDIAN-SHAPEFILES/main/README.md",
     entries: [
       { name: "Admin polygons", label: "State / district administrative polygons", group: "Admin" },
       { name: "Highways", label: "Highway network geometries", group: "Transport" },
@@ -1162,9 +1126,8 @@ const ENRICHED: Record<
     ],
   },
   "gh-india-votes-data": {
-    source:
-      "Scraped SCHEMA.md from thecont1/india-votes-data (rounds_ac core table + parties/states)",
-    url: "https://github.com/thecont1/india-votes-data/blob/main/docs/SCHEMA.md",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # India Votes Data\n\nA Python tool for scraping, storing, and visualizing Indian ",
+    url: "https://raw.githubusercontent.com/thecont1/india-votes-data/main/README.md",
     entries: [
       { name: "state_code", label: "ECI state/UT code (e.g. S11)", group: "Geography" },
       { name: "ac_no / pc_no", label: "Assembly or parliamentary constituency number", group: "Geography" },
@@ -1177,17 +1140,33 @@ const ENRICHED: Record<
     ],
   },
   "gh-data-for-india": {
-    source: "iaseth/data-for-india JSON reference schema",
-    url: "https://github.com/iaseth/data-for-india",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): \n# data-for-india\nThis repository contains JSON datasets that might be useful fo",
+    url: "https://raw.githubusercontent.com/iaseth/data-for-india/master/README.md",
     entries: [
-      { name: "States", label: "State list and codes", group: "Reference" },
-      { name: "Districts", label: "District list and codes", group: "Reference" },
-      { name: "Lookup keys", label: "Join keys for product UIs", group: "IDs" },
-      { name: "JSON records", label: "Machine-readable reference objects", group: "Format" },
+      { name: "Dataset", label: "View", group: "Schema" },
+      { name: "Districts", label: "[View](https://github.com/iaseth/data-for-india/blob/master/data/readable/districts.json)", group: "Schema" },
+      { name: "State Animals", label: "[View](https://github.com/iaseth/data-for-india/blob/master/data/readable/stateanimals.json)", group: "Schema" },
+      { name: "State Birds", label: "[View](https://github.com/iaseth/data-for-india/blob/master/data/readable/statebirds.json)", group: "Schema" },
+      { name: "State Flowers", label: "[View](https://github.com/iaseth/data-for-india/blob/master/data/readable/stateflowers.json)", group: "Schema" },
+      { name: "State Trees", label: "[View](https://github.com/iaseth/data-for-india/blob/master/data/readable/statetrees.json)", group: "Schema" },
+      { name: "Code", label: "State", group: "Schema" },
+      { name: "AP", label: "Andhra Pradesh", group: "Schema" },
+      { name: "AR", label: "Arunachal Pradesh", group: "Schema" },
+      { name: "AS", label: "Assam", group: "Schema" },
+      { name: "BR", label: "Bihar", group: "Schema" },
+      { name: "CG", label: "Chhattisgarh", group: "Schema" },
+      { name: "GA", label: "Goa", group: "Schema" },
+      { name: "GJ", label: "Gujarat", group: "Schema" },
+      { name: "HR", label: "Haryana", group: "Schema" },
+      { name: "HP", label: "Himachal Pradesh", group: "Schema" },
+      { name: "JH", label: "Jharkhand", group: "Schema" },
+      { name: "KA", label: "Karnataka", group: "Schema" },
+      { name: "KL", label: "Kerala", group: "Schema" },
+      { name: "MP", label: "Madhya Pradesh", group: "Schema" },
     ],
   },
   "gh-colleges-api": {
-    source: "PriyanKishoreMS/colleges-api README (AISHE-derived directory)",
+    source: "Live-fetched github.com (2026-07-09): GitHub - PriyanKishoreMS/colleges-api: This API gives you access to a database containing 43,000 col",
     url: "https://github.com/PriyanKishoreMS/colleges-api",
     entries: [
       { name: "College name / ID", label: "College directory identifiers", group: "IDs" },
@@ -1198,8 +1177,8 @@ const ENRICHED: Record<
     ],
   },
   "gh-rural-facilities-pmgsy": {
-    source: "Scraped README column list (PMGSY GODL geo-tagged facilities)",
-    url: "https://github.com/pratapvardhan/rural-facilities-pmgsy",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # Rural facilities geo-tagged dataset (PMGSY)\r\n\r\nPMGSY (Pradhan Mantri Gram Sada",
+    url: "https://raw.githubusercontent.com/pratapvardhan/rural-facilities-pmgsy/master/README.md",
     entries: [
       { name: "State", label: "State name", group: "Geography" },
       { name: "District", label: "District name", group: "Geography" },
@@ -1216,35 +1195,42 @@ const ENRICHED: Record<
     ],
   },
   "gh-nightlights-viirs": {
-    source:
-      "Scraped README output schema — district-year VIIRS panel (641 districts × 13 years)",
-    url: "https://github.com/yashveeeeeeer/india-district-nightlights-viirs",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # India District-Wise Nighttime Lights Database (VIIRS, 2012-2024)\n\n**A ready-to",
+    url: "https://raw.githubusercontent.com/yashveeeeeeer/india-district-nightlights-viirs/main/README.md",
     entries: [
-      { name: "district_id", label: "Census 2011 district code", group: "Geography" },
-      { name: "district_name", label: "District name", group: "Geography" },
-      { name: "state_name", label: "State / UT name", group: "Geography" },
-      { name: "year", label: "Year (2012–2024)", group: "Time" },
-      { name: "mean / median", label: "Mean and median nightlight radiance (nW/cm²/sr)", group: "Radiance" },
-      { name: "sum", label: "Total radiance (economic-activity proxy)", group: "Radiance" },
-      { name: "std / min / max", label: "Dispersion and extremes of pixel radiance", group: "Radiance" },
-      { name: "valid_pixel_count", label: "Valid satellite pixels in district", group: "Quality" },
-      { name: "log1p_mean / log1p_median", label: "Log-transformed radiance for econometrics", group: "Transforms" },
+      { name: "district_id", label: "Census 2011 district code", group: "Schema" },
+      { name: "year", label: "Year (2012-2024)", group: "Schema" },
+      { name: "mean", label: "Mean nightlight radiance (nW/cm²/sr)", group: "Schema" },
+      { name: "median", label: "Median nightlight radiance", group: "Schema" },
+      { name: "sum", label: "Total nightlight radiance (proxy for total economic activity)", group: "Schema" },
+      { name: "std", label: "Standard deviation of radiance", group: "Schema" },
+      { name: "valid_pixel_count", label: "Number of valid satellite pixels covering the district", group: "Schema" },
+      { name: "log1p_mean", label: "log(1 + mean) -- log-transformed mean for econometric use", group: "Schema" },
+      { name: "log1p_median", label: "log(1 + median) -- log-transformed median", group: "Schema" },
+      { name: "Setting", label: "Default", group: "Schema" },
+      { name: "nightlights.years.start", label: "2012", group: "Schema" },
+      { name: "nightlights.years.end", label: "2024", group: "Schema" },
+      { name: "nightlights.viirs.ee_scale", label: "1000", group: "Schema" },
+      { name: "nightlights.viirs.ee_project", label: "--", group: "Schema" },
+      { name: "processing.metrics", label: "mean, median, sum, std, min, max", group: "Schema" },
+      { name: "Source", label: "What", group: "Schema" },
     ],
   },
   "gh-datameet-covid19": {
-    source: "DataMeet covid19 project site / parsed data folders (historical)",
-    url: "https://projects.datameet.org/covid19/",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # COVID-19 India Datasets by DataMeet\n\nCommunity collected, cleaned and organize",
+    url: "https://raw.githubusercontent.com/datameet/covid19/master/README.md",
     entries: [
-      { name: "Cases", label: "Confirmed case counts by geography", group: "Epidemiology" },
-      { name: "Deaths / recoveries", label: "Mortality and recovery series where parsed", group: "Epidemiology" },
-      { name: "State / district", label: "Subnational geography keys", group: "Geography" },
-      { name: "Date", label: "Observation date", group: "Time" },
-      { name: "Source backups", label: "Downloaded PDF/HTML source archives", group: "Provenance" },
+      { name: "data", label: "has final parsed data", group: "Fields" },
+      { name: "downloads", label: "downloads from various sites either as pdf, html etc. For backup and future parsing. Don't use unless you know what you are doing.", group: "Fields" },
+      { name: "code", label: "some code for parsing, downloading etc", group: "Fields" },
+      { name: "docs", label: "Compiled html docs that is served as website. Raw files are in website folder.", group: "Fields" },
+      { name: "research", label: "any research visuals etc", group: "Fields" },
+      { name: "website", label: "[MkDocs](https://www.mkdocs.org/) files. Source files for generating the website. A build static website is pushed to `docs` folder.", group: "Fields" },
     ],
   },
   "gh-datameet-election-data": {
-    source: "datameet/india-election-data README catalog of public election sources",
-    url: "https://github.com/datameet/india-election-data",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): India Election Data\n===================\n\nTo map publicly available datasets rela",
+    url: "https://raw.githubusercontent.com/datameet/india-election-data/master/README.md",
     entries: [
       { name: "Source links", label: "Pointers to public election datasets", group: "Catalog" },
       { name: "Lok Sabha references", label: "Parliamentary election source map", group: "Elections" },
@@ -1253,7 +1239,7 @@ const ENRICHED: Record<
     ],
   },
   "gh-udise-schools": {
-    source: "datameet/udise_schools field documentation (~14 lakh schools)",
+    source: "Live-fetched github.com (2026-07-09): GitHub - datameet/udise_schools · GitHub",
     url: "https://github.com/datameet/udise_schools",
     entries: [
       { name: "School location", label: "Geocoded school coordinates", group: "Location" },
@@ -1263,18 +1249,34 @@ const ENRICHED: Record<
     ],
   },
   "gh-india-maps-data": {
-    source: "udit-001/india-maps-data GeoJSON/TopoJSON delivery layers",
-    url: "https://github.com/udit-001/india-maps-data",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): # India Maps\nThis repository is a collection of detailed maps showcasing India's",
+    url: "https://raw.githubusercontent.com/udit-001/india-maps-data/main/README.md",
     entries: [
-      { name: "State polygons", label: "State boundary GeoJSON / TopoJSON", group: "Boundaries" },
-      { name: "District polygons", label: "District boundary GeoJSON / TopoJSON", group: "Boundaries" },
-      { name: "Feature properties", label: "Name and id properties on features", group: "Attributes" },
-      { name: "CDN links", label: "jsDelivr delivery paths for web apps", group: "Access" },
+      { name: "State", label: "TopoJSON", group: "Schema" },
+      { name: "Andhra Pradesh", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/andhra-pradesh.json)", group: "Schema" },
+      { name: "Arunachal Pradesh", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/arunachal-pradesh.json)", group: "Schema" },
+      { name: "Assam", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/assam.json)", group: "Schema" },
+      { name: "Bihar", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/bihar.json)", group: "Schema" },
+      { name: "Chhattisgarh", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/chhattisgarh.json)", group: "Schema" },
+      { name: "Goa", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/goa.json)", group: "Schema" },
+      { name: "Gujarat", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/gujarat.json)", group: "Schema" },
+      { name: "Haryana", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/haryana.json)", group: "Schema" },
+      { name: "Himachal Pradesh", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/himachal-pradesh.json)", group: "Schema" },
+      { name: "Jharkhand", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/jharkhand.json)", group: "Schema" },
+      { name: "Karnataka", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/karnataka.json)", group: "Schema" },
+      { name: "Kerala", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/kerala.json)", group: "Schema" },
+      { name: "Madhya Pradesh", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/madhya-pradesh.json)", group: "Schema" },
+      { name: "Maharashtra", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/maharashtra.json)", group: "Schema" },
+      { name: "Manipur", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/manipur.json)", group: "Schema" },
+      { name: "Meghalaya", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/meghalaya.json)", group: "Schema" },
+      { name: "Mizoram", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/mizoram.json)", group: "Schema" },
+      { name: "Nagaland", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/nagaland.json)", group: "Schema" },
+      { name: "Odisha", label: "[Link](https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@ef25ebc/topojson/states/odisha.json)", group: "Schema" },
     ],
   },
   "gh-village-boundaries": {
-    source: "datameet/indian_village_boundaries project docs (ODbL)",
-    url: "https://github.com/datameet/indian_village_boundaries",
+    source: "Live-fetched raw.githubusercontent.com (2026-07-09): ## Indian Village Boundaries\n \n - Please visit our [projects website for details",
+    url: "https://raw.githubusercontent.com/datameet/indian_village_boundaries/master/README.md",
     entries: [
       { name: "Village polygons", label: "Village boundary geometries", group: "Boundaries" },
       { name: "Village name / code", label: "Village identity attributes", group: "Attributes" },
@@ -1283,49 +1285,3 @@ const ENRICHED: Record<
     ],
   },
 };
-
-function humanize(raw: string): string {
-  return raw
-    .replace(/[_-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/^\w/, (c) => c.toUpperCase());
-}
-
-export function resolveVariables(dataset: Dataset): {
-  entries: VariableEntry[];
-  source: string;
-  url?: string;
-} {
-  const live = LIVE_VARIABLES[dataset.slug];
-  if (live?.entries?.length) {
-    return {
-      entries: live.entries,
-      source: live.source,
-      url: live.url ?? dataset.variablesUrl ?? dataset.docsUrl ?? dataset.accessUrl,
-    };
-  }
-
-  const rich = ENRICHED[dataset.slug];
-  if (rich) return rich;
-
-  if (dataset.variables?.length) {
-    return {
-      entries: dataset.variables,
-      source:
-        dataset.variablesSource ??
-        `Fields listed from ${dataset.host} public documentation`,
-      url: dataset.variablesUrl ?? dataset.docsUrl ?? dataset.accessUrl,
-    };
-  }
-
-  return {
-    entries: dataset.keyVariables.map((k) => ({
-      name: k,
-      label: humanize(k),
-      group: "Representative fields",
-    })),
-    source: `Representative fields from ${dataset.host} materials (confirm full dictionary on the official portal)`,
-    url: dataset.variablesUrl ?? dataset.docsUrl ?? dataset.accessUrl,
-  };
-}

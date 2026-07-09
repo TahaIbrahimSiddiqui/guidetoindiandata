@@ -36,7 +36,7 @@ export function AdSlot({
   if (canRenderNetwork) {
     return (
       <div
-        className={`ad-slot overflow-hidden rounded-xl border border-white/10 bg-slate-900/40 ${className}`}
+        className={`ad-slot overflow-hidden rounded-xl border border-obsidian-border bg-obsidian-panel/50 ${className}`}
         style={{ minHeight }}
         data-ad-slot={slotId}
       >
@@ -55,15 +55,15 @@ export function AdSlot({
 
   return (
     <div
-      className={`ad-slot flex flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-slate-900/30 ${className}`}
+      className={`ad-slot flex flex-col items-center justify-center rounded-xl border border-dashed border-obsidian-border bg-obsidian-panel/30 ${className}`}
       style={{ minHeight }}
       data-ad-slot={slotId}
       aria-label="Advertisement placeholder"
     >
-      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D3D4C0]/45">
         Advertisement
       </span>
-      <span className="mt-1 text-xs text-slate-600">
+      <span className="mt-1 text-xs text-[#D3D4C0]/35">
         {label} · slot `{slotId}`
       </span>
     </div>

@@ -17,14 +17,14 @@ export function ContentWithAds({
       />
 
       <div
-        className={`grid gap-10 ${
+        className={`grid gap-10 xl:gap-12 ${
           showSidebar ? "lg:grid-cols-[minmax(0,1fr)_280px]" : ""
         }`}
       >
         <div className="min-w-0">{children}</div>
 
         {showSidebar && (
-          <aside className="hidden lg:block">
+          <aside className="hidden lg:block" aria-label="Sidebar">
             <div className="sticky top-24 space-y-4">
               <AdSlot
                 slotId={AD_SLOT_IDS.sidebar}

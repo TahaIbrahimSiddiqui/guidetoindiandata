@@ -33,7 +33,7 @@ function Shelf({
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#D3D4C0]">
         {blurb}
       </p>
-      <div className="mt-6 grid gap-px bg-obsidian-border sm:grid-cols-2">
+      <div className="mt-6 grid-hairline sm:grid-cols-2">
         {items.map((d) => (
           <DatasetCard key={d.slug} dataset={d} />
         ))}
@@ -58,22 +58,22 @@ export default function AcademicPage() {
           <br />
           Dataverse &amp; GitHub
         </h1>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#D3D4C0]">
+        <p className="page-lede">
           Harvard Dataverse deposits, journal replications, and community GitHub
           repos. Where licenses were not reported, we flag metadata incomplete
           instead of inventing terms.
         </p>
-        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-medium uppercase tracking-[0.16em] text-[#C4A574]">
-          <Link href="/explore?source=academic" className="link-underline">
+        <div className="mt-6 flex flex-wrap gap-2">
+          <Link href="/explore?source=academic" className="btn-ghost">
             Academic
           </Link>
-          <Link href="/explore?source=replication" className="link-underline">
+          <Link href="/explore?source=replication" className="btn-ghost">
             Replications
           </Link>
-          <Link href="/explore?source=github" className="link-underline">
+          <Link href="/explore?source=github" className="btn-ghost">
             GitHub
           </Link>
-          <Link href="/series/access-energy" className="link-underline">
+          <Link href="/series/access-energy" className="btn-ghost">
             ACCESS series
           </Link>
         </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
 const display = Syne({
@@ -37,9 +38,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
+      className={cn(
+        "dark h-full antialiased",
+        display.variable,
+        body.variable,
+        mono.variable,
+      )}
     >
-      <body className="min-h-full bg-brand-navy text-obsidian-text">{children}</body>
+      <body className="min-h-dvh bg-background font-sans text-foreground">
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

@@ -31,46 +31,51 @@ export default async function SeriesDetailPage({ params }: Props) {
 
   return (
     <article>
-      <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-obsidian-muted">
-        <Link href="/series" className="hover:text-obsidian-purple-bright">
+      <nav
+        aria-label="Breadcrumb"
+        className="mb-3 flex flex-wrap items-center gap-2 text-sm text-obsidian-muted"
+      >
+        <Link
+          href="/series"
+          className="transition-colors hover:text-obsidian-purple-bright"
+        >
           Series
         </Link>
-        <span aria-hidden>/</span>
+        <span aria-hidden className="text-obsidian-muted/50">
+          /
+        </span>
         <span className="text-obsidian-text">{series.shortTitle}</span>
-      </div>
+      </nav>
 
       <header className="border-b border-obsidian-border pb-8">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-obsidian-purple-bright">
           {FAMILY_LABELS[series.family]}
         </p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-obsidian-text sm:text-4xl">
+        <h1 className="font-display mt-3 text-3xl font-semibold tracking-tight text-obsidian-text sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
           {series.title}
         </h1>
-        <p className="mt-3 max-w-3xl text-obsidian-muted leading-relaxed">
+        <p className="mt-4 max-w-3xl text-base leading-relaxed text-obsidian-muted">
           {series.description}
         </p>
         <p className="mt-4 text-sm text-obsidian-muted">
           <span className="text-obsidian-text">Host:</span> {series.host}
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           {years.map((y) => (
-            <span
-              key={y}
-              className="rounded-md border border-obsidian-border bg-obsidian-panel px-2.5 py-1 font-mono text-xs text-obsidian-purple-bright"
-            >
+            <span key={y} className="chip-accent font-mono">
               {y}
             </span>
           ))}
         </div>
         {series.pairsWithSeries && series.pairsWithSeries.length > 0 && (
-          <p className="mt-4 text-sm text-obsidian-muted">
+          <p className="mt-5 text-sm text-obsidian-muted">
             Related series:{" "}
             {series.pairsWithSeries.map((ps, i) => (
               <span key={ps}>
                 {i > 0 && ", "}
                 <Link
                   href={`/series/${ps}`}
-                  className="text-obsidian-purple-bright hover:underline"
+                  className="text-obsidian-purple-bright link-underline"
                 >
                   {getSeriesBySlug(ps)?.shortTitle ?? ps}
                 </Link>

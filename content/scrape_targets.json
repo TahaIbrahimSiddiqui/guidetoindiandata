@@ -1,0 +1,1599 @@
+{
+  "generatedAt": "2026-07-09T20:11:31.511Z",
+  "count": 111,
+  "targets": [
+    {
+      "slug": "nfhs-1",
+      "shortTitle": "NFHS-1",
+      "host": "dhsprogram.com",
+      "urls": [
+        "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
+        "https://www.idhsdata.org",
+        "https://dhsprogram.com/data/Getting-Started.cfm",
+        "https://dhsprogram.com/data/Access-Instructions.cfm",
+        "https://dhsprogram.com/Data/Guide-to-DHS-Statistics/index.cfm",
+        "https://dhsprogram.com/data/"
+      ],
+      "keyVariables": [
+        "fertility",
+        "family planning",
+        "mortality",
+        "maternal health"
+      ]
+    },
+    {
+      "slug": "nfhs-2",
+      "shortTitle": "NFHS-2",
+      "host": "dhsprogram.com",
+      "urls": [
+        "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
+        "https://www.idhsdata.org",
+        "https://dhsprogram.com/data/Getting-Started.cfm",
+        "https://dhsprogram.com/data/Access-Instructions.cfm",
+        "https://dhsprogram.com/Data/Guide-to-DHS-Statistics/index.cfm",
+        "https://dhsprogram.com/data/"
+      ],
+      "keyVariables": [
+        "fertility",
+        "nutrition",
+        "family planning",
+        "health care"
+      ]
+    },
+    {
+      "slug": "nfhs-3",
+      "shortTitle": "NFHS-3",
+      "host": "dhsprogram.com",
+      "urls": [
+        "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
+        "https://www.idhsdata.org",
+        "https://dhsprogram.com/data/Getting-Started.cfm",
+        "https://dhsprogram.com/data/Access-Instructions.cfm",
+        "https://dhsprogram.com/Data/Guide-to-DHS-Statistics/index.cfm",
+        "https://dhsprogram.com/data/"
+      ],
+      "keyVariables": [
+        "HIV testing",
+        "fertility",
+        "nutrition",
+        "women’s status"
+      ]
+    },
+    {
+      "slug": "nfhs-4",
+      "shortTitle": "NFHS-4",
+      "host": "dhsprogram.com",
+      "urls": [
+        "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
+        "https://www.idhsdata.org",
+        "https://dhsprogram.com/data/Getting-Started.cfm",
+        "https://dhsprogram.com/data/Access-Instructions.cfm",
+        "https://dhsprogram.com/Data/Guide-to-DHS-Statistics/index.cfm",
+        "https://dhsprogram.com/data/"
+      ],
+      "keyVariables": [
+        "district indicators",
+        "child growth",
+        "sanitation",
+        "biomarkers"
+      ]
+    },
+    {
+      "slug": "nfhs-5",
+      "shortTitle": "NFHS-5",
+      "host": "dhsprogram.com",
+      "urls": [
+        "https://dhsprogram.com/data/Data-Variables-and-Definitions.cfm",
+        "https://www.idhsdata.org",
+        "https://microdata.worldbank.org/index.php/catalog/4482",
+        "https://dhsprogram.com/data/Getting-Started.cfm",
+        "https://dhsprogram.com/data/Access-Instructions.cfm",
+        "https://dhsprogram.com/Data/Guide-to-DHS-Statistics/index.cfm"
+      ],
+      "keyVariables": [
+        "fertility",
+        "ANC",
+        "immunization",
+        "BMI",
+        "anemia",
+        "blood pressure",
+        "glucose",
+        "district IDs"
+      ]
+    },
+    {
+      "slug": "dlhs-1",
+      "shortTitle": "DLHS-1",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "reproductive health",
+        "family planning",
+        "district indicators"
+      ]
+    },
+    {
+      "slug": "dlhs-2",
+      "shortTitle": "DLHS-2",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "service use",
+        "reproductive health",
+        "child health"
+      ]
+    },
+    {
+      "slug": "dlhs-3",
+      "shortTitle": "DLHS-3",
+      "host": "www.iipsindia.ac.in",
+      "urls": [
+        "https://www.iipsindia.ac.in/"
+      ],
+      "keyVariables": [
+        "MCH indicators",
+        "family planning",
+        "service quality"
+      ]
+    },
+    {
+      "slug": "dlhs-4",
+      "shortTitle": "DLHS-4",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "district health indicators",
+        "facility-linked measures"
+      ]
+    },
+    {
+      "slug": "hmis",
+      "shortTitle": "HMIS",
+      "host": "hmis.mohfw.gov.in",
+      "urls": [
+        "https://hmis.mohfw.gov.in/"
+      ],
+      "keyVariables": [
+        "births",
+        "deaths",
+        "immunization",
+        "patient counts",
+        "drug stocks",
+        "infrastructure"
+      ]
+    },
+    {
+      "slug": "srs-statistical-reports",
+      "shortTitle": "SRS",
+      "host": "censusindia.gov.in",
+      "urls": [
+        "https://censusindia.gov.in/"
+      ],
+      "keyVariables": [
+        "CBR",
+        "CDR",
+        "IMR",
+        "age composition"
+      ]
+    },
+    {
+      "slug": "crs-vital-statistics",
+      "shortTitle": "CRS",
+      "host": "censusindia.gov.in",
+      "urls": [
+        "https://censusindia.gov.in/"
+      ],
+      "keyVariables": [
+        "registered births",
+        "registered deaths",
+        "infant deaths",
+        "sex ratios"
+      ]
+    },
+    {
+      "slug": "lasi-wave-1",
+      "shortTitle": "LASI Wave 1",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "health",
+        "cognition",
+        "work",
+        "family support",
+        "community modules"
+      ]
+    },
+    {
+      "slug": "lasi-dad",
+      "shortTitle": "LASI-DAD",
+      "host": "www.lasi-dad.org",
+      "urls": [
+        "https://www.lasi-dad.org/data/overview",
+        "https://g2aging.org/harmonized-data/get-data"
+      ],
+      "keyVariables": [
+        "cognitive tests",
+        "informant interview",
+        "geriatric assessment",
+        "biomarkers"
+      ]
+    },
+    {
+      "slug": "udise-plus",
+      "shortTitle": "UDISE+",
+      "host": "dashboard.udiseplus.gov.in",
+      "urls": [
+        "https://dashboard.udiseplus.gov.in/",
+        "https://udiseplus.gov.in/"
+      ],
+      "keyVariables": [
+        "school profile",
+        "infrastructure",
+        "teachers",
+        "enrolment",
+        "exam results"
+      ]
+    },
+    {
+      "slug": "aishe",
+      "shortTitle": "AISHE",
+      "host": "aishe.gov.in",
+      "urls": [
+        "https://aishe.gov.in/"
+      ],
+      "keyVariables": [
+        "teachers",
+        "enrolment",
+        "programmes",
+        "finance",
+        "infrastructure"
+      ]
+    },
+    {
+      "slug": "nas-2021",
+      "shortTitle": "NAS 2021",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "test scores",
+        "pupil questionnaire",
+        "school questionnaire",
+        "teacher questionnaire"
+      ]
+    },
+    {
+      "slug": "aser",
+      "shortTitle": "ASER",
+      "host": "asercentre.org",
+      "urls": [
+        "https://asercentre.org/aser-survey/",
+        "https://www.asercentre.org/"
+      ],
+      "keyVariables": [
+        "enrolment",
+        "reading",
+        "arithmetic",
+        "school report card items"
+      ]
+    },
+    {
+      "slug": "plfs-annual-2023-24",
+      "shortTitle": "PLFS Annual",
+      "host": "microdata.gov.in",
+      "urls": [
+        "https://microdata.gov.in/NADA/index.php/catalog/213",
+        "https://www.youtube.com/watch?v=xpfS9Dq2Lpw",
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/PLFS",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "WPR",
+        "LFPR",
+        "UR",
+        "industry",
+        "occupation",
+        "earnings",
+        "hours"
+      ]
+    },
+    {
+      "slug": "plfs-quarterly-2025",
+      "shortTitle": "PLFS Quarterly",
+      "host": "microdata.gov.in",
+      "urls": [
+        "https://microdata.gov.in/NADA/index.php/catalog/213",
+        "https://www.youtube.com/watch?v=xpfS9Dq2Lpw",
+        "https://microdata.gov.in/NADA/index.php/catalog/284",
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/PLFS",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "activity status",
+        "employment indicators",
+        "household files"
+      ]
+    },
+    {
+      "slug": "time-use-survey-2024",
+      "shortTitle": "TUS 2024",
+      "host": "mospi.gov.in",
+      "urls": [
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "paid work",
+        "unpaid care",
+        "domestic services",
+        "learning",
+        "leisure"
+      ]
+    },
+    {
+      "slug": "hces-2022-23",
+      "shortTitle": "HCES 2022–23",
+      "host": "mospi.gov.in",
+      "urls": [
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/CEXP",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "MPCE",
+        "food items",
+        "non-food items",
+        "quantity/value"
+      ]
+    },
+    {
+      "slug": "hces-2023-24",
+      "shortTitle": "HCES 2023–24",
+      "host": "mospi.gov.in",
+      "urls": [
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/CEXP",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "MPCE fractiles",
+        "item quantity/value",
+        "food and non-food"
+      ]
+    },
+    {
+      "slug": "ihds-i",
+      "shortTitle": "IHDS-I",
+      "host": "ihds.umd.edu",
+      "urls": [
+        "https://ihds.umd.edu/ihds-1-codebook-topic-index",
+        "https://ihds.umd.edu/data/ihds-2",
+        "https://www.icpsr.umich.edu/web/pages/DSDR/idhs-II-data-guide.html",
+        "https://ihds.umd.edu/"
+      ],
+      "keyVariables": [
+        "health",
+        "education",
+        "employment",
+        "assets",
+        "caste",
+        "social capital"
+      ]
+    },
+    {
+      "slug": "ihds-ii",
+      "shortTitle": "IHDS-II",
+      "host": "ihds.umd.edu",
+      "urls": [
+        "https://ihds.umd.edu/ihds-1-codebook-topic-index",
+        "https://ihds.umd.edu/data/ihds-2",
+        "https://www.icpsr.umich.edu/web/pages/DSDR/idhs-II-data-guide.html",
+        "https://ihds.umd.edu/"
+      ],
+      "keyVariables": [
+        "income",
+        "consumption",
+        "agriculture",
+        "education",
+        "programs"
+      ]
+    },
+    {
+      "slug": "cmie-cphs",
+      "shortTitle": "CMIE CPHS",
+      "host": "consumerpyramidsdx.cmie.com",
+      "urls": [
+        "https://consumerpyramidsdx.cmie.com/"
+      ],
+      "keyVariables": [
+        "household panel",
+        "incomes",
+        "employment",
+        "consumption"
+      ]
+    },
+    {
+      "slug": "cmie-prowessdx",
+      "shortTitle": "ProwessDX",
+      "host": "prowessdx.cmie.com",
+      "urls": [
+        "https://prowessdx.cmie.com/"
+      ],
+      "keyVariables": [
+        "P&L",
+        "balance sheet",
+        "ratios",
+        "share prices",
+        "corporate actions"
+      ]
+    },
+    {
+      "slug": "asuse-2023-24",
+      "shortTitle": "ASUSE 2023–24",
+      "host": "mospi.gov.in",
+      "urls": [
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/ENT",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "establishment traits",
+        "output",
+        "value added",
+        "employment"
+      ]
+    },
+    {
+      "slug": "asi-2023-24",
+      "shortTitle": "ASI 2023–24",
+      "host": "mospi.gov.in",
+      "urls": [
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/ASI",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "ownership",
+        "fixed assets",
+        "labor cost",
+        "inputs",
+        "outputs"
+      ]
+    },
+    {
+      "slug": "national-accounts-statistics",
+      "shortTitle": "NAS (Macro)",
+      "host": "www.mospi.gov.in",
+      "urls": [
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "GDP",
+        "GVA",
+        "national income",
+        "sectoral aggregates"
+      ]
+    },
+    {
+      "slug": "iip",
+      "shortTitle": "IIP",
+      "host": "microdata.gov.in",
+      "urls": [
+        "https://microdata.gov.in/NADA/index.php/catalog/IIP",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "index",
+        "growth rate",
+        "category",
+        "base year"
+      ]
+    },
+    {
+      "slug": "cpi-combined",
+      "shortTitle": "CPI Combined",
+      "host": "www.mospi.gov.in",
+      "urls": [
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "rural CPI",
+        "urban CPI",
+        "combined",
+        "groups/sub-groups"
+      ]
+    },
+    {
+      "slug": "wpi",
+      "shortTitle": "WPI",
+      "host": "eaindustry.nic.in",
+      "urls": [
+        "https://eaindustry.nic.in/"
+      ],
+      "keyVariables": [
+        "commodity groups",
+        "linked base years",
+        "WPI/PPI"
+      ]
+    },
+    {
+      "slug": "rbi-dbie",
+      "shortTitle": "RBI DBIE",
+      "host": "dbie.rbi.org.in",
+      "urls": [
+        "https://dbie.rbi.org.in/"
+      ],
+      "keyVariables": [
+        "real sector",
+        "financial markets",
+        "external sector",
+        "public finance"
+      ]
+    },
+    {
+      "slug": "agriculture-census-2015-16",
+      "shortTitle": "Ag Census 2015–16",
+      "host": "agcensus.nic.in",
+      "urls": [
+        "https://agcensus.nic.in/"
+      ],
+      "keyVariables": [
+        "operational holdings",
+        "size class",
+        "irrigation",
+        "tenancy",
+        "land use"
+      ]
+    },
+    {
+      "slug": "agriculture-census-2021-22",
+      "shortTitle": "Ag Census 2021–22",
+      "host": "agcensus.nic.in",
+      "urls": [
+        "https://agcensus.nic.in/"
+      ],
+      "keyVariables": [
+        "operational holdings",
+        "census process fields"
+      ]
+    },
+    {
+      "slug": "input-survey-2016-17",
+      "shortTitle": "Input Survey 2016–17",
+      "host": "agcensus.nic.in",
+      "urls": [
+        "https://agcensus.nic.in/"
+      ],
+      "keyVariables": [
+        "fertilizers",
+        "pesticides",
+        "manures",
+        "irrigated crops"
+      ]
+    },
+    {
+      "slug": "input-survey-2022-23",
+      "shortTitle": "Input Survey 2022–23",
+      "host": "agcensus.nic.in",
+      "urls": [
+        "https://agcensus.nic.in/"
+      ],
+      "keyVariables": [
+        "fertilizers",
+        "HYV seeds",
+        "pesticides",
+        "bio-inputs"
+      ]
+    },
+    {
+      "slug": "sas-ag-households-2019",
+      "shortTitle": "SAS 2019",
+      "host": "mospi.gov.in",
+      "urls": [
+        "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+        "https://microdata.gov.in/NADA/index.php/catalog/LLS",
+        "https://www.mospi.gov.in/"
+      ],
+      "keyVariables": [
+        "income",
+        "debt",
+        "assets",
+        "farming practices",
+        "schemes"
+      ]
+    },
+    {
+      "slug": "cost-of-cultivation",
+      "shortTitle": "Cost of Cultivation",
+      "host": "desagri.gov.in",
+      "urls": [
+        "https://desagri.gov.in/"
+      ],
+      "keyVariables": [
+        "A2+FL",
+        "C2 costs",
+        "labor",
+        "machinery",
+        "fertilizer"
+      ]
+    },
+    {
+      "slug": "agmarknet",
+      "shortTitle": "Agmarknet",
+      "host": "agmarknet.gov.in",
+      "urls": [
+        "https://agmarknet.gov.in/"
+      ],
+      "keyVariables": [
+        "mandi",
+        "commodity",
+        "arrivals",
+        "min/modal/max price",
+        "date"
+      ]
+    },
+    {
+      "slug": "enam-dashboard",
+      "shortTitle": "eNAM",
+      "host": "www.enam.gov.in",
+      "urls": [
+        "https://www.enam.gov.in/"
+      ],
+      "keyVariables": [
+        "APMC",
+        "commodity",
+        "prices",
+        "arrivals",
+        "traded quantity"
+      ]
+    },
+    {
+      "slug": "soil-health-card",
+      "shortTitle": "Soil Health Card",
+      "host": "www.soilhealth.dac.gov.in",
+      "urls": [
+        "https://www.soilhealth.dac.gov.in/"
+      ],
+      "keyVariables": [
+        "N",
+        "P",
+        "K",
+        "S",
+        "micronutrients",
+        "organic carbon",
+        "pH",
+        "EC"
+      ]
+    },
+    {
+      "slug": "minor-irrigation-census-6",
+      "shortTitle": "MI Census 6",
+      "host": "data.gov.in",
+      "urls": [
+        "https://data.gov.in/"
+      ],
+      "keyVariables": [
+        "scheme type",
+        "ownership",
+        "holding size",
+        "utilization"
+      ]
+    },
+    {
+      "slug": "crime-in-india",
+      "shortTitle": "Crime in India",
+      "host": "ncrb.gov.in",
+      "urls": [
+        "https://ncrb.gov.in/"
+      ],
+      "keyVariables": [
+        "IPC/SLL cases",
+        "victims",
+        "crime type",
+        "state/UT"
+      ]
+    },
+    {
+      "slug": "prison-statistics-india",
+      "shortTitle": "Prison Statistics",
+      "host": "ncrb.gov.in",
+      "urls": [
+        "https://ncrb.gov.in/"
+      ],
+      "keyVariables": [
+        "capacity",
+        "occupancy",
+        "prisoner composition",
+        "staff"
+      ]
+    },
+    {
+      "slug": "adsi",
+      "shortTitle": "ADSI",
+      "host": "ncrb.gov.in",
+      "urls": [
+        "https://ncrb.gov.in/"
+      ],
+      "keyVariables": [
+        "suicides",
+        "accidental deaths",
+        "causes",
+        "occupation"
+      ]
+    },
+    {
+      "slug": "njdg",
+      "shortTitle": "NJDG",
+      "host": "ecourts.gov.in",
+      "urls": [
+        "https://ecourts.gov.in/",
+        "https://njdg.ecourts.gov.in/"
+      ],
+      "keyVariables": [
+        "instituted",
+        "pending",
+        "disposed",
+        "case type",
+        "delay reasons"
+      ]
+    },
+    {
+      "slug": "eci-general-election-reports",
+      "shortTitle": "ECI Lok Sabha Reports",
+      "host": "eci.gov.in",
+      "urls": [
+        "https://eci.gov.in/"
+      ],
+      "keyVariables": [
+        "electors",
+        "turnout",
+        "candidates",
+        "votes",
+        "winners"
+      ]
+    },
+    {
+      "slug": "eci-assembly-election-reports",
+      "shortTitle": "ECI Assembly Reports",
+      "host": "eci.gov.in",
+      "urls": [
+        "https://eci.gov.in/"
+      ],
+      "keyVariables": [
+        "AC electors",
+        "turnout",
+        "parties",
+        "winners"
+      ]
+    },
+    {
+      "slug": "myneta",
+      "shortTitle": "MyNeta",
+      "host": "adrindia.org",
+      "urls": [
+        "https://adrindia.org/",
+        "https://myneta.info/"
+      ],
+      "keyVariables": [
+        "assets",
+        "liabilities",
+        "education",
+        "criminal cases",
+        "party"
+      ]
+    },
+    {
+      "slug": "lok-dhaba",
+      "shortTitle": "Lok Dhaba",
+      "host": "lokdhaba.ashoka.edu.in",
+      "urls": [
+        "https://lokdhaba.ashoka.edu.in/"
+      ],
+      "keyVariables": [
+        "results",
+        "constituency history",
+        "candidate/party trajectories"
+      ]
+    },
+    {
+      "slug": "imd-rainfall",
+      "shortTitle": "IMD Rainfall",
+      "host": "www.imdpune.gov.in",
+      "urls": [
+        "https://www.imdpune.gov.in/"
+      ],
+      "keyVariables": [
+        "daily rainfall",
+        "lat-long grid",
+        "mm"
+      ]
+    },
+    {
+      "slug": "imd-temperature",
+      "shortTitle": "IMD Temperature",
+      "host": "www.imdpune.gov.in",
+      "urls": [
+        "https://www.imdpune.gov.in/"
+      ],
+      "keyVariables": [
+        "daily max temperature",
+        "daily min temperature"
+      ]
+    },
+    {
+      "slug": "cpcb-aqi",
+      "shortTitle": "CPCB AQI",
+      "host": "airquality.cpcb.gov.in",
+      "urls": [
+        "https://airquality.cpcb.gov.in/"
+      ],
+      "keyVariables": [
+        "AQI",
+        "PM2.5",
+        "PM10",
+        "NO2",
+        "O3",
+        "timestamp"
+      ]
+    },
+    {
+      "slug": "india-wris-reservoirs",
+      "shortTitle": "India-WRIS Reservoirs",
+      "host": "indiawris.gov.in",
+      "urls": [
+        "https://indiawris.gov.in/"
+      ],
+      "keyVariables": [
+        "storage",
+        "level",
+        "inflow/outflow",
+        "location",
+        "date"
+      ]
+    },
+    {
+      "slug": "cgwb-groundwater",
+      "shortTitle": "CGWB Groundwater",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "pre/post monsoon levels",
+        "station",
+        "quarter"
+      ]
+    },
+    {
+      "slug": "cea-installed-capacity",
+      "shortTitle": "CEA Capacity",
+      "host": "cea.nic.in",
+      "urls": [
+        "https://cea.nic.in/"
+      ],
+      "keyVariables": [
+        "installed MW",
+        "source",
+        "sector",
+        "state"
+      ]
+    },
+    {
+      "slug": "npp-grid-india",
+      "shortTitle": "NPP / GRID-INDIA",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "generation",
+        "demand",
+        "transmission",
+        "source splits"
+      ]
+    },
+    {
+      "slug": "road-accidents-india",
+      "shortTitle": "Road Accidents",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "accidents",
+        "deaths",
+        "injuries",
+        "road category",
+        "road user type"
+      ]
+    },
+    {
+      "slug": "pmgsy-dashboard",
+      "shortTitle": "PMGSY",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "km",
+        "roads sanctioned/completed",
+        "habitations",
+        "financial progress"
+      ]
+    },
+    {
+      "slug": "dgca-monthly-traffic",
+      "shortTitle": "DGCA Traffic",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "passengers",
+        "freight",
+        "mail",
+        "carrier traffic"
+      ]
+    },
+    {
+      "slug": "jjm-dashboard",
+      "shortTitle": "JJM",
+      "host": "jaljeevanmission.gov.in",
+      "urls": [
+        "https://jaljeevanmission.gov.in/"
+      ],
+      "keyVariables": [
+        "households",
+        "tap connections",
+        "Har Ghar Jal status"
+      ]
+    },
+    {
+      "slug": "sbm-g-dashboard",
+      "shortTitle": "SBM-G",
+      "host": "sbm.gov.in",
+      "urls": [
+        "https://sbm.gov.in/"
+      ],
+      "keyVariables": [
+        "ODF Plus status",
+        "verification stages",
+        "GPs/villages"
+      ]
+    },
+    {
+      "slug": "census-pca-2011",
+      "shortTitle": "Census PCA 2011",
+      "host": "censusindia.gov.in",
+      "urls": [
+        "https://censusindia.gov.in/"
+      ],
+      "keyVariables": [
+        "population",
+        "sex",
+        "literacy",
+        "workers",
+        "SC/ST",
+        "households"
+      ]
+    },
+    {
+      "slug": "district-census-handbook",
+      "shortTitle": "DCHB / Village Directory",
+      "host": "censusindia.gov.in",
+      "urls": [
+        "https://censusindia.gov.in/"
+      ],
+      "keyVariables": [
+        "amenities",
+        "roads",
+        "power",
+        "medical",
+        "education",
+        "households"
+      ]
+    },
+    {
+      "slug": "bhuvan-thematic",
+      "shortTitle": "Bhuvan",
+      "host": "bhuvan.nrsc.gov.in",
+      "urls": [
+        "https://bhuvan.nrsc.gov.in/"
+      ],
+      "keyVariables": [
+        "LULC",
+        "urban land use",
+        "wasteland",
+        "water bodies",
+        "flood layers"
+      ]
+    },
+    {
+      "slug": "wastelands-atlas-2019",
+      "shortTitle": "Wastelands Atlas",
+      "host": "none",
+      "urls": [],
+      "keyVariables": [
+        "wasteland classes",
+        "23 classes"
+      ]
+    },
+    {
+      "slug": "geoboundaries-india",
+      "shortTitle": "geoBoundaries India",
+      "host": "www.geoboundaries.org",
+      "urls": [
+        "https://www.geoboundaries.org/"
+      ],
+      "keyVariables": [
+        "admin geometries",
+        "metadata",
+        "license"
+      ]
+    },
+    {
+      "slug": "osm-india",
+      "shortTitle": "OSM India",
+      "host": "wiki.openstreetmap.org",
+      "urls": [
+        "https://wiki.openstreetmap.org/wiki/Map_features",
+        "https://wiki.openstreetmap.org/wiki/India",
+        "https://download.geofabrik.de/asia/india.html"
+      ],
+      "keyVariables": [
+        "roads",
+        "rail",
+        "water",
+        "POIs",
+        "routeable network"
+      ]
+    },
+    {
+      "slug": "landsat-collection-2",
+      "shortTitle": "Landsat C2",
+      "host": "www.usgs.gov",
+      "urls": [
+        "https://www.usgs.gov/landsat-missions",
+        "https://www.usgs.gov/landsat-missions/landsat-collection-2"
+      ],
+      "keyVariables": [
+        "surface reflectance",
+        "QA bands",
+        "geometry"
+      ]
+    },
+    {
+      "slug": "sentinel-2-l2a",
+      "shortTitle": "Sentinel-2 L2A",
+      "host": "sentinels.copernicus.eu",
+      "urls": [
+        "https://sentinels.copernicus.eu/web/sentinel/technical-guides/sentinel-2-msi/level-2a/algorithm",
+        "https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-2-msi",
+        "https://dataspace.copernicus.eu/"
+      ],
+      "keyVariables": [
+        "10m/20m/60m bands",
+        "scene metadata",
+        "geometry"
+      ]
+    },
+    {
+      "slug": "indian-census-collection-1901-2026",
+      "shortTitle": "Census Collection 1901–2026",
+      "host": "guides.dataverse.org",
+      "urls": [
+        "https://guides.dataverse.org/en/latest/user/index.html",
+        "https://doi.org/10.7910/DVN/ON8CP8"
+      ],
+      "keyVariables": [
+        "state population",
+        "district population",
+        "subdistrict population",
+        "administrative identifiers"
+      ]
+    },
+    {
+      "slug": "district-pop-estimates-2020",
+      "shortTitle": "District & PC Pop. 2020",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/RXYJR6"
+      ],
+      "keyVariables": [
+        "district population",
+        "parliamentary constituency population"
+      ]
+    },
+    {
+      "slug": "electoral-criminality-2004-2009",
+      "shortTitle": "Electoral Criminality 2004–09",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.3886/ICPSR35512.v1",
+        "https://doi.org/10.7910/DVN/26863"
+      ],
+      "keyVariables": [
+        "candidate election results",
+        "criminal charges",
+        "Lok Sabha candidates"
+      ]
+    },
+    {
+      "slug": "access-2015",
+      "shortTitle": "ACCESS 2015",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/0NV9LF"
+      ],
+      "keyVariables": [
+        "electricity access",
+        "cooking fuels",
+        "service quality",
+        "expenditure",
+        "socio-economic fields"
+      ]
+    },
+    {
+      "slug": "access-2018",
+      "shortTitle": "ACCESS 2018",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/AHFINM"
+      ],
+      "keyVariables": [
+        "energy access",
+        "cooking outcomes",
+        "electricity outcomes",
+        "panel household links"
+      ]
+    },
+    {
+      "slug": "ires-2020",
+      "shortTitle": "IRES 2020",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/U8NYUP"
+      ],
+      "keyVariables": [
+        "energy access",
+        "consumption",
+        "electricity reliability",
+        "cooking and heating",
+        "appliances",
+        "efficiency"
+      ]
+    },
+    {
+      "slug": "gender-energy-perception-2021",
+      "shortTitle": "Gender Energy Survey",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/GV85BL"
+      ],
+      "keyVariables": [
+        "gendered energy perceptions",
+        "empowerment dimensions",
+        "household energy use"
+      ]
+    },
+    {
+      "slug": "tafssa-nalanda-2023",
+      "shortTitle": "TAFSSA Nalanda 2023",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/5MAC6B"
+      ],
+      "keyVariables": [
+        "household modules",
+        "adolescent modules",
+        "food systems",
+        "markets",
+        "diets",
+        "climate risk",
+        "gender"
+      ]
+    },
+    {
+      "slug": "replication-bhavnani-lee-2018",
+      "shortTitle": "Bhavnani & Lee 2018",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1086/694101",
+        "https://doi.org/10.7910/DVN/TWDSBW"
+      ],
+      "keyVariables": [
+        "district public-goods outcomes",
+        "IAS officer embeddedness",
+        "postings",
+        "career history"
+      ]
+    },
+    {
+      "slug": "replication-kapoor-magesan-2018",
+      "shortTitle": "Kapoor & Magesan 2018",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1017/S0003055418000199",
+        "https://doi.org/10.7910/DVN/AJHFHU"
+      ],
+      "keyVariables": [
+        "independent candidates",
+        "turnout",
+        "vote shares",
+        "coalition outcomes",
+        "ethnic-party outcomes"
+      ]
+    },
+    {
+      "slug": "replication-aklin-cheng-urpelainen-2021",
+      "shortTitle": "Aklin et al. 2021",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1017/S0143814X20000045",
+        "https://doi.org/10.7910/DVN/KBTHZH"
+      ],
+      "keyVariables": [
+        "electrification outcomes",
+        "caste identifiers",
+        "rural household/service variables",
+        "implementation measures"
+      ]
+    },
+    {
+      "slug": "replication-dugoua-liu-urpelainen-2017",
+      "shortTitle": "Dugoua et al. 2017",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1016/j.enpol.2017.03.048",
+        "https://doi.org/10.7910/DVN/K1IUNQ"
+      ],
+      "keyVariables": [
+        "village electrification status",
+        "geographic barriers",
+        "socio-economic indicators",
+        "political participation"
+      ]
+    },
+    {
+      "slug": "replication-besley-burgess-2000",
+      "shortTitle": "Besley & Burgess 2000",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1162/003355300554809",
+        "https://doi.org/10.7910/DVN/JWRHCK"
+      ],
+      "keyVariables": [
+        "land-reform measures",
+        "poverty",
+        "growth",
+        "state controls"
+      ]
+    },
+    {
+      "slug": "replication-karlan-mullainathan-roth-2019",
+      "shortTitle": "Karlan et al. 2019",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1257/aeri.20180030",
+        "https://doi.org/10.3886/E116321V1"
+      ],
+      "keyVariables": [
+        "vendor debt",
+        "borrowing",
+        "loan sources",
+        "market-vendor outcomes"
+      ]
+    },
+    {
+      "slug": "replication-kyle-sampat-shadlen-2026",
+      "shortTitle": "Kyle et al. 2026",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1093/haschl/qxaf239",
+        "https://doi.org/10.7910/DVN/5V5UOO"
+      ],
+      "keyVariables": [
+        "pharmaceutical patents",
+        "generic competition",
+        "market outcomes"
+      ]
+    },
+    {
+      "slug": "replication-stainier-shah-barreca-2026",
+      "shortTitle": "Stainier et al. 2026",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1086/739115",
+        "https://doi.org/10.7910/DVN/MCUQWV"
+      ],
+      "keyVariables": [
+        "nutrition",
+        "weather shocks",
+        "adaptation behavior",
+        "agricultural season"
+      ]
+    },
+    {
+      "slug": "replication-adbi-agarwal-ghosh-2026",
+      "shortTitle": "Adbi et al. 2026",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.1086/742218",
+        "https://doi.org/10.7910/DVN/0UVLWW"
+      ],
+      "keyVariables": [
+        "noise pollution",
+        "student / academic outcomes"
+      ]
+    },
+    {
+      "slug": "india-renewable-energy-2010-2025",
+      "shortTitle": "RE Capacity 2010–2025",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/GJNVJE"
+      ],
+      "keyVariables": [
+        "solar PV capacity",
+        "wind capacity",
+        "costs",
+        "policy variables"
+      ]
+    },
+    {
+      "slug": "covid-r-estimates-india",
+      "shortTitle": "Covid R Estimates",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/PLLOXR"
+      ],
+      "keyVariables": [
+        "reproduction number R",
+        "test-based estimates"
+      ]
+    },
+    {
+      "slug": "asti-india",
+      "shortTitle": "ASTI India",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/MDNRRV"
+      ],
+      "keyVariables": [
+        "agricultural research system indicators"
+      ]
+    },
+    {
+      "slug": "pratham-read-india",
+      "shortTitle": "Read India (Pratham)",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/CHDLPN"
+      ],
+      "keyVariables": [
+        "literacy program indicators"
+      ]
+    },
+    {
+      "slug": "india-treaty-registry",
+      "shortTitle": "India Treaty Registry",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/1YHDXE"
+      ],
+      "keyVariables": [
+        "treaty IDs",
+        "dates",
+        "subject matter",
+        "linkage fields"
+      ]
+    },
+    {
+      "slug": "india-treaty-nesting",
+      "shortTitle": "India Treaty Nesting",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/Q5WP09"
+      ],
+      "keyVariables": [
+        "nesting relationships among treaties"
+      ]
+    },
+    {
+      "slug": "health-survey-andhra-2013",
+      "shortTitle": "AP Health Survey 2013",
+      "host": "doi.org",
+      "urls": [
+        "https://doi.org/10.7910/DVN/26302"
+      ],
+      "keyVariables": [
+        "family/household health survey fields"
+      ]
+    },
+    {
+      "slug": "gh-datameet-maps",
+      "shortTitle": "datameet/maps",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datameet/maps"
+      ],
+      "keyVariables": [
+        "admin boundaries",
+        "electoral maps",
+        "field documentation"
+      ]
+    },
+    {
+      "slug": "gh-datameet-municipal",
+      "shortTitle": "Municipal Spatial Data",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datameet/Municipal_Spatial_Data"
+      ],
+      "keyVariables": [
+        "ward boundaries",
+        "municipal polygons"
+      ]
+    },
+    {
+      "slug": "gh-india-geodata",
+      "shortTitle": "india-geodata",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/yashveeeeeeer/india-geodata"
+      ],
+      "keyVariables": [
+        "boundaries",
+        "census layers",
+        "electoral",
+        "environment"
+      ]
+    },
+    {
+      "slug": "gh-indian-admin-boundaries",
+      "shortTitle": "indian_admin_boundaries",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/ramSeraph/indian_admin_boundaries"
+      ],
+      "keyVariables": [
+        "admin boundaries",
+        "postal",
+        "forest",
+        "coastal",
+        "police"
+      ]
+    },
+    {
+      "slug": "gh-indian-shapefiles",
+      "shortTitle": "INDIAN-SHAPEFILES",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datta07/INDIAN-SHAPEFILES"
+      ],
+      "keyVariables": [
+        "admin polygons",
+        "highways",
+        "railways",
+        "metros"
+      ]
+    },
+    {
+      "slug": "gh-india-votes-data",
+      "shortTitle": "india-votes-data",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/thecont1/india-votes-data"
+      ],
+      "keyVariables": [
+        "candidates",
+        "votes",
+        "parties",
+        "constituency results"
+      ]
+    },
+    {
+      "slug": "gh-data-for-india",
+      "shortTitle": "data-for-india",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/iaseth/data-for-india"
+      ],
+      "keyVariables": [
+        "districts",
+        "states",
+        "lookup keys"
+      ]
+    },
+    {
+      "slug": "gh-colleges-api",
+      "shortTitle": "colleges-api",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/PriyanKishoreMS/colleges-api"
+      ],
+      "keyVariables": [
+        "college directory fields",
+        "API endpoints"
+      ]
+    },
+    {
+      "slug": "gh-rural-facilities-pmgsy",
+      "shortTitle": "rural-facilities-pmgsy",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/pratapvardhan/rural-facilities-pmgsy"
+      ],
+      "keyVariables": [
+        "agriculture",
+        "education",
+        "medical",
+        "transport",
+        "admin POIs"
+      ]
+    },
+    {
+      "slug": "gh-nightlights-viirs",
+      "shortTitle": "Night lights VIIRS",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/yashveeeeeeer/india-district-nightlights-viirs"
+      ],
+      "keyVariables": [
+        "night-light radiance",
+        "district-year panel"
+      ]
+    },
+    {
+      "slug": "gh-datameet-covid19",
+      "shortTitle": "datameet/covid19",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datameet/covid19"
+      ],
+      "keyVariables": [
+        "cases",
+        "public-health series",
+        "backups"
+      ]
+    },
+    {
+      "slug": "gh-datameet-election-data",
+      "shortTitle": "india-election-data",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datameet/india-election-data"
+      ],
+      "keyVariables": [
+        "links to public election datasets"
+      ]
+    },
+    {
+      "slug": "gh-udise-schools",
+      "shortTitle": "udise_schools",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datameet/udise_schools"
+      ],
+      "keyVariables": [
+        "school locations",
+        "UDISE-related fields"
+      ]
+    },
+    {
+      "slug": "gh-india-maps-data",
+      "shortTitle": "india-maps-data",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/udit-001/india-maps-data"
+      ],
+      "keyVariables": [
+        "state polygons",
+        "district polygons"
+      ]
+    },
+    {
+      "slug": "gh-village-boundaries",
+      "shortTitle": "Village boundaries",
+      "host": "github.com",
+      "urls": [
+        "https://github.com/datameet/indian_village_boundaries"
+      ],
+      "keyVariables": [
+        "village polygons",
+        "rural boundaries"
+      ]
+    }
+  ]
+}

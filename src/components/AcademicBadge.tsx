@@ -1,6 +1,8 @@
-import type { AcademicBadge as Badge } from "@/types/dataset";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import type { AcademicBadge as BadgeType } from "@/types/dataset";
 
-const LABELS: Record<Badge, string> = {
+const LABELS: Record<BadgeType, string> = {
   "core-reference": "Core reference",
   "survey-microdata": "Survey microdata",
   replication: "Replication package",
@@ -10,43 +12,38 @@ const LABELS: Record<Badge, string> = {
   "historical-archive": "Historical archive",
 };
 
-const STYLES: Record<Badge, string> = {
-  "core-reference":
-    "border-sky-500/40 bg-sky-500/10 text-sky-200",
-  "survey-microdata":
-    "border-emerald-500/40 bg-emerald-500/10 text-emerald-200",
-  replication:
-    "border-violet-500/40 bg-violet-500/10 text-violet-200",
-  "mixed-restricted":
-    "border-orange-500/40 bg-orange-500/10 text-orange-200",
+const STYLES: Record<BadgeType, string> = {
+  "core-reference": "border-sky-500/40 bg-sky-500/10 text-sky-200",
+  "survey-microdata": "border-emerald-500/40 bg-emerald-500/10 text-emerald-200",
+  replication: "border-violet-500/40 bg-violet-500/10 text-violet-200",
+  "mixed-restricted": "border-orange-500/40 bg-orange-500/10 text-orange-200",
   "metadata-incomplete":
     "border-neutral-500/40 bg-neutral-500/10 text-neutral-300",
-  "github-repo":
-    "border-slate-400/40 bg-slate-500/15 text-slate-200",
-  "historical-archive":
-    "border-amber-500/40 bg-amber-500/10 text-amber-200",
+  "github-repo": "border-slate-400/40 bg-slate-500/15 text-slate-200",
+  "historical-archive": "border-amber-500/40 bg-amber-500/10 text-amber-200",
 };
 
 export function AcademicBadge({
   badge,
   className = "",
 }: {
-  badge: Badge;
+  badge: BadgeType;
   className?: string;
 }) {
   return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium tracking-wide ${STYLES[badge]} ${className}`}
+    <Badge
+      variant="outline"
+      className={cn("border font-medium tracking-wide", STYLES[badge], className)}
     >
       {LABELS[badge]}
-    </span>
+    </Badge>
   );
 }
 
 export function AcademicBadgeList({
   badges,
 }: {
-  badges?: Badge[];
+  badges?: BadgeType[];
 }) {
   if (!badges?.length) return null;
   return (

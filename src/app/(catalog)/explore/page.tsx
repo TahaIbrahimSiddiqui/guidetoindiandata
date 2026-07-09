@@ -12,7 +12,14 @@ export default function ExplorePage() {
   return (
     <Suspense
       fallback={
-        <div className="h-40 animate-pulse rounded-2xl bg-slate-900/50" />
+        <div className="space-y-6" aria-hidden>
+          <div className="skeleton h-28 w-full max-w-xl" />
+          <div className="skeleton h-48 w-full" />
+          <div className="grid gap-px bg-obsidian-border sm:grid-cols-2">
+            <div className="skeleton h-52" />
+            <div className="skeleton h-52" />
+          </div>
+        </div>
       }
     >
       <ExploreClient />

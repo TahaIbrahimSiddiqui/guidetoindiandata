@@ -69,17 +69,32 @@ export function LandingExperience() {
                 aria-hidden
               />
               <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-                Indian Data Guide®
+                Indian Data Guide
+                <span className="align-super text-[0.65em] text-[#C4A574]/80">
+                  ®
+                </span>
               </span>
             </div>
-            <nav className="flex items-center gap-6 text-[11px] font-medium uppercase tracking-[0.18em] text-[#D3D4C0]">
-              <Link href="/explore" className="link-underline hover:text-[#F3E4C9]">
+            <nav
+              className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-[#E0E1D4] sm:gap-4"
+              aria-label="Landing"
+            >
+              <Link
+                href="/explore"
+                className="inline-flex min-h-11 items-center px-2 link-underline hover:text-[#F3E4C9]"
+              >
                 Explore
               </Link>
-              <Link href="/academic" className="link-underline hover:text-[#F3E4C9]">
+              <Link
+                href="/academic"
+                className="inline-flex min-h-11 items-center px-2 link-underline hover:text-[#F3E4C9]"
+              >
                 Academic
               </Link>
-              <Link href="/series" className="link-underline hover:text-[#F3E4C9]">
+              <Link
+                href="/series"
+                className="inline-flex min-h-11 items-center px-2 link-underline hover:text-[#F3E4C9]"
+              >
                 Series
               </Link>
             </nav>
@@ -91,7 +106,7 @@ export function LandingExperience() {
               India · Data · Discovery
             </p>
 
-            <h1 className="font-display max-w-5xl text-[clamp(2.75rem,9vw,7.5rem)] font-bold text-[#F3E4C9]">
+            <h1 className="font-display max-w-5xl text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[1.05] text-[#F3E4C9]">
               {reduced ? (
                 <>
                   National data,

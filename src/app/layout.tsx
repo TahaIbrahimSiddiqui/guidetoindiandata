@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
-import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
+import {
+  Atkinson_Hyperlegible,
+  Crimson_Pro,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
-const display = Syne({
+/** Academic display — ui-ux-pro-max Academic/Research pairing */
+const display = Crimson_Pro({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const body = DM_Sans({
+/** High-readability body */
+const body = Atkinson_Hyperlegible({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "700"],
 });
 
 const mono = IBM_Plex_Mono({

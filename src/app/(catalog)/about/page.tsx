@@ -18,10 +18,11 @@ export default function AboutPage() {
           The Indian Data Guide is a public-facing catalog built from independent
           research on India&apos;s statistical and administrative data ecosystem.
           The goal is not another flat link list—it is a{" "}
-          <strong className="font-medium text-[#F3E4C9]">
+          <strong className="font-medium text-foreground">
             dataset record system
           </strong>{" "}
-          with comparable metadata, honest access labels, and relationship links.
+          with comparable metadata, honest access labels, usage guides, and
+          live-sourced variable tables.
         </p>
       </header>
 

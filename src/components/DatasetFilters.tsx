@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import type { AccessType } from "@/types/dataset";
 
 const selectClass =
-  "field h-10 w-full appearance-none rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+  "h-11 w-full appearance-none rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:h-10";
 
 export function DatasetFilters() {
   const router = useRouter();

@@ -134,16 +134,24 @@ export default async function DatasetPage({ params }: Props) {
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <AccessBadge accessType={dataset.accessType} />
           <AcademicBadgeList badges={dataset.academicBadges} />
-          <span className="chip">{dataset.sizeTier}</span>
+          <Badge variant="outline" className="font-normal">
+            {dataset.sizeTier}
+          </Badge>
           {dataset.flags?.includes("good-starting") && (
-            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
+            <Badge
+              variant="outline"
+              className="border-emerald-500/30 bg-emerald-500/10 font-medium text-emerald-300"
+            >
               Good starting dataset
-            </span>
+            </Badge>
           )}
           {dataset.flags?.includes("best-district") && (
-            <span className="rounded-full border border-violet-500/30 bg-violet-500/10 px-2.5 py-0.5 text-[11px] font-medium text-violet-300">
+            <Badge
+              variant="outline"
+              className="border-violet-500/30 bg-violet-500/10 font-medium text-violet-300"
+            >
               Strong district source
-            </span>
+            </Badge>
           )}
         </div>
 

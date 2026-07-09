@@ -20,8 +20,11 @@ export function DatasetCard({ dataset }: { dataset: Dataset }) {
   const vars = dataset.keyVariables.slice(0, 3);
 
   return (
-    <Link href={`/datasets/${dataset.slug}`} className="group block h-full">
-      <Card className="h-full rounded-none bg-card py-0 ring-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:bg-secondary/40 group-focus-visible:ring-2 group-focus-visible:ring-ring">
+    <Link
+      href={`/datasets/${dataset.slug}`}
+      className="group pressable block h-full"
+    >
+      <Card className="h-full rounded-none bg-card py-0 ring-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:bg-secondary/40 group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)] group-focus-visible:ring-2 group-focus-visible:ring-ring">
         <CardHeader className="relative gap-0 border-b border-border/60 px-6 pt-6 pb-0">
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ring/0 to-transparent transition-all duration-500 group-hover:via-ring/50"

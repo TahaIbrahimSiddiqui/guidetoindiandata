@@ -26,11 +26,11 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-xl supports-[backdrop-filter]:bg-background/75">
+    <header className="glass-header sticky top-0 z-50 border-b border-border/80">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <Link
           href="/"
-          className="group flex items-center gap-2.5 text-foreground focus-visible:outline-offset-4"
+          className="group flex min-h-11 items-center gap-2.5 text-foreground focus-visible:outline-offset-4"
         >
           <span
             className="inline-block h-2 w-2 rotate-45 bg-primary transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-125 group-hover:rotate-[225deg]"
@@ -54,7 +54,7 @@ export function SiteHeader() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative rounded-md px-3 py-2 text-[11px] font-medium uppercase tracking-[0.16em] transition-colors duration-200",
+                  "relative inline-flex min-h-11 items-center rounded-md px-3 py-2 text-[11px] font-medium uppercase tracking-[0.16em] transition-colors duration-200",
                   active
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground",
@@ -63,7 +63,7 @@ export function SiteHeader() {
                 {item.label}
                 {active && (
                   <span
-                    className="absolute inset-x-3 -bottom-[calc(0.5rem+1px)] h-px bg-ring"
+                    className="absolute inset-x-3 bottom-1.5 h-0.5 rounded-full bg-ring"
                     aria-hidden
                   />
                 )}

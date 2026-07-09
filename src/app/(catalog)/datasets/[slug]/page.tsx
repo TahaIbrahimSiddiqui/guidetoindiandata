@@ -13,6 +13,7 @@ import { InContentAd } from "@/components/ads/ContentWithAds";
 import { getCluster } from "@/data/clusters";
 import { datasets, getDatasetBySlug } from "@/data/datasets";
 import { getWaveForDataset } from "@/data/series";
+import { resolveVariables } from "@/lib/variables";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -38,6 +39,7 @@ export default async function DatasetPage({ params }: Props) {
 
   const cluster = getCluster(dataset.cluster);
   const seriesMeta = getWaveForDataset(dataset.slug);
+  const variableInfo = resolveVariables(dataset);
 
   return (
     <article>
@@ -81,7 +83,7 @@ export default async function DatasetPage({ params }: Props) {
             href={`/series/${seriesMeta.series.slug}`}
             className="mb-3 inline-flex rounded-md border border-obsidian-purple/30 bg-obsidian-purple/10 px-2.5 py-1 font-mono text-xs text-obsidian-purple-bright hover:border-obsidian-purple"
           >
-            Part of [[{seriesMeta.series.shortTitle}]] · {seriesMeta.wave.yearLabel}
+            Part of {seriesMeta.series.shortTitle} · {seriesMeta.wave.yearLabel}
           </Link>
         )}
         <p className="font-mono text-xs uppercase tracking-wider text-obsidian-muted">
@@ -162,19 +164,57 @@ export default async function DatasetPage({ params }: Props) {
       </section>
 
       <section className="mt-10">
-        <h2 className="text-lg font-semibold text-white">
-          Key variables / field preview
-        </h2>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {dataset.keyVariables.map((v) => (
-            <li
-              key={v}
-              className="rounded-lg border border-white/10 bg-slate-900/60 px-3 py-1.5 font-mono text-xs text-cyan-100/90"
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-obsidian-text">
+              Variables
+            </h2>
+            <p className="mt-1 max-w-2xl text-sm text-obsidian-muted">
+              {variableInfo.source}. Verify the full dictionary on the official
+              site.
+            </p>
+          </div>
+          {variableInfo.url && (
+            <a
+              href={variableInfo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-obsidian-border px-3 py-1.5 text-xs text-obsidian-purple-bright hover:border-obsidian-purple"
             >
-              {v}
-            </li>
-          ))}
-        </ul>
+              Open official docs
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
+        </div>
+        <div className="mt-4 overflow-hidden rounded-xl border border-obsidian-border">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-obsidian-panel text-xs uppercase tracking-wide text-obsidian-muted">
+              <tr>
+                <th className="px-3 py-2 font-medium">Name / code</th>
+                <th className="px-3 py-2 font-medium">Description</th>
+                <th className="hidden px-3 py-2 font-medium sm:table-cell">
+                  Group
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {variableInfo.entries.map((v) => (
+                <tr
+                  key={`${v.name}-${v.label}`}
+                  className="border-t border-obsidian-border/80"
+                >
+                  <td className="px-3 py-2 font-mono text-xs text-obsidian-purple-bright">
+                    {v.name}
+                  </td>
+                  <td className="px-3 py-2 text-obsidian-text">{v.label}</td>
+                  <td className="hidden px-3 py-2 text-obsidian-muted sm:table-cell">
+                    {v.group ?? "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <InContentAd />

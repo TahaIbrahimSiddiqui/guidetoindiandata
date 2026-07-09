@@ -18,6 +18,12 @@ export type ClusterId =
   | "governance-justice"
   | "climate-infra";
 
+export type VariableEntry = {
+  name: string;
+  label: string;
+  group?: string;
+};
+
 export type Dataset = {
   slug: string;
   title: string;
@@ -36,6 +42,10 @@ export type Dataset = {
   geographyLevel: string[];
   timeCoverage: string;
   keyVariables: string[];
+  /** Structured listing aligned with official portal/docs field names */
+  variables?: VariableEntry[];
+  variablesSource?: string;
+  variablesUrl?: string;
   bestFor: string;
   limitations: string;
   pairsWith: string[];

@@ -54,7 +54,7 @@ export function SiteHeader() {
             href="/series/nfhs"
             className="ml-2 rounded-md bg-obsidian-purple px-3 py-1.5 text-sm font-medium text-white transition hover:bg-obsidian-purple-bright hover:text-obsidian-bg"
           >
-            NFHS years
+            NFHS
           </Link>
         </nav>
 

@@ -72,7 +72,7 @@ export default async function SeriesDetailPage({ params }: Props) {
                   href={`/series/${ps}`}
                   className="text-obsidian-purple-bright hover:underline"
                 >
-                  [[{getSeriesBySlug(ps)?.shortTitle ?? ps}]]
+                  {getSeriesBySlug(ps)?.shortTitle ?? ps}
                 </Link>
               </span>
             ))}

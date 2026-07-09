@@ -25,12 +25,12 @@ const familyOrder: DataSeries["family"][] = [
 export default function SeriesIndexPage() {
   return (
     <div>
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold text-obsidian-text">Series</h1>
-        <p className="mt-2 max-w-2xl text-obsidian-muted">
-          Survey families with multiple years. Open a series for the timeline of
-          available years and design revisions—e.g. one NFHS page, separate pages
-          for each NSS product.
+      <header className="mb-12 max-w-3xl">
+        <p className="page-kicker">Multi-year families</p>
+        <h1 className="page-title">Series</h1>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#D3D4C0]">
+          Survey families with year timelines and design revisions—NFHS, NSS
+          products, ACCESS energy, and more.
         </p>
       </header>
 

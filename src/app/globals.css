@@ -1,11 +1,8 @@
 @import "tailwindcss";
 
 /*
-  Brand palette
-  Navy  #0A2947  rgb(10, 41, 71)
-  Cream #F3E4C9  rgb(243, 228, 201)
-  Sage  #D3D4C0  rgb(211, 212, 192)
-  Brown #8B5E3C  rgb(139, 94, 60)
+  Brand palette (kept) + Locomotive-inspired craft
+  Navy  #0A2947 · Cream #F3E4C9 · Sage #D3D4C0 · Brown #8B5E3C
 */
 
 :root {
@@ -18,16 +15,16 @@
   --foreground: #f3e4c9;
 
   --obsidian-bg: #0a2947;
-  --obsidian-panel: #0f3558;
-  --obsidian-border: #3d5a73;
+  --obsidian-panel: #0d3152;
+  --obsidian-border: rgba(211, 212, 192, 0.18);
   --obsidian-muted: #d3d4c0;
   --obsidian-text: #f3e4c9;
   --obsidian-purple: #8b5e3c;
   --obsidian-purple-bright: #c4a574;
-  --obsidian-purple-dim: rgba(139, 94, 60, 0.2);
+  --obsidian-purple-dim: rgba(139, 94, 60, 0.18);
 
-  --brand-cream-soft: rgba(243, 228, 201, 0.12);
-  --brand-brown-glow: rgba(139, 94, 60, 0.45);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-loco: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
@@ -44,8 +41,9 @@
   --color-brand-cream: var(--brand-cream);
   --color-brand-sage: var(--brand-sage);
   --color-brand-brown: var(--brand-brown);
-  --font-sans: var(--font-plex-sans);
-  --font-mono: var(--font-plex-mono);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
 }
 
 html {
@@ -55,8 +53,10 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
@@ -64,17 +64,120 @@ body {
   color: #f3e4c9;
 }
 
+/* Locomotive-style display type */
+.font-display {
+  font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand-sage);
+}
+
 .bg-vault {
   background-color: var(--obsidian-bg);
-  background-image:
-    radial-gradient(ellipse 70% 40% at 50% -10%, rgba(243, 228, 201, 0.08), transparent),
-    linear-gradient(rgba(211, 212, 192, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(211, 212, 192, 0.04) 1px, transparent 1px);
-  background-size: auto, 40px 40px, 40px 40px;
+  background-image: radial-gradient(
+    ellipse 90% 50% at 50% -20%,
+    rgba(243, 228, 201, 0.06),
+    transparent 55%
+  );
 }
 
 .note-card {
   background: var(--obsidian-panel);
   border: 1px solid var(--obsidian-border);
-  border-radius: 0.5rem;
+  border-radius: 0;
+  transition:
+    border-color 0.4s var(--ease-loco),
+    transform 0.5s var(--ease-loco),
+    background-color 0.4s var(--ease-loco);
+}
+
+.note-card:hover {
+  border-color: rgba(243, 228, 201, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Staggered hero lines */
+@keyframes loco-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.1em, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.loco-line {
+  display: block;
+  overflow: hidden;
+}
+
+.loco-line > span {
+  display: block;
+  animation: loco-rise 1s var(--ease-out-expo) both;
+}
+
+.loco-line:nth-child(1) > span {
+  animation-delay: 0.08s;
+}
+.loco-line:nth-child(2) > span {
+  animation-delay: 0.18s;
+}
+.loco-line:nth-child(3) > span {
+  animation-delay: 0.28s;
+}
+.loco-line:nth-child(4) > span {
+  animation-delay: 0.38s;
+}
+
+@keyframes loco-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loco-fade {
+  animation: loco-fade 0.9s var(--ease-loco) 0.55s both;
+}
+
+/* Soft link underline */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.4s var(--ease-loco);
+}
+
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* Page section titles */
+.page-kicker {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brand-sage);
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: var(--brand-cream);
 }

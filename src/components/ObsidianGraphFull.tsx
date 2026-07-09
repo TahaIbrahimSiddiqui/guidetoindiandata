@@ -407,27 +407,32 @@ export function ObsidianGraphFull() {
         onClick={onClick}
       />
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-3 sm:p-5">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-4 p-5 sm:p-8">
         <div className="pointer-events-auto max-w-md">
-          <p className="text-sm font-semibold text-[#F3E4C9]">Indian Data Guide</p>
-          <p className="mt-0.5 text-xs text-[#D3D4C0]/80">
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]" />
+            <p className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
+              Indian Data Guide®
+            </p>
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/80">
             {selectedNode
               ? selectedNode.kind === "theme"
-                ? `${selectedNode.label}: ${focusedSources} linked sources · other themes stay dim`
-                : `${selectedNode.label} · double-click or Open to visit`
-              : "22 themes across the full screen · click a theme to focus only its datasets"}
+                ? `${selectedNode.label} — ${focusedSources} sources · others dim`
+                : `${selectedNode.label} · double-click or open`
+              : "Click a theme. Only linked sources light up."}
           </p>
           {selectedNode?.kind === "source" && selectedNode.href && (
             <button
               type="button"
-              className="mt-2 rounded-md border border-[#8B5E3C]/50 bg-[#8B5E3C]/25 px-3 py-1.5 text-xs text-[#F3E4C9] hover:bg-[#8B5E3C]/40"
+              className="mt-3 border border-[#F3E4C9]/30 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F3E4C9] transition hover:bg-[#F3E4C9] hover:text-[#0A2947]"
               onClick={() => router.push(selectedNode.href!)}
             >
-              Open {selectedNode.label}
+              Open {selectedNode.label} →
             </button>
           )}
         </div>
-        <nav className="pointer-events-auto flex flex-wrap justify-end gap-2 text-xs">
+        <nav className="pointer-events-auto flex flex-wrap justify-end gap-5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#D3D4C0]">
           {[
             { href: "/academic", label: "Academic" },
             { href: "/series", label: "Series" },
@@ -437,7 +442,7 @@ export function ObsidianGraphFull() {
             <Link
               key={l.href}
               href={l.href}
-              className="rounded-md border border-[#D3D4C0]/25 bg-[#0A2947]/70 px-2.5 py-1.5 text-[#D3D4C0] backdrop-blur hover:border-[#8B5E3C]/50 hover:text-[#F3E4C9]"
+              className="link-underline hover:text-[#F3E4C9]"
             >
               {l.label}
             </Link>
@@ -445,8 +450,8 @@ export function ObsidianGraphFull() {
         </nav>
       </div>
 
-      <p className="pointer-events-none absolute bottom-3 left-0 right-0 z-10 px-4 text-center text-[11px] text-[#D3D4C0]/50">
-        Esc clears focus · only connected datasets light when a theme is selected
+      <p className="pointer-events-none absolute bottom-5 left-0 right-0 z-10 px-4 text-center text-[10px] uppercase tracking-[0.18em] text-[#D3D4C0]/40">
+        Esc clears · theme focus is exclusive
       </p>
     </div>
   );

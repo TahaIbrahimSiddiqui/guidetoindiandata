@@ -9,16 +9,16 @@ export function ContentWithAds({
   showSidebar?: boolean;
 }) {
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-[1400px] px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
       <AdSlot
         slotId={AD_SLOT_IDS.topBanner}
         format="leaderboard"
-        className="mb-6 w-full"
+        className="mb-10 w-full"
       />
 
       <div
-        className={`grid gap-8 ${
-          showSidebar ? "lg:grid-cols-[minmax(0,1fr)_300px]" : ""
+        className={`grid gap-10 ${
+          showSidebar ? "lg:grid-cols-[minmax(0,1fr)_280px]" : ""
         }`}
       >
         <div className="min-w-0">{children}</div>
@@ -39,7 +39,7 @@ export function ContentWithAds({
       <AdSlot
         slotId={AD_SLOT_IDS.bottomBanner}
         format="leaderboard"
-        className="mt-10 w-full"
+        className="mt-14 w-full"
       />
     </div>
   );
@@ -50,7 +50,7 @@ export function InContentAd({ className = "" }: { className?: string }) {
     <AdSlot
       slotId={AD_SLOT_IDS.inContent}
       format="rectangle"
-      className={`my-6 w-full max-w-md ${className}`}
+      className={`my-10 w-full max-w-md ${className}`}
     />
   );
 }

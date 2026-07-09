@@ -26,10 +26,14 @@ function Shelf({
 }) {
   if (!items.length) return null;
   return (
-    <section className="mb-12">
-      <h2 className="text-xl font-semibold text-obsidian-text">{title}</h2>
-      <p className="mt-1 max-w-2xl text-sm text-obsidian-muted">{blurb}</p>
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+    <section className="mb-16">
+      <h2 className="font-display text-2xl font-semibold tracking-tight text-[#F3E4C9]">
+        {title}
+      </h2>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#D3D4C0]">
+        {blurb}
+      </p>
+      <div className="mt-6 grid gap-px bg-obsidian-border sm:grid-cols-2">
         {items.map((d) => (
           <DatasetCard key={d.slug} dataset={d} />
         ))}
@@ -47,47 +51,30 @@ export default function AcademicPage() {
 
   return (
     <div>
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold text-obsidian-text">
-          Academic, Dataverse & GitHub
+      <header className="mb-14 max-w-3xl">
+        <p className="page-kicker">Research layer</p>
+        <h1 className="page-title">
+          Academic,
+          <br />
+          Dataverse &amp; GitHub
         </h1>
-        <p className="mt-3 max-w-3xl text-obsidian-muted leading-relaxed">
-          India-focused records from Harvard Dataverse, journal replications, and
-          community GitHub datasets. Sources:{" "}
-          <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-violet-200">
-            academic_dataset_harvard.md
-          </code>{" "}
-          and{" "}
-          <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-violet-200">
-            github_dataset.md
-          </code>
-          . NR fields stay{" "}
-          <strong className="text-obsidian-text">Metadata incomplete</strong>.
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#D3D4C0]">
+          Harvard Dataverse deposits, journal replications, and community GitHub
+          repos. Where licenses were not reported, we flag metadata incomplete
+          instead of inventing terms.
         </p>
-        <div className="mt-4 flex flex-wrap gap-3 text-sm">
-          <Link
-            href="/explore?source=academic"
-            className="text-obsidian-purple-bright hover:underline"
-          >
-            Academic only
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-medium uppercase tracking-[0.16em] text-[#C4A574]">
+          <Link href="/explore?source=academic" className="link-underline">
+            Academic
           </Link>
-          <Link
-            href="/explore?source=replication"
-            className="text-obsidian-purple-bright hover:underline"
-          >
+          <Link href="/explore?source=replication" className="link-underline">
             Replications
           </Link>
-          <Link
-            href="/explore?source=github"
-            className="text-obsidian-purple-bright hover:underline"
-          >
-            GitHub community
+          <Link href="/explore?source=github" className="link-underline">
+            GitHub
           </Link>
-          <Link
-            href="/series/access-energy"
-            className="text-obsidian-purple-bright hover:underline"
-          >
-            ACCESS energy series
+          <Link href="/series/access-energy" className="link-underline">
+            ACCESS series
           </Link>
         </div>
       </header>

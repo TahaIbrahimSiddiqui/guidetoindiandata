@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
 import "./globals.css";
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+const display = Syne({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+});
+
+const body = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const mono = IBM_Plex_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -20,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s · Indian Data Guide",
   },
   description:
-    "Discover 70+ Indian datasets across health, labor, agriculture, elections, climate, and more—with honest access badges and related sources.",
+    "Discover Indian datasets across health, labour, agriculture, elections, climate, academic archives, and community GitHub sources.",
 };
 
 export default function RootLayout({
@@ -31,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-brand-navy text-obsidian-text">{children}</body>
     </html>

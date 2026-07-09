@@ -37,23 +37,24 @@ export function ExploreClient() {
 
   return (
     <div>
-      <header className="mb-6">
-        <h1 className="text-3xl font-semibold text-white">Explore datasets</h1>
-        <p className="mt-2 max-w-2xl text-slate-400">
-          Filter by what you need operationally—access, geography, frequency—not
-          just topic labels.
+      <header className="mb-10 max-w-3xl">
+        <p className="page-kicker">Catalog</p>
+        <h1 className="page-title">Explore</h1>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#D3D4C0]">
+          Filter by access friction, geography, and source layer—not just topic
+          labels.
         </p>
       </header>
 
       <DatasetFilters />
 
-      <p className="mt-6 text-sm text-slate-400">
+      <p className="mt-8 text-[11px] font-medium uppercase tracking-[0.16em] text-[#D3D4C0]/70">
         Showing{" "}
-        <span className="font-medium text-slate-200">{results.length}</span> of{" "}
+        <span className="text-[#F3E4C9]">{results.length}</span> of{" "}
         {datasets.length} datasets
       </p>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid gap-px bg-obsidian-border sm:grid-cols-2">
         {results.map((d, i) => (
           <div key={d.slug} className="contents">
             <DatasetCard dataset={d} />

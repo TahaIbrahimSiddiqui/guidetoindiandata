@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Layers } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { AccessBadge } from "@/components/AccessBadge";
 import { AcademicBadgeList } from "@/components/AcademicBadge";
 import { getWaveForDataset } from "@/data/series";
@@ -12,42 +12,37 @@ export function DatasetCard({ dataset }: { dataset: Dataset }) {
   return (
     <Link
       href={`/datasets/${dataset.slug}`}
-      className="group flex h-full flex-col rounded-xl border border-obsidian-border bg-obsidian-panel p-5 transition hover:border-obsidian-purple/40"
+      className="group flex h-full flex-col border border-obsidian-border bg-obsidian-panel p-6 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-[#F3E4C9]/35 hover:bg-[#0f3558]"
     >
       <div className="flex items-start justify-between gap-3">
-        <div>
-          {meta && (
-            <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-obsidian-purple-bright">
-              {meta.series.shortTitle} · {meta.wave.yearLabel}
-            </p>
-          )}
-          {isAcademic && !meta && (
-            <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-violet-300/90">
-              Academic / Dataverse
-            </p>
-          )}
-          <p className="font-mono text-xs text-obsidian-muted">
-            {dataset.shortTitle}
+        <div className="min-w-0">
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#C4A574]">
+            {meta
+              ? `${meta.series.shortTitle} · ${meta.wave.yearLabel}`
+              : isAcademic
+                ? dataset.sourceKind === "github-community"
+                  ? "GitHub / Community"
+                  : "Academic / Dataverse"
+                : dataset.shortTitle}
           </p>
-          <h3 className="mt-1 text-base font-semibold text-obsidian-text group-hover:text-obsidian-purple-bright">
+          <h3 className="font-display mt-3 text-xl font-semibold leading-tight tracking-tight text-[#F3E4C9] transition-colors group-hover:text-white">
             {dataset.title}
           </h3>
         </div>
         <ArrowUpRight
-          className="h-4 w-4 shrink-0 text-obsidian-muted transition group-hover:text-obsidian-purple-bright"
+          className="mt-1 h-4 w-4 shrink-0 text-[#D3D4C0]/50 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#F3E4C9]"
           aria-hidden
         />
       </div>
 
-      <p className="mt-3 line-clamp-2 flex-1 text-sm text-obsidian-muted">
+      <p className="mt-4 line-clamp-2 flex-1 text-sm leading-relaxed text-[#D3D4C0]/90">
         {dataset.bestFor}
       </p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-obsidian-border pt-4">
         <AccessBadge accessType={dataset.accessType} />
         <AcademicBadgeList badges={dataset.academicBadges} />
-        <span className="inline-flex items-center gap-1 rounded-full border border-obsidian-border px-2.5 py-0.5 text-xs text-obsidian-muted">
-          <Layers className="h-3 w-3" aria-hidden />
+        <span className="text-[10px] uppercase tracking-[0.12em] text-[#D3D4C0]/60">
           {dataset.sizeTier}
         </span>
       </div>

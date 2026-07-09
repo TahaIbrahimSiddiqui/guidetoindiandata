@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Hexagon, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const nav = [
   { href: "/series", label: "Series" },
   { href: "/academic", label: "Academic" },
   { href: "/explore", label: "Explore" },
-  { href: "/clusters", label: "Clusters" },
+  { href: "/clusters", label: "Themes" },
   { href: "/about", label: "About" },
 ];
 
@@ -18,22 +18,25 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-obsidian-border bg-obsidian-bg/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-obsidian-border/80 bg-[#0A2947]/85 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <Link
           href="/"
-          className="group flex items-center gap-2 font-semibold tracking-tight text-obsidian-text"
+          className="group flex items-center gap-2.5 text-obsidian-text"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-md border border-obsidian-purple/40 bg-obsidian-purple/15 text-obsidian-purple-bright">
-            <Hexagon className="h-4 w-4" aria-hidden />
+          <span
+            className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C] transition-transform duration-500 group-hover:scale-110"
+            aria-hidden
+          />
+          <span className="font-display text-sm font-semibold tracking-tight">
+            Indian Data Guide®
           </span>
-          <span className="hidden sm:inline text-sm">
-            Indian Data <span className="text-obsidian-purple-bright">Guide</span>
-          </span>
-          <span className="sm:hidden text-sm">IDG</span>
         </Link>
 
-        <nav className="hidden items-center gap-0.5 md:flex" aria-label="Main">
+        <nav
+          className="hidden items-center gap-8 md:flex"
+          aria-label="Main"
+        >
           {nav.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -41,10 +44,10 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-md px-3 py-1.5 text-sm transition ${
+                className={`text-[11px] font-medium uppercase tracking-[0.18em] transition-colors duration-300 ${
                   active
-                    ? "bg-obsidian-purple/20 text-obsidian-purple-bright"
-                    : "text-obsidian-muted hover:bg-white/5 hover:text-obsidian-text"
+                    ? "text-[#F3E4C9]"
+                    : "text-[#D3D4C0]/80 hover:text-[#F3E4C9]"
                 }`}
               >
                 {item.label}
@@ -53,7 +56,7 @@ export function SiteHeader() {
           })}
           <Link
             href="/series/nfhs"
-            className="ml-2 rounded-md bg-obsidian-purple px-3 py-1.5 text-sm font-medium text-[#F3E4C9] transition hover:bg-obsidian-purple-bright hover:text-[#0A2947]"
+            className="border border-[#F3E4C9]/25 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F3E4C9] transition-all duration-400 hover:border-[#F3E4C9] hover:bg-[#F3E4C9] hover:text-[#0A2947]"
           >
             NFHS
           </Link>
@@ -61,7 +64,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="inline-flex rounded-md border border-obsidian-border p-2 text-obsidian-text md:hidden"
+          className="inline-flex border border-obsidian-border p-2 text-obsidian-text md:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
         >
@@ -70,14 +73,14 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="border-t border-obsidian-border bg-obsidian-bg px-4 py-3 md:hidden">
+        <div className="border-t border-obsidian-border bg-[#0A2947] px-5 py-4 md:hidden">
           <nav className="flex flex-col gap-1" aria-label="Mobile">
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2 text-sm text-obsidian-text hover:bg-white/5"
+                className="py-2.5 text-xs font-medium uppercase tracking-[0.16em] text-[#D3D4C0]"
               >
                 {item.label}
               </Link>

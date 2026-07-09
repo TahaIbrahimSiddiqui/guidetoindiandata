@@ -63,41 +63,64 @@ export function ObsidianGraphFull() {
       const cx = w / 2;
       const cy = h / 2;
       // Themes near screen edge — full viewport use
-      const themeRing = Math.min(w, h) * 0.42;
+      const themeRing = Math.min(w, h) * 0.4;
 
       const themes = graph.nodes.filter((n) => n.kind === "theme");
       const sources = graph.nodes.filter((n) => n.kind === "source");
 
       const nodes: SimNode[] = [];
+      const themePos = new Map<string, { x: number; y: number; angle: number }>();
+
       themes.forEach((n, i) => {
         const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
+        const x = cx + Math.cos(angle) * themeRing;
+        const y = cy + Math.sin(angle) * themeRing;
+        themePos.set(n.id, { x, y, angle });
         nodes.push({
           ...n,
-          x: cx + Math.cos(angle) * themeRing,
-          y: cy + Math.sin(angle) * themeRing,
+          x,
+          y,
           vx: 0,
           vy: 0,
           r: 14,
         });
       });
 
-      // Sources scattered across full screen (not all center-clustered)
-      sources.forEach((n, i) => {
-        const col = i % 8;
-        const row = Math.floor(i / 8);
-        const maxRow = Math.ceil(sources.length / 8) || 1;
-        const x =
-          w * (0.12 + (col / 7) * 0.76) + (Math.random() - 0.5) * 40;
-        const y =
-          h * (0.14 + (row / Math.max(maxRow - 1, 1)) * 0.72) +
-          (Math.random() - 0.5) * 36;
-        nodes.push({
-          ...n,
-          x: Math.min(w - 24, Math.max(24, x)),
-          y: Math.min(h - 48, Math.max(56, y)),
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          r: 4,
+      // Place each source near its *primary* theme (first themeId)
+      // so NFHS sits by Health, not in the center cluster.
+      const byPrimary = new Map<string, GraphNodeDef[]>();
+      sources.forEach((n) => {
+        const primary = n.themeIds[0] ?? "data-catalogs";
+        const key = `t:${primary}`;
+        const list = byPrimary.get(key) ?? [];
+        list.push(n);
+        byPrimary.set(key, list);
+      });
+
+      byPrimary.forEach((list, themeKey) => {
+        const anchor = themePos.get(themeKey);
+        const baseAngle = anchor?.angle ?? 0;
+        const ax = anchor?.x ?? cx;
+        const ay = anchor?.y ?? cy;
+
+        list.forEach((n, j) => {
+          // Fan around the primary theme, slightly inward toward center
+          const spread =
+            list.length === 1
+              ? 0
+              : ((j / (list.length - 1)) - 0.5) * Math.min(1.1, 0.12 * list.length + 0.35);
+          const dist = 52 + (j % 4) * 18 + Math.random() * 10;
+          const a = baseAngle + Math.PI + spread; // sit inward from outer ring
+          const x = ax + Math.cos(a) * dist * 0.35 + Math.cos(baseAngle + spread) * dist * 0.55;
+          const y = ay + Math.sin(a) * dist * 0.35 + Math.sin(baseAngle + spread) * dist * 0.55;
+          nodes.push({
+            ...n,
+            x: Math.min(w - 20, Math.max(20, x)),
+            y: Math.min(h - 40, Math.max(48, y)),
+            vx: 0,
+            vy: 0,
+            r: 5,
+          });
         });
       });
 
@@ -199,47 +222,62 @@ export function ObsidianGraphFull() {
           }
         }
 
-        // Springs: theme–source pull lightly; no strong center gravity
+        // Strong pull only to *primary* theme (themeIds[0]) so sources stay near it
+        nodes.forEach((n) => {
+          if (n.kind !== "source") return;
+          const primary = n.themeIds[0];
+          if (!primary) return;
+          const theme = byId.get(`t:${primary}`);
+          if (!theme) return;
+          const dx = theme.x - n.x;
+          const dy = theme.y - n.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          const target = 70;
+          const f = ((dist - target) / dist) * 0.012;
+          n.vx += dx * f;
+          n.vy += dy * f;
+        });
+
+        // Weak links to secondary themes only (keeps multi-link without centering)
         edges.forEach((e) => {
-          if (e.kind === "theme-ring") return; // don't collapse via ring
+          if (e.kind !== "theme-source") return;
           const a = byId.get(e.a);
           const b = byId.get(e.b);
           if (!a || !b) return;
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
+          const theme = a.kind === "theme" ? a : b;
+          const source = a.kind === "source" ? a : b;
+          if (theme.kind !== "theme" || source.kind !== "source") return;
+          const primary = source.themeIds[0];
+          if (primary && theme.themeId === primary) return; // already strong-pull
+          const dx = theme.x - source.x;
+          const dy = theme.y - source.y;
           const dist = Math.hypot(dx, dy) || 1;
-          const target = e.kind === "theme-source" ? 160 : 90;
-          const strength = e.kind === "theme-source" ? 0.0012 : 0.002;
-          const f = ((dist - target) / dist) * strength;
-          a.vx += dx * f;
-          a.vy += dy * f;
-          b.vx -= dx * f;
-          b.vy -= dy * f;
+          const f = ((dist - 140) / dist) * 0.0015;
+          source.vx += dx * f;
+          source.vy += dy * f;
         });
 
-        // Themes gently anchored on outer ring (full screen)
+        // Themes gently anchored on outer ring
         const cx = w / 2;
         const cy = h / 2;
-        const themeRing = Math.min(w, h) * 0.42;
+        const themeRing = Math.min(w, h) * 0.4;
         const themes = nodes.filter((n) => n.kind === "theme");
         themes.forEach((n, i) => {
           const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
           const tx = cx + Math.cos(angle) * themeRing;
           const ty = cy + Math.sin(angle) * themeRing;
-          n.vx += (tx - n.x) * 0.018;
-          n.vy += (ty - n.y) * 0.018;
+          n.vx += (tx - n.x) * 0.02;
+          n.vy += (ty - n.y) * 0.02;
         });
 
-        // Very mild pull so sources don't leave the viewport — NOT to center
+        // Keep nodes on screen — no center gravity
         nodes.forEach((n) => {
-          if (n.kind === "source") {
-            if (n.x < w * 0.08) n.vx += 0.15;
-            if (n.x > w * 0.92) n.vx -= 0.15;
-            if (n.y < h * 0.12) n.vy += 0.15;
-            if (n.y > h * 0.9) n.vy -= 0.15;
-          }
-          n.vx *= 0.88;
-          n.vy *= 0.88;
+          if (n.x < 16) n.vx += 0.2;
+          if (n.x > w - 16) n.vx -= 0.2;
+          if (n.y < 48) n.vy += 0.2;
+          if (n.y > h - 36) n.vy -= 0.2;
+          n.vx *= 0.86;
+          n.vy *= 0.86;
           n.x += n.vx;
           n.y += n.vy;
           n.x = Math.max(n.r + 12, Math.min(w - n.r - 12, n.x));
@@ -251,32 +289,34 @@ export function ObsidianGraphFull() {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, w, h);
 
-      // Edges: very faint by default; only focus links brighten
+      // Edges: primary theme spokes only (not ring); no fading of datasets
       edges.forEach((e) => {
         const a = byId.get(e.a);
         const b = byId.get(e.b);
         if (!a || !b) return;
-
-        // Skip ring + pair edges when unfocused (declutter)
-        if (!hasFocus && e.kind !== "theme-source") return;
         if (e.kind === "theme-ring") return;
 
-        let drawLit = false;
-        if (!hasFocus) {
-          // Default: ultra-faint theme→source spokes only
-          ctx.globalAlpha = 0.06;
-        } else if (e.kind === "theme-source") {
-          drawLit = focus.has(a.id) && focus.has(b.id);
-          if (!drawLit) return;
-          ctx.globalAlpha = 0.45;
+        // Only draw primary theme→source edges by default (less clutter)
+        if (e.kind === "theme-source") {
+          const theme = a.kind === "theme" ? a : b;
+          const source = a.kind === "source" ? a : b;
+          if (theme.kind !== "theme" || source.kind !== "source") return;
+          const isPrimary =
+            source.themeIds[0] && theme.themeId === source.themeIds[0];
+          if (!isPrimary && !hasFocus) return;
+          if (hasFocus && !(focus.has(a.id) && focus.has(b.id))) return;
+          ctx.globalAlpha = hasFocus ? 0.5 : 0.2;
         } else if (e.kind === "source-source") {
           const sel = selectedRef.current;
           const selNode = sel ? byId.get(sel) : null;
-          drawLit =
-            selNode?.kind === "source" &&
-            focus.has(a.id) &&
-            focus.has(b.id);
-          if (!drawLit) return;
+          if (
+            !(
+              selNode?.kind === "source" &&
+              focus.has(a.id) &&
+              focus.has(b.id)
+            )
+          )
+            return;
           ctx.globalAlpha = 0.35;
         } else {
           return;
@@ -285,71 +325,51 @@ export function ObsidianGraphFull() {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = drawLit
-          ? "rgba(220, 220, 220, 0.55)"
-          : "rgba(180, 180, 180, 0.35)";
-        ctx.lineWidth = drawLit ? 1.2 : 0.5;
+        ctx.strokeStyle = "rgba(200, 200, 200, 0.55)";
+        ctx.lineWidth = hasFocus ? 1.2 : 0.6;
         ctx.stroke();
         ctx.globalAlpha = 1;
       });
 
-      const ordered = [...nodes].sort((a, b) => {
-        const af = !hasFocus || focus.has(a.id) ? 1 : 0;
-        const bf = !hasFocus || focus.has(b.id) ? 1 : 0;
-        return af - bf;
-      });
+      // Draw all nodes fully visible — no fade
+      const ordered = [...nodes].sort((a, b) =>
+        a.kind === "theme" ? 1 : b.kind === "theme" ? -1 : 0
+      );
 
       ordered.forEach((n) => {
-        const lit = !hasFocus || focus.has(n.id);
         const isHover = hover === n.id;
         const isSel = selectedRef.current === n.id;
         const isSource = n.kind === "source";
+        const inFocus = !hasFocus || focus.has(n.id);
 
-        // Datasets: light grey, low opacity; themes stay readable
-        if (isSource) {
-          ctx.globalAlpha = lit
-            ? isHover || isSel
-              ? 0.55
-              : hasFocus
-                ? 0.4
-                : 0.18
-            : 0.05;
-        } else {
-          ctx.globalAlpha = lit ? 1 : 0.15;
-        }
-
+        // No fade: full opacity for all nodes; focus only thickens/highlights
+        ctx.globalAlpha = 1;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r + (isHover || isSel ? 2 : 0), 0, Math.PI * 2);
         ctx.fillStyle = isSource ? "#c8c8c8" : n.color;
         ctx.shadowColor =
-          lit && n.kind === "theme" && (isSel || isHover)
-            ? n.color
-            : "transparent";
+          (isSel || isHover) && n.kind === "theme" ? n.color : "transparent";
         ctx.shadowBlur = isSel && n.kind === "theme" ? 16 : 0;
         ctx.fill();
         ctx.shadowBlur = 0;
         if (n.kind === "theme") {
-          ctx.strokeStyle = lit
-            ? "rgba(200, 200, 200, 0.35)"
-            : "rgba(120, 120, 120, 0.15)";
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = inFocus
+            ? "rgba(230, 230, 230, 0.5)"
+            : "rgba(160, 160, 160, 0.35)";
+          ctx.lineWidth = inFocus && hasFocus ? 2 : 1;
           ctx.stroke();
         }
 
-        // Labels: themes always; sources only when focused or hovered
+        // Theme labels always; source labels on hover or when theme focused
         const showLabel =
           n.kind === "theme" ||
-          (isSource && lit && (isHover || isSel || hasFocus));
+          (isSource && (isHover || isSel || (hasFocus && inFocus)));
         if (showLabel) {
           ctx.font =
             n.kind === "theme"
               ? "600 11px var(--font-body), system-ui, sans-serif"
               : "500 9px var(--font-body), system-ui, sans-serif";
-          ctx.fillStyle = isSource
-            ? "rgba(200, 200, 200, 0.75)"
-            : lit
-              ? "#e8e8e8"
-              : "rgba(120, 120, 120, 0.5)";
+          ctx.fillStyle = isSource ? "#d0d0d0" : "#eaeaea";
           ctx.textAlign = "center";
           const label =
             n.kind === "theme" && n.label.length > 14
@@ -357,7 +377,6 @@ export function ObsidianGraphFull() {
               : n.label;
           ctx.fillText(label, n.x, n.y + n.r + 12);
         }
-        ctx.globalAlpha = 1;
       });
 
       if (!reduced) state.raf = requestAnimationFrame(draw);

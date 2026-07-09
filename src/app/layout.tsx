@@ -35,7 +35,7 @@ export default function RootLayout({
       lang="en"
       className={`${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-slate-950 text-slate-100">
+      <body className="flex min-h-full flex-col bg-obsidian-bg text-obsidian-text">
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

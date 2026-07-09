@@ -12,6 +12,7 @@ import { RelatedDatasets } from "@/components/RelatedDatasets";
 import { InContentAd } from "@/components/ads/ContentWithAds";
 import { getCluster } from "@/data/clusters";
 import { datasets, getDatasetBySlug } from "@/data/datasets";
+import { getWaveForDataset } from "@/data/series";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -36,33 +37,57 @@ export default async function DatasetPage({ params }: Props) {
   if (!dataset) notFound();
 
   const cluster = getCluster(dataset.cluster);
+  const seriesMeta = getWaveForDataset(dataset.slug);
 
   return (
     <article>
-      <div className="mb-2 flex flex-wrap items-center gap-2 text-sm text-slate-400">
-        <Link href="/explore" className="hover:text-cyan-300">
+      <div className="mb-2 flex flex-wrap items-center gap-2 text-sm text-obsidian-muted">
+        <Link href="/explore" className="hover:text-obsidian-purple-bright">
           Explore
         </Link>
         <span aria-hidden>/</span>
-        {cluster && (
+        {seriesMeta ? (
           <>
             <Link
-              href={`/explore?cluster=${cluster.id}`}
-              className="hover:text-cyan-300"
+              href={`/series/${seriesMeta.series.slug}`}
+              className="hover:text-obsidian-purple-bright"
             >
-              {cluster.shortName}
+              {seriesMeta.series.shortTitle}
             </Link>
             <span aria-hidden>/</span>
+            <span className="font-mono text-obsidian-purple-bright">
+              {seriesMeta.wave.yearLabel}
+            </span>
           </>
+        ) : (
+          cluster && (
+            <>
+              <Link
+                href={`/explore?cluster=${cluster.id}`}
+                className="hover:text-obsidian-purple-bright"
+              >
+                {cluster.shortName}
+              </Link>
+              <span aria-hidden>/</span>
+              <span className="text-obsidian-text">{dataset.shortTitle}</span>
+            </>
+          )
         )}
-        <span className="text-slate-300">{dataset.shortTitle}</span>
       </div>
 
-      <header className="border-b border-white/10 pb-8">
-        <p className="font-mono text-xs uppercase tracking-wider text-cyan-300/90">
+      <header className="border-b border-obsidian-border pb-8">
+        {seriesMeta && (
+          <Link
+            href={`/series/${seriesMeta.series.slug}`}
+            className="mb-3 inline-flex rounded-md border border-obsidian-purple/30 bg-obsidian-purple/10 px-2.5 py-1 font-mono text-xs text-obsidian-purple-bright hover:border-obsidian-purple"
+          >
+            Part of [[{seriesMeta.series.shortTitle}]] · {seriesMeta.wave.yearLabel}
+          </Link>
+        )}
+        <p className="font-mono text-xs uppercase tracking-wider text-obsidian-muted">
           {dataset.abbreviations.join(" · ")}
         </p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-obsidian-text sm:text-4xl">
           {dataset.title}
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-2">

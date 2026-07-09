@@ -1,186 +1,172 @@
 import Link from "next/link";
+import { ArrowRight, BookOpen, GitBranch, Network } from "lucide-react";
+import { ObsidianGraphHero } from "@/components/ObsidianGraphHero";
 import {
-  ArrowRight,
-  BadgeCheck,
-  Filter,
-  Network,
-  ShieldAlert,
-} from "lucide-react";
-import { NeuralNetworkHero } from "@/components/NeuralNetworkHero";
-import { DatasetCard } from "@/components/DatasetCard";
-import { AccessBadge } from "@/components/AccessBadge";
+  FAMILY_LABELS,
+  getPinnedSeries,
+  seriesList,
+} from "@/data/series";
+import { datasets } from "@/data/datasets";
 import { clusters } from "@/data/clusters";
-import { datasets, getFeaturedDatasets } from "@/data/datasets";
-import type { AccessType } from "@/types/dataset";
-
-const accessTypes: AccessType[] = [
-  "open-download",
-  "public-dashboard",
-  "registration",
-  "data-use-agreement",
-  "request-only",
-  "paid-subscription",
-];
 
 export default function LandingPage() {
-  const featured = getFeaturedDatasets().slice(0, 6);
-  const categoryCount = new Set(datasets.flatMap((d) => d.categories)).size;
+  const pinned = getPinnedSeries();
+  const nssCount = seriesList.filter((s) => s.family === "nss").length;
 
   return (
-    <div className="bg-data-grid">
-      <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pt-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan-300/90">
-            National data discovery
+    <div className="bg-vault">
+      <section className="mx-auto max-w-6xl px-4 pb-12 pt-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-obsidian-purple-bright">
+            Vault · Indian data sources
           </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-obsidian-text sm:text-5xl">
             Indian Data{" "}
-            <span className="bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">
-              Guide
-            </span>
+            <span className="text-obsidian-purple-bright">Guide</span>
           </h1>
-          <p className="mt-5 text-base leading-relaxed text-slate-300 sm:text-lg">
-            India&apos;s data ecosystem is rich but fragmented across surveys,
-            dashboards, and subscription products. This guide treats datasets as
-            discoverable records—with access friction, geography, and related
-            sources made explicit.
+          <p className="mt-4 text-base leading-relaxed text-obsidian-muted sm:text-lg">
+            An Obsidian-style map of surveys and portals. Open a{" "}
+            <strong className="font-medium text-obsidian-text">series</strong>{" "}
+            (NFHS, NSS PLFS, HCES…) to see every year available—and when the
+            design was revised.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/explore"
-              className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+              href="/series"
+              className="inline-flex items-center gap-2 rounded-lg bg-obsidian-purple px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-obsidian-purple-bright hover:text-obsidian-bg"
             >
-              Explore datasets
+              Browse series
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
             <Link
-              href="/clusters"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:border-white/25 hover:bg-white/10"
+              href="/series/nfhs"
+              className="inline-flex items-center gap-2 rounded-lg border border-obsidian-border bg-obsidian-panel px-5 py-2.5 text-sm text-obsidian-text transition hover:border-obsidian-purple/50"
             >
-              How the ecosystem fits
+              Open [[NFHS]]
+            </Link>
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-2 rounded-lg border border-transparent px-3 py-2.5 text-sm text-obsidian-muted hover:text-obsidian-text"
+            >
+              All waves
             </Link>
           </div>
         </div>
 
         <div className="mt-12">
-          <NeuralNetworkHero />
+          <ObsidianGraphHero />
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-slate-950/80">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4 sm:px-6 lg:px-8">
+      <section className="border-y border-obsidian-border bg-obsidian-panel/50">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 sm:grid-cols-4 sm:px-6 lg:px-8">
           {[
-            { label: "Datasets catalogued", value: String(datasets.length) },
-            { label: "Broad categories", value: `${categoryCount}+` },
-            { label: "Ecosystem clusters", value: String(clusters.length) },
-            { label: "Access regimes", value: String(accessTypes.length) },
+            { label: "Series hubs", value: String(seriesList.length) },
+            { label: "NSS products", value: String(nssCount) },
+            { label: "Wave records", value: String(datasets.length) },
+            { label: "Clusters", value: String(clusters.length) },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="text-3xl font-semibold text-white">{stat.value}</p>
-              <p className="mt-1 text-sm text-slate-400">{stat.label}</p>
+              <p className="text-2xl font-semibold text-obsidian-text">
+                {stat.value}
+              </p>
+              <p className="mt-1 text-xs text-obsidian-muted">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-semibold text-white">Six data clusters</h2>
-            <p className="mt-2 max-w-2xl text-slate-400">
-              A practical map of how health, education, labor, agriculture,
-              governance, and climate/infra systems interact.
-            </p>
-          </div>
-          <Link
-            href="/clusters"
-            className="hidden text-sm text-cyan-300 hover:text-cyan-200 sm:inline"
-          >
-            View all
-          </Link>
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2">
+          <BookOpen className="h-5 w-5 text-obsidian-purple-bright" />
+          <h2 className="text-xl font-semibold text-obsidian-text">
+            Pinned notes
+          </h2>
         </div>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {clusters.map((c) => (
+        <p className="mt-2 text-sm text-obsidian-muted">
+          Start here—each note is a multi-year series with a year timeline.
+        </p>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          {pinned.map((s) => (
             <Link
-              key={c.id}
-              href={`/explore?cluster=${c.id}`}
-              className="rounded-2xl border border-white/10 bg-slate-900/50 p-5 transition hover:border-white/20"
+              key={s.slug}
+              href={`/series/${s.slug}`}
+              className="note-card group p-5 transition hover:border-obsidian-purple/50"
             >
-              <div className="flex items-center gap-2">
-                <span
-                  className="h-3 w-3 rounded-full"
-                  style={{ backgroundColor: c.color }}
-                  aria-hidden
-                />
-                <h3 className="font-semibold text-white">{c.name}</h3>
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-obsidian-purple-bright">
+                  {FAMILY_LABELS[s.family]}
+                </span>
+                <span className="font-mono text-xs text-obsidian-muted">
+                  {s.waves.length} yrs
+                </span>
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                {c.description}
+              <h3 className="mt-2 text-lg font-semibold text-obsidian-text group-hover:text-obsidian-purple-bright">
+                [[{s.shortTitle}]]
+              </h3>
+              <p className="mt-2 line-clamp-2 text-sm text-obsidian-muted">
+                {s.description}
+              </p>
+              <p className="mt-3 font-mono text-[11px] text-obsidian-muted">
+                {s.waves.map((w) => w.yearLabel).join(" → ")}
               </p>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2">
-          <BadgeCheck className="h-5 w-5 text-emerald-400" aria-hidden />
-          <h2 className="text-2xl font-semibold text-white">
-            Good starting datasets
-          </h2>
-        </div>
-        <p className="mt-2 max-w-2xl text-slate-400">
-          High-leverage sources for newcomers—flagged for common research and
-          policy questions.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((d) => (
-            <DatasetCard key={d.slug} dataset={d} />
-          ))}
-        </div>
-      </section>
-
-      <section className="border-t border-white/10 bg-slate-900/30">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div>
-              <div className="flex items-center gap-2 text-cyan-300">
-                <Filter className="h-5 w-5" aria-hidden />
-                <h2 className="text-2xl font-semibold text-white">
-                  Metadata that actually helps
-                </h2>
-              </div>
-              <p className="mt-3 text-slate-400">
-                Filter by category, geography, access type, format, and update
-                frequency. Each record includes &quot;best for,&quot; limitations,
-                and pairs-well-with links.
-              </p>
-              <ul className="mt-6 space-y-3 text-sm text-slate-300">
-                <li className="flex gap-2">
-                  <Network className="mt-0.5 h-4 w-4 shrink-0 text-cyan-400" />
-                  Related datasets surface survey + administrative combinations
-                </li>
-                <li className="flex gap-2">
-                  <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-                  Access friction is shown honestly—open vs registration vs paid
-                </li>
-              </ul>
+      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="note-card p-6">
+            <div className="flex items-center gap-2 text-obsidian-purple-bright">
+              <Network className="h-4 w-4" />
+              <h2 className="text-sm font-semibold uppercase tracking-wide">
+                How to use
+              </h2>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-6">
-              <p className="text-sm font-medium text-white">Access badges</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {accessTypes.map((t) => (
-                  <AccessBadge key={t} accessType={t} />
+            <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-obsidian-muted">
+              <li>
+                Open a series (e.g.{" "}
+                <Link
+                  href="/series/nfhs"
+                  className="text-obsidian-purple-bright hover:underline"
+                >
+                  NFHS
+                </Link>
+                ) for every year available.
+              </li>
+              <li>
+                Read{" "}
+                <strong className="text-obsidian-text">design revised</strong>{" "}
+                notes when methodology or geography changed.
+              </li>
+              <li>Open a year to get access badges, variables, and limitations.</li>
+            </ol>
+          </div>
+          <div className="note-card p-6">
+            <div className="flex items-center gap-2 text-obsidian-purple-bright">
+              <GitBranch className="h-4 w-4" />
+              <h2 className="text-sm font-semibold uppercase tracking-wide">
+                NSS products
+              </h2>
+            </div>
+            <p className="mt-3 text-sm text-obsidian-muted">
+              Each NSO/NSS survey has its own page with years—not one flat list:
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {seriesList
+                .filter((s) => s.family === "nss")
+                .map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/series/${s.slug}`}
+                      className="inline-flex rounded-md border border-obsidian-border px-2.5 py-1 font-mono text-xs text-obsidian-purple-bright hover:border-obsidian-purple"
+                    >
+                      {s.shortTitle}
+                    </Link>
+                  </li>
                 ))}
-              </div>
-              <Link
-                href="/explore"
-                className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-cyan-300 hover:text-cyan-200"
-              >
-                Open the catalog
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
+            </ul>
           </div>
         </div>
       </section>

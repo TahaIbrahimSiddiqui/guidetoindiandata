@@ -42,6 +42,39 @@ export type Dataset = {
   exampleUses: string;
   flags?: DatasetFlag[];
   cluster: ClusterId;
+  /** Optional; usually derived from series.waves */
+  seriesSlug?: string;
+  waveYearLabel?: string;
+};
+
+export type SeriesFamily = "nfhs" | "nss" | "dlhs" | "other";
+
+export type DesignRevision = {
+  yearLabel: string;
+  summary: string;
+};
+
+export type SeriesWave = {
+  yearLabel: string;
+  yearStart: number;
+  yearEnd?: number;
+  datasetSlug: string;
+  isLatest?: boolean;
+  designNote?: string;
+};
+
+export type DataSeries = {
+  slug: string;
+  title: string;
+  shortTitle: string;
+  family: SeriesFamily;
+  description: string;
+  host: string;
+  cluster: ClusterId;
+  designRevisions: DesignRevision[];
+  waves: SeriesWave[];
+  pairsWithSeries?: string[];
+  pinned?: boolean;
 };
 
 export type Cluster = {

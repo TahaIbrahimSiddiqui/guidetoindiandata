@@ -9,7 +9,7 @@ export default function CatalogLayout({
   return (
     <>
       <AdScript />
-      <div className="bg-data-grid min-h-[70vh]">
+      <div className="bg-vault min-h-[70vh]">
         <ContentWithAds>{children}</ContentWithAds>
       </div>
     </>

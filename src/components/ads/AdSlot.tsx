@@ -1,0 +1,71 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import {
+  ADS_ENABLED,
+  ADSENSE_CLIENT,
+  AD_FORMAT_STYLES,
+  type AdFormat,
+} from "@/lib/ads";
+
+type AdSlotProps = {
+  slotId: string;
+  format?: AdFormat;
+  className?: string;
+};
+
+export function AdSlot({
+  slotId,
+  format = "leaderboard",
+  className = "",
+}: AdSlotProps) {
+  const ref = useRef<HTMLModElement>(null);
+  const { minHeight, label } = AD_FORMAT_STYLES[format];
+  const canRenderNetwork = ADS_ENABLED && Boolean(ADSENSE_CLIENT);
+
+  useEffect(() => {
+    if (!canRenderNetwork || !ref.current) return;
+    try {
+      // @ts-expect-error adsbygoogle global
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch {
+      // Ignore when network not ready
+    }
+  }, [canRenderNetwork, slotId]);
+
+  if (canRenderNetwork) {
+    return (
+      <div
+        className={`ad-slot overflow-hidden rounded-xl border border-white/10 bg-slate-900/40 ${className}`}
+        style={{ minHeight }}
+        data-ad-slot={slotId}
+      >
+        <ins
+          ref={ref}
+          className="adsbygoogle block"
+          style={{ display: "block", minHeight }}
+          data-ad-client={ADSENSE_CLIENT}
+          data-ad-slot={slotId}
+          data-ad-format={format === "fluid" ? "fluid" : "auto"}
+          data-full-width-responsive="true"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`ad-slot flex flex-col items-center justify-center rounded-xl border border-dashed border-white/15 bg-slate-900/30 ${className}`}
+      style={{ minHeight }}
+      data-ad-slot={slotId}
+      aria-label="Advertisement placeholder"
+    >
+      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        Advertisement
+      </span>
+      <span className="mt-1 text-xs text-slate-600">
+        {label} · slot `{slotId}`
+      </span>
+    </div>
+  );
+}

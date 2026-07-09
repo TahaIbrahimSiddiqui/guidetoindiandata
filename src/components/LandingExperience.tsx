@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
 
 /**
- * Always show the black intro on load/refresh.
+ * Always show the navy intro on load/refresh.
  * Graph only after click (no sessionStorage skip).
  */
 export function LandingExperience() {
@@ -46,7 +46,7 @@ export function LandingExperience() {
   }, [enter, entered]);
 
   return (
-    <div className="fixed inset-0 bg-black">
+    <div className="fixed inset-0 bg-[#0A2947]">
       {(entered || exiting) && <ObsidianGraphFull />}
 
       {!entered && (
@@ -57,28 +57,28 @@ export function LandingExperience() {
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") enter();
           }}
-          className={`absolute inset-0 z-20 flex cursor-pointer flex-col items-center justify-center bg-black transition-transform duration-700 ease-in-out ${
+          className={`absolute inset-0 z-20 flex cursor-pointer flex-col items-center justify-center bg-[#0A2947] transition-transform duration-700 ease-in-out ${
             exiting ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
           }`}
           style={{ transitionProperty: "transform, opacity" }}
           aria-label="Click to enter the graph"
         >
           <div
-            className={`mb-8 h-3 w-3 rounded-full bg-violet-400 shadow-[0_0_24px_rgba(167,139,250,0.9)] ${
+            className={`mb-8 h-3 w-3 rounded-full bg-[#8B5E3C] shadow-[0_0_28px_rgba(243,228,201,0.45)] ${
               reduced ? "" : "animate-pulse"
             }`}
             aria-hidden
           />
-          <h1 className="text-center text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h1 className="text-center text-3xl font-semibold tracking-tight text-[#F3E4C9] sm:text-5xl">
             Indian Data Guide
           </h1>
-          <p className="mt-4 max-w-md px-6 text-center text-sm text-neutral-500">
+          <p className="mt-4 max-w-md px-6 text-center text-sm text-[#D3D4C0]">
             A map of India&apos;s surveys, academic archives, and community data
           </p>
-          <p className="mt-10 font-mono text-[11px] uppercase tracking-[0.25em] text-violet-400/90">
+          <p className="mt-10 font-mono text-[11px] uppercase tracking-[0.25em] text-[#C4A574]">
             Click to enter the graph
           </p>
-          <p className="mt-2 text-xs text-neutral-600">or press Enter</p>
+          <p className="mt-2 text-xs text-[#8B9A8C]">or press Enter</p>
         </div>
       )}
     </div>

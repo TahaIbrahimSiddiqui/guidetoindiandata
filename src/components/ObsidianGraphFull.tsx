@@ -247,7 +247,13 @@ export function ObsidianGraphFull() {
         });
       }
 
-      ctx.fillStyle = "#000000";
+      // Brand navy canvas
+      ctx.fillStyle = "#0A2947";
+      ctx.fillRect(0, 0, w, h);
+      const g = ctx.createRadialGradient(w / 2, h / 2, 20, w / 2, h / 2, w * 0.55);
+      g.addColorStop(0, "rgba(243, 228, 201, 0.06)");
+      g.addColorStop(1, "rgba(10, 41, 71, 0)");
+      ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
 
       // Edges: when theme focused, only theme-source to that theme; never light ring to other themes
@@ -259,32 +265,29 @@ export function ObsidianGraphFull() {
         let drawLit = false;
         if (!hasFocus) {
           drawLit = e.kind !== "theme-ring";
-          ctx.globalAlpha = e.kind === "theme-ring" ? 0.08 : 0.22;
+          ctx.globalAlpha = e.kind === "theme-ring" ? 0.1 : 0.28;
         } else if (e.kind === "theme-source") {
-          // Only if BOTH ends in focus (theme + its sources)
           drawLit = focus.has(a.id) && focus.has(b.id);
-          ctx.globalAlpha = drawLit ? 0.65 : 0.04;
+          ctx.globalAlpha = drawLit ? 0.75 : 0.05;
         } else if (e.kind === "source-source") {
-          // Only when a source is selected (both sources focused)
           const sel = selectedRef.current;
           const selNode = sel ? byId.get(sel) : null;
           drawLit =
             selNode?.kind === "source" &&
             focus.has(a.id) &&
             focus.has(b.id);
-          ctx.globalAlpha = drawLit ? 0.4 : 0.03;
+          ctx.globalAlpha = drawLit ? 0.45 : 0.04;
         } else {
-          // theme-ring always dim when focusing
-          ctx.globalAlpha = 0.04;
+          ctx.globalAlpha = 0.05;
         }
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.strokeStyle = drawLit
-          ? "rgba(167, 139, 250, 0.7)"
-          : "rgba(80, 80, 80, 0.5)";
-        ctx.lineWidth = drawLit ? 1.4 : 0.7;
+          ? "rgba(243, 228, 201, 0.75)"
+          : "rgba(211, 212, 192, 0.25)";
+        ctx.lineWidth = drawLit ? 1.5 : 0.7;
         ctx.stroke();
         ctx.globalAlpha = 1;
       });
@@ -307,7 +310,9 @@ export function ObsidianGraphFull() {
         ctx.shadowBlur = isSel ? 20 : lit && n.kind === "theme" ? 10 : 0;
         ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = "rgba(255,255,255,0.25)";
+        ctx.strokeStyle = lit
+          ? "rgba(243, 228, 201, 0.45)"
+          : "rgba(211, 212, 192, 0.15)";
         ctx.lineWidth = 1;
         ctx.stroke();
 
@@ -316,7 +321,7 @@ export function ObsidianGraphFull() {
             n.kind === "theme"
               ? "600 11px var(--font-plex-sans), system-ui, sans-serif"
               : "500 9px var(--font-plex-sans), system-ui, sans-serif";
-          ctx.fillStyle = lit ? "#f5f5f5" : "#525252";
+          ctx.fillStyle = lit ? "#F3E4C9" : "#6B7A88";
           ctx.textAlign = "center";
           const label =
             n.kind === "theme" && n.label.length > 14
@@ -386,7 +391,7 @@ export function ObsidianGraphFull() {
   };
 
   return (
-    <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-hidden bg-black">
+    <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-hidden bg-[#0A2947]">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -404,8 +409,8 @@ export function ObsidianGraphFull() {
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-3 sm:p-5">
         <div className="pointer-events-auto max-w-md">
-          <p className="text-sm font-semibold text-white">Indian Data Guide</p>
-          <p className="mt-0.5 text-xs text-neutral-500">
+          <p className="text-sm font-semibold text-[#F3E4C9]">Indian Data Guide</p>
+          <p className="mt-0.5 text-xs text-[#D3D4C0]/80">
             {selectedNode
               ? selectedNode.kind === "theme"
                 ? `${selectedNode.label}: ${focusedSources} linked sources · other themes stay dim`
@@ -415,7 +420,7 @@ export function ObsidianGraphFull() {
           {selectedNode?.kind === "source" && selectedNode.href && (
             <button
               type="button"
-              className="mt-2 rounded-md border border-violet-400/40 bg-violet-500/20 px-3 py-1.5 text-xs text-violet-100 hover:bg-violet-500/30"
+              className="mt-2 rounded-md border border-[#8B5E3C]/50 bg-[#8B5E3C]/25 px-3 py-1.5 text-xs text-[#F3E4C9] hover:bg-[#8B5E3C]/40"
               onClick={() => router.push(selectedNode.href!)}
             >
               Open {selectedNode.label}
@@ -432,7 +437,7 @@ export function ObsidianGraphFull() {
             <Link
               key={l.href}
               href={l.href}
-              className="rounded-md border border-white/10 bg-black/50 px-2.5 py-1.5 text-neutral-300 backdrop-blur hover:border-violet-400/40 hover:text-violet-200"
+              className="rounded-md border border-[#D3D4C0]/25 bg-[#0A2947]/70 px-2.5 py-1.5 text-[#D3D4C0] backdrop-blur hover:border-[#8B5E3C]/50 hover:text-[#F3E4C9]"
             >
               {l.label}
             </Link>
@@ -440,7 +445,7 @@ export function ObsidianGraphFull() {
         </nav>
       </div>
 
-      <p className="pointer-events-none absolute bottom-3 left-0 right-0 z-10 px-4 text-center text-[11px] text-neutral-600">
+      <p className="pointer-events-none absolute bottom-3 left-0 right-0 z-10 px-4 text-center text-[11px] text-[#D3D4C0]/50">
         Esc clears focus · only connected datasets light when a theme is selected
       </p>
     </div>

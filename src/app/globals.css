@@ -1,17 +1,33 @@
 @import "tailwindcss";
 
-/* Obsidian-inspired vault palette */
+/*
+  Brand palette
+  Navy  #0A2947  rgb(10, 41, 71)
+  Cream #F3E4C9  rgb(243, 228, 201)
+  Sage  #D3D4C0  rgb(211, 212, 192)
+  Brown #8B5E3C  rgb(139, 94, 60)
+*/
+
 :root {
-  --background: #0d0d0d;
-  --foreground: #e5e5e5;
-  --obsidian-bg: #0d0d0d;
-  --obsidian-panel: #1e1e1e;
-  --obsidian-border: #333333;
-  --obsidian-muted: #a3a3a3;
-  --obsidian-text: #e5e5e5;
-  --obsidian-purple: #7c3aed;
-  --obsidian-purple-bright: #a78bfa;
-  --obsidian-purple-dim: rgba(124, 58, 237, 0.15);
+  --brand-navy: #0a2947;
+  --brand-cream: #f3e4c9;
+  --brand-sage: #d3d4c0;
+  --brand-brown: #8b5e3c;
+
+  --background: #0a2947;
+  --foreground: #f3e4c9;
+
+  --obsidian-bg: #0a2947;
+  --obsidian-panel: #0f3558;
+  --obsidian-border: #3d5a73;
+  --obsidian-muted: #d3d4c0;
+  --obsidian-text: #f3e4c9;
+  --obsidian-purple: #8b5e3c;
+  --obsidian-purple-bright: #c4a574;
+  --obsidian-purple-dim: rgba(139, 94, 60, 0.2);
+
+  --brand-cream-soft: rgba(243, 228, 201, 0.12);
+  --brand-brown-glow: rgba(139, 94, 60, 0.45);
 }
 
 @theme inline {
@@ -24,6 +40,10 @@
   --color-obsidian-text: var(--obsidian-text);
   --color-obsidian-purple: var(--obsidian-purple);
   --color-obsidian-purple-bright: var(--obsidian-purple-bright);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-sage: var(--brand-sage);
+  --color-brand-brown: var(--brand-brown);
   --font-sans: var(--font-plex-sans);
   --font-mono: var(--font-plex-mono);
 }
@@ -40,20 +60,19 @@ body {
 }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.45);
-  color: #fafafa;
+  background: rgba(139, 94, 60, 0.55);
+  color: #f3e4c9;
 }
 
 .bg-vault {
   background-color: var(--obsidian-bg);
   background-image:
-    radial-gradient(ellipse 70% 40% at 50% -10%, rgba(124, 58, 237, 0.14), transparent),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    radial-gradient(ellipse 70% 40% at 50% -10%, rgba(243, 228, 201, 0.08), transparent),
+    linear-gradient(rgba(211, 212, 192, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(211, 212, 192, 0.04) 1px, transparent 1px);
   background-size: auto, 40px 40px, 40px 40px;
 }
 
-/* note-card look */
 .note-card {
   background: var(--obsidian-panel);
   border: 1px solid var(--obsidian-border);

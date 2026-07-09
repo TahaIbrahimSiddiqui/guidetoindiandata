@@ -110,7 +110,7 @@ export function buildInterlinkedGraph(): {
       kind: "source",
       href: `/series/${s.slug}`,
       themeIds,
-      color: "#c4b5fd",
+      color: "#D3D4C0",
     });
     for (const t of themeIds) {
       edges.push({ a: `t:${t}`, b: id, kind: "theme-source" });
@@ -130,10 +130,10 @@ export function buildInterlinkedGraph(): {
       themeIds,
       color:
         d.sourceKind === "github-community"
-          ? "#94a3b8"
+          ? "#8B9A8C"
           : d.sourceKind === "replication"
-            ? "#d8b4fe"
-            : "#a78bfa",
+            ? "#C4A574"
+            : "#F3E4C9",
     });
     for (const t of themeIds) {
       edges.push({ a: `t:${t}`, b: id, kind: "theme-source" });

@@ -53,7 +53,7 @@ export function SiteHeader() {
           })}
           <Link
             href="/series/nfhs"
-            className="ml-2 rounded-md bg-obsidian-purple px-3 py-1.5 text-sm font-medium text-white transition hover:bg-obsidian-purple-bright hover:text-obsidian-bg"
+            className="ml-2 rounded-md bg-obsidian-purple px-3 py-1.5 text-sm font-medium text-[#F3E4C9] transition hover:bg-obsidian-purple-bright hover:text-[#0A2947]"
           >
             NFHS
           </Link>

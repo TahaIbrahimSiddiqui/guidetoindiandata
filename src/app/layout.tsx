@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-black text-obsidian-text">{children}</body>
+      <body className="min-h-full bg-brand-navy text-obsidian-text">{children}</body>
     </html>
   );
 }

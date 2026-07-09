@@ -2,52 +2,55 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  getGraphChildrenForCluster,
-  getThemeNodes,
+  buildInterlinkedGraph,
+  getFocusSet,
+  type GraphNodeDef,
 } from "@/lib/graphData";
-import type { ClusterId } from "@/types/dataset";
 
-type NetNode = {
-  id: string;
-  label: string;
-  kind: "theme" | "child";
-  clusterId: ClusterId;
-  color: string;
-  href?: string;
+type SimNode = GraphNodeDef & {
   x: number;
   y: number;
   vx: number;
   vy: number;
   r: number;
-  active: boolean;
 };
 
-type NetEdge = { a: string; b: string };
+type SimEdge = { a: string; b: string; kind: string };
 
 const PURPLE = "#a78bfa";
-const PURPLE_DIM = "#7c3aed";
-const GRAY = "#525252";
 
 export function ObsidianGraphFull() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const [activeTheme, setActiveTheme] = useState<ClusterId | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const [reduced, setReduced] = useState(false);
-  const activeRef = useRef<ClusterId | null>(null);
-  activeRef.current = activeTheme;
+  const [lastSourceClick, setLastSourceClick] = useState<{
+    id: string;
+    t: number;
+  } | null>(null);
+
+  const graph = useMemo(() => buildInterlinkedGraph(), []);
+  const selectedRef = useRef<string | null>(null);
+  selectedRef.current = selectedId;
 
   const stateRef = useRef<{
-    nodes: NetNode[];
-    edges: NetEdge[];
-    byId: Map<string, NetNode>;
+    nodes: SimNode[];
+    edges: SimEdge[];
+    byId: Map<string, SimNode>;
     w: number;
     h: number;
     raf: number;
   } | null>(null);
+
+  const focusSet = useMemo(
+    () => getFocusSet(selectedId, graph.nodes, graph.edges),
+    [selectedId, graph]
+  );
+  const focusRef = useRef(focusSet);
+  focusRef.current = focusSet;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -57,89 +60,63 @@ export function ObsidianGraphFull() {
     return () => mq.removeEventListener("change", fn);
   }, []);
 
-  const rebuild = useCallback((w: number, h: number, theme: ClusterId | null) => {
-    const cx = w / 2;
-    const cy = h / 2;
-    const ring = Math.min(w, h) * 0.28;
-    const themes = getThemeNodes();
-    const nodes: NetNode[] = [];
-    const edges: NetEdge[] = [];
-    const byId = new Map<string, NetNode>();
+  const initSim = useCallback(
+    (w: number, h: number) => {
+      const cx = w / 2;
+      const cy = h / 2;
+      const themeRing = Math.min(w, h) * 0.32;
+      const sourceRing = Math.min(w, h) * 0.18;
 
-    themes.forEach((t, i) => {
-      const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
-      const isActive = theme === t.id;
-      const dim = theme !== null && !isActive;
-      const node: NetNode = {
-        id: `t:${t.id}`,
-        label: t.label,
-        kind: "theme",
-        clusterId: t.id,
-        color: dim ? GRAY : isActive ? PURPLE : PURPLE_DIM,
-        x: cx + Math.cos(angle) * ring,
-        y: cy + Math.sin(angle) * ring,
-        vx: 0,
-        vy: 0,
-        r: isActive ? 22 : 18,
-        active: isActive || theme === null,
-      };
-      nodes.push(node);
-      byId.set(node.id, node);
-    });
+      const themes = graph.nodes.filter((n) => n.kind === "theme");
+      const sources = graph.nodes.filter((n) => n.kind === "source");
 
-    for (let i = 0; i < themes.length; i++) {
-      edges.push({
-        a: `t:${themes[i].id}`,
-        b: `t:${themes[(i + 1) % themes.length].id}`,
-      });
-    }
-
-    if (theme) {
-      const children = getGraphChildrenForCluster(theme);
-      const parent = byId.get(`t:${theme}`);
-      const n = children.length || 1;
-      children.forEach((ch, j) => {
-        const angle =
-          ((themes.findIndex((t) => t.id === theme) / themes.length) *
-            Math.PI *
-            2 -
-            Math.PI / 2) +
-          ((j - (n - 1) / 2) * 0.22);
-        const dist = ring + 90 + (j % 4) * 18;
-        const node: NetNode = {
-          id: ch.id,
-          label: ch.label,
-          kind: "child",
-          clusterId: theme,
-          color: PURPLE,
-          href: ch.href,
-          x: (parent?.x ?? cx) + Math.cos(angle) * (dist - ring) * 0.15 + Math.cos(angle) * dist * 0.55,
-          y: (parent?.y ?? cy) + Math.sin(angle) * (dist - ring) * 0.15 + Math.sin(angle) * dist * 0.55,
+      const nodes: SimNode[] = [];
+      themes.forEach((n, i) => {
+        const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
+        nodes.push({
+          ...n,
+          x: cx + Math.cos(angle) * themeRing,
+          y: cy + Math.sin(angle) * themeRing,
           vx: 0,
           vy: 0,
-          r: 7,
-          active: true,
-        };
-        // place around active theme
-        const baseAngle =
-          (themes.findIndex((t) => t.id === theme) / themes.length) * Math.PI * 2 -
-          Math.PI / 2;
-        const spread = ((j / n) * 2 - 1) * Math.min(1.2, 0.15 * n);
-        node.x = cx + Math.cos(baseAngle + spread) * (ring + 100 + (j % 3) * 22);
-        node.y = cy + Math.sin(baseAngle + spread) * (ring + 100 + (j % 3) * 22);
-        nodes.push(node);
-        byId.set(node.id, node);
-        edges.push({ a: `t:${theme}`, b: ch.id });
+          r: 20,
+        });
       });
-    }
+      sources.forEach((n, i) => {
+        const angle = (i / Math.max(sources.length, 1)) * Math.PI * 2;
+        const jitter = 40 + (i % 5) * 12;
+        nodes.push({
+          ...n,
+          x: cx + Math.cos(angle) * (sourceRing + jitter),
+          y: cy + Math.sin(angle) * (sourceRing + jitter),
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          r: 8,
+        });
+      });
 
-    return { nodes, edges, byId, w, h, raf: stateRef.current?.raf ?? 0 };
-  }, []);
+      const byId = new Map(nodes.map((n) => [n.id, n]));
+      const edges: SimEdge[] = graph.edges.map((e) => ({
+        a: e.a,
+        b: e.b,
+        kind: e.kind,
+      }));
+
+      return {
+        nodes,
+        edges,
+        byId,
+        w,
+        h,
+        raf: stateRef.current?.raf ?? 0,
+      };
+    },
+    [graph]
+  );
 
   const resize = useCallback(() => {
-    const wrap = wrapRef.current;
     const canvas = canvasRef.current;
-    if (!wrap || !canvas) return;
+    if (!canvas) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -149,8 +126,24 @@ export function ObsidianGraphFull() {
     canvas.style.height = `${h}px`;
     const ctx = canvas.getContext("2d");
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    stateRef.current = rebuild(w, h, activeRef.current);
-  }, [rebuild]);
+
+    // preserve positions if possible
+    const prev = stateRef.current;
+    const next = initSim(w, h);
+    if (prev) {
+      for (const n of next.nodes) {
+        const p = prev.byId.get(n.id);
+        if (p) {
+          n.x = Math.min(w - 20, Math.max(20, p.x));
+          n.y = Math.min(h - 20, Math.max(20, p.y));
+          n.vx = p.vx;
+          n.vy = p.vy;
+        }
+      }
+      next.byId = new Map(next.nodes.map((n) => [n.id, n]));
+    }
+    stateRef.current = next;
+  }, [initSim]);
 
   useEffect(() => {
     resize();
@@ -159,10 +152,12 @@ export function ObsidianGraphFull() {
   }, [resize]);
 
   useEffect(() => {
-    const st = stateRef.current;
-    if (!st) return;
-    stateRef.current = rebuild(st.w, st.h, activeTheme);
-  }, [activeTheme, rebuild]);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedId(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -175,8 +170,11 @@ export function ObsidianGraphFull() {
       const state = stateRef.current;
       if (!state || !alive) return;
       const { nodes, edges, byId, w, h } = state;
+      const focus = focusRef.current;
+      const hasFocus = focus.size > 0;
 
       if (!reduced) {
+        // repulsion
         for (let i = 0; i < nodes.length; i++) {
           for (let j = i + 1; j < nodes.length; j++) {
             const a = nodes[i];
@@ -184,9 +182,9 @@ export function ObsidianGraphFull() {
             let dx = b.x - a.x;
             let dy = b.y - a.y;
             const dist = Math.hypot(dx, dy) || 1;
-            const minDist = a.r + b.r + 24;
+            const minDist = a.r + b.r + (a.kind === "theme" || b.kind === "theme" ? 36 : 22);
             if (dist < minDist) {
-              const f = ((minDist - dist) / dist) * 0.025;
+              const f = ((minDist - dist) / dist) * 0.04;
               a.vx -= dx * f;
               a.vy -= dy * f;
               b.vx += dx * f;
@@ -194,6 +192,7 @@ export function ObsidianGraphFull() {
             }
           }
         }
+        // springs
         edges.forEach((e) => {
           const a = byId.get(e.a);
           const b = byId.get(e.b);
@@ -201,31 +200,48 @@ export function ObsidianGraphFull() {
           const dx = b.x - a.x;
           const dy = b.y - a.y;
           const dist = Math.hypot(dx, dy) || 1;
-          const target =
-            a.kind === "theme" && b.kind === "theme" ? 140 : 85;
-          const f = ((dist - target) / dist) * 0.0035;
+          let target = 100;
+          if (e.kind === "theme-ring") target = 150;
+          if (e.kind === "theme-source") target = 110;
+          if (e.kind === "source-source") target = 70;
+          const strength = e.kind === "theme-ring" ? 0.002 : 0.006;
+          const f = ((dist - target) / dist) * strength;
           a.vx += dx * f;
           a.vy += dy * f;
           b.vx -= dx * f;
           b.vy -= dy * f;
         });
+        // anchors: themes soft pull to ring
+        const cx = w / 2;
+        const cy = h / 2;
+        const themeRing = Math.min(w, h) * 0.32;
+        const themes = nodes.filter((n) => n.kind === "theme");
+        themes.forEach((n, i) => {
+          const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
+          const tx = cx + Math.cos(angle) * themeRing;
+          const ty = cy + Math.sin(angle) * themeRing;
+          n.vx += (tx - n.x) * 0.01;
+          n.vy += (ty - n.y) * 0.01;
+        });
+        // mild center gravity for sources
         nodes.forEach((n) => {
-          n.vx += (w / 2 - n.x) * 0.00025;
-          n.vy += (h / 2 - n.y) * 0.00025;
-          n.vx *= 0.88;
-          n.vy *= 0.88;
+          if (n.kind === "source") {
+            n.vx += (cx - n.x) * 0.0004;
+            n.vy += (cy - n.y) * 0.0004;
+          }
+          n.vx *= 0.86;
+          n.vy *= 0.86;
           n.x += n.vx;
           n.y += n.vy;
-          n.x = Math.max(n.r + 12, Math.min(w - n.r - 12, n.x));
-          n.y = Math.max(n.r + 28, Math.min(h - n.r - 36, n.y));
+          n.x = Math.max(n.r + 10, Math.min(w - n.r - 10, n.x));
+          n.y = Math.max(n.r + 48, Math.min(h - n.r - 40, n.y));
         });
       }
 
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, w, h);
-
-      const g = ctx.createRadialGradient(w / 2, h / 2, 20, w / 2, h / 2, w * 0.5);
-      g.addColorStop(0, "rgba(124, 58, 237, 0.1)");
+      const g = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, w * 0.55);
+      g.addColorStop(0, "rgba(124, 58, 237, 0.08)");
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
@@ -234,47 +250,64 @@ export function ObsidianGraphFull() {
         const a = byId.get(e.a);
         const b = byId.get(e.b);
         if (!a || !b) return;
-        const lit =
-          a.kind === "child" ||
-          b.kind === "child" ||
-          (hover && (hover === a.id || hover === b.id));
+        const inFocus =
+          !hasFocus || (focus.has(a.id) && focus.has(b.id));
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = lit
-          ? "rgba(167, 139, 250, 0.55)"
-          : "rgba(82, 82, 82, 0.45)";
-        ctx.lineWidth = lit ? 1.5 : 1;
+        if (inFocus) {
+          ctx.strokeStyle =
+            e.kind === "source-source"
+              ? "rgba(167, 139, 250, 0.45)"
+              : "rgba(167, 139, 250, 0.55)";
+          ctx.lineWidth = hasFocus ? 1.6 : 1;
+        } else {
+          ctx.strokeStyle = "rgba(64, 64, 64, 0.2)";
+          ctx.lineWidth = 0.8;
+        }
         ctx.stroke();
       });
 
-      nodes.forEach((n) => {
+      // draw dimmed first, then focused on top
+      const ordered = [...nodes].sort((a, b) => {
+        const af = !hasFocus || focus.has(a.id) ? 1 : 0;
+        const bf = !hasFocus || focus.has(b.id) ? 1 : 0;
+        return af - bf;
+      });
+
+      ordered.forEach((n) => {
+        const lit = !hasFocus || focus.has(n.id);
         const isHover = hover === n.id;
-        const glow = n.kind === "theme" && n.active && activeRef.current === n.clusterId;
+        const isSel = selectedRef.current === n.id;
+        ctx.globalAlpha = lit ? 1 : 0.18;
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r + (isHover || glow ? 3 : 0), 0, Math.PI * 2);
-        ctx.fillStyle = n.color;
-        ctx.shadowColor = glow || isHover ? PURPLE : "transparent";
-        ctx.shadowBlur = glow ? 22 : isHover ? 14 : 0;
+        ctx.arc(
+          n.x,
+          n.y,
+          n.r + (isHover || isSel ? 3 : 0),
+          0,
+          Math.PI * 2
+        );
+        ctx.fillStyle = n.kind === "theme" ? n.color : lit ? PURPLE : "#525252";
+        ctx.shadowColor = lit && (isSel || n.kind === "theme") ? n.color : "transparent";
+        ctx.shadowBlur = isSel ? 24 : lit && n.kind === "theme" ? 12 : 0;
         ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = "rgba(255,255,255,0.25)";
+        ctx.strokeStyle = "rgba(255,255,255,0.3)";
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Labels: always for themes; for children when visible
-        if (n.kind === "theme" || n.kind === "child") {
+        // labels: themes always; sources when lit or hover
+        if (n.kind === "theme" || lit || isHover) {
           ctx.font =
             n.kind === "theme"
               ? "600 13px var(--font-plex-sans), system-ui, sans-serif"
-              : "500 11px var(--font-plex-sans), system-ui, sans-serif";
-          ctx.fillStyle =
-            n.kind === "theme" && activeRef.current && activeRef.current !== n.clusterId
-              ? "#737373"
-              : "#f5f5f5";
+              : "500 10px var(--font-plex-sans), system-ui, sans-serif";
+          ctx.fillStyle = lit ? "#f5f5f5" : "#737373";
           ctx.textAlign = "center";
-          ctx.fillText(n.label, n.x, n.y + n.r + 16);
+          ctx.fillText(n.label, n.x, n.y + n.r + 14);
         }
+        ctx.globalAlpha = 1;
       });
 
       if (!reduced) state.raf = requestAnimationFrame(draw);
@@ -285,7 +318,7 @@ export function ObsidianGraphFull() {
       alive = false;
       if (stateRef.current?.raf) cancelAnimationFrame(stateRef.current.raf);
     };
-  }, [hover, reduced, activeTheme]);
+  }, [hover, reduced, selectedId]);
 
   const hitTest = useCallback((clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
@@ -301,29 +334,40 @@ export function ObsidianGraphFull() {
     return null;
   }, []);
 
+  const selectedNode = graph.nodes.find((n) => n.id === selectedId);
+
   const onClick = (e: React.MouseEvent) => {
     const n = hitTest(e.clientX, e.clientY);
-    if (!n) return;
-    if (n.kind === "theme") {
-      setActiveTheme((prev) =>
-        prev === n.clusterId ? null : n.clusterId
-      );
+    if (!n) {
+      setSelectedId(null);
       return;
     }
-    if (n.href) router.push(n.href);
+    if (n.kind === "theme") {
+      setSelectedId((prev) => (prev === n.id ? null : n.id));
+      return;
+    }
+    // source: second click within 1.2s opens; first focuses
+    const now = Date.now();
+    if (
+      lastSourceClick &&
+      lastSourceClick.id === n.id &&
+      now - lastSourceClick.t < 1200 &&
+      n.href
+    ) {
+      router.push(n.href);
+      return;
+    }
+    setLastSourceClick({ id: n.id, t: now });
+    setSelectedId(n.id);
   };
 
-  const activeName = activeTheme
-    ? getThemeNodes().find((t) => t.id === activeTheme)?.fullLabel
-    : null;
-
   return (
-    <div ref={wrapRef} className="fixed inset-0 z-0 bg-black">
+    <div className="fixed inset-0 z-0 bg-black">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
         role="img"
-        aria-label="Full-page theme graph. Click a major theme to light related datasets."
+        aria-label="Interlinked Obsidian graph. All sources float. Click a theme to focus linked datasets. NFHS links to Health and Education."
         onMouseMove={(e) => {
           const n = hitTest(e.clientX, e.clientY);
           setHover(n?.id ?? null);
@@ -334,17 +378,27 @@ export function ObsidianGraphFull() {
         onClick={onClick}
       />
 
-      {/* Floating chrome */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4 sm:p-6">
-        <div className="pointer-events-auto">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4 sm:p-6">
+        <div className="pointer-events-auto max-w-sm">
           <p className="text-sm font-semibold text-white">Indian Data Guide</p>
           <p className="mt-0.5 text-xs text-neutral-500">
-            {activeName
-              ? `${activeName} — related sources lit`
-              : "Themes only — click a theme to light datasets"}
+            {selectedNode
+              ? selectedNode.kind === "theme"
+                ? `Focus: ${selectedNode.label} — multi-linked sources lit (incl. cross-theme like NFHS)`
+                : `Focus: ${selectedNode.label} — linked themes & pairs lit · double-click to open`
+              : "Everything floating · click a theme to focus · Esc clears"}
           </p>
+          {selectedNode?.kind === "source" && selectedNode.href && (
+            <button
+              type="button"
+              className="pointer-events-auto mt-2 rounded-md border border-violet-400/40 bg-violet-500/20 px-3 py-1.5 text-xs text-violet-100 hover:bg-violet-500/30"
+              onClick={() => router.push(selectedNode.href!)}
+            >
+              Open {selectedNode.label}
+            </button>
+          )}
         </div>
-        <nav className="pointer-events-auto flex flex-wrap gap-2 text-xs">
+        <nav className="pointer-events-auto flex flex-wrap justify-end gap-2 text-xs">
           {[
             { href: "/series", label: "Series" },
             { href: "/explore", label: "Explore" },
@@ -361,8 +415,9 @@ export function ObsidianGraphFull() {
         </nav>
       </div>
 
-      <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 text-center text-[11px] text-neutral-600">
-        Click theme to expand · click again to collapse · click a source to open
+      <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 px-4 text-center text-[11px] text-neutral-600">
+        Interlinked graph · NFHS lights for Health and Education · double-click a
+        source to open
       </p>
     </div>
   );

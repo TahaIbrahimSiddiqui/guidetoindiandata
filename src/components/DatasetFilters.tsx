@@ -68,6 +68,20 @@ export function DatasetFilters() {
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <label className="block text-xs text-slate-400">
+          Source layer
+          <select
+            className={`mt-1 ${selectClass}`}
+            value={params.get("source") ?? ""}
+            onChange={(e) => setParam("source", e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="government">Government / national</option>
+            <option value="academic">Academic / Dataverse</option>
+            <option value="replication">Replication packages</option>
+          </select>
+        </label>
+
+        <label className="block text-xs text-slate-400">
           Category
           <select
             className={`mt-1 ${selectClass}`}

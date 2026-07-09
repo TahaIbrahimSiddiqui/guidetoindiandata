@@ -26,6 +26,7 @@ export function ExploreClient() {
       institution: params.get("institution") ?? undefined,
       cluster: params.get("cluster") ?? undefined,
       flag: params.get("flag") ?? undefined,
+      source: params.get("source") ?? undefined,
     };
   }, [params]);
 

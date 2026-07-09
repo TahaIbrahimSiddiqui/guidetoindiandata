@@ -10,6 +10,20 @@ export type SizeTier = "Medium" | "Large" | "Very large";
 
 export type DatasetFlag = "good-starting" | "best-district";
 
+export type SourceKind =
+  | "government"
+  | "academic-reference"
+  | "academic-survey"
+  | "academic-project"
+  | "replication";
+
+export type AcademicBadge =
+  | "core-reference"
+  | "survey-microdata"
+  | "replication"
+  | "mixed-restricted"
+  | "metadata-incomplete";
+
 export type ClusterId =
   | "health-demography"
   | "education"
@@ -55,9 +69,18 @@ export type Dataset = {
   /** Optional; usually derived from series.waves */
   seriesSlug?: string;
   waveYearLabel?: string;
+  /** Default government when omitted */
+  sourceKind?: SourceKind;
+  academicBadges?: AcademicBadge[];
+  paperDoi?: string;
+  dataDoi?: string;
+  authors?: string;
+  publicationYear?: number;
+  recommendedCitation?: string;
+  repository?: string;
 };
 
-export type SeriesFamily = "nfhs" | "nss" | "dlhs" | "other";
+export type SeriesFamily = "nfhs" | "nss" | "dlhs" | "other" | "academic";
 
 export type DesignRevision = {
   yearLabel: string;

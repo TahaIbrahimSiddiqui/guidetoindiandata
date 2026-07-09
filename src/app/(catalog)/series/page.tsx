@@ -14,7 +14,13 @@ export const metadata: Metadata = {
     "Multi-year data series: NFHS waves, NSS/NSO surveys (PLFS, HCES, …), DLHS, and more—browse by year of availability.",
 };
 
-const familyOrder: DataSeries["family"][] = ["nfhs", "nss", "dlhs", "other"];
+const familyOrder: DataSeries["family"][] = [
+  "nfhs",
+  "nss",
+  "dlhs",
+  "academic",
+  "other",
+];
 
 export default function SeriesIndexPage() {
   return (

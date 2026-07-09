@@ -68,6 +68,7 @@ export const SERIES_THEME_OVERRIDES: Record<string, ClusterId[]> = {
   lasi: ["health-demography", "labor-firms"],
   "agriculture-census": ["agriculture", "climate-infra"],
   "input-survey": ["agriculture"],
+  "access-energy": ["climate-infra", "labor-firms", "health-demography"],
 };
 
 /** Standalone datasets that need multi-theme links beyond primary cluster. */
@@ -86,4 +87,45 @@ export const DATASET_THEME_OVERRIDES: Record<string, ClusterId[]> = {
   "imd-rainfall": ["climate-infra", "agriculture"],
   "lok-dhaba": ["governance-justice"],
   njdg: ["governance-justice"],
+  // Academic layer
+  "indian-census-collection-1901-2026": [
+    "health-demography",
+    "climate-infra",
+    "governance-justice",
+  ],
+  "district-pop-estimates-2020": [
+    "health-demography",
+    "governance-justice",
+  ],
+  "electoral-criminality-2004-2009": ["governance-justice"],
+  "ires-2020": ["climate-infra", "labor-firms"],
+  "gender-energy-perception-2021": [
+    "climate-infra",
+    "health-demography",
+    "labor-firms",
+  ],
+  "tafssa-nalanda-2023": ["agriculture", "health-demography"],
+  "replication-bhavnani-lee-2018": ["governance-justice", "health-demography"],
+  "replication-kapoor-magesan-2018": ["governance-justice"],
+  "replication-aklin-cheng-urpelainen-2021": [
+    "climate-infra",
+    "governance-justice",
+  ],
+  "replication-dugoua-liu-urpelainen-2017": ["climate-infra"],
+  "replication-besley-burgess-2000": ["agriculture", "labor-firms"],
+  "replication-karlan-mullainathan-roth-2019": ["labor-firms"],
+  "replication-kyle-sampat-shadlen-2026": ["health-demography", "labor-firms"],
+  "replication-stainier-shah-barreca-2026": [
+    "climate-infra",
+    "health-demography",
+    "agriculture",
+  ],
+  "replication-adbi-agarwal-ghosh-2026": ["education", "climate-infra"],
+  "india-renewable-energy-2010-2025": ["climate-infra", "labor-firms"],
+  "covid-r-estimates-india": ["health-demography"],
+  "asti-india": ["agriculture"],
+  "pratham-read-india": ["education"],
+  "india-treaty-registry": ["governance-justice"],
+  "india-treaty-nesting": ["governance-justice"],
+  "health-survey-andhra-2013": ["health-demography"],
 };

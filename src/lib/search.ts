@@ -1,4 +1,4 @@
-import type { AccessType, Dataset } from "@/types/dataset";
+import type { AccessType, Dataset, SourceKind } from "@/types/dataset";
 
 export type DatasetFilters = {
   q?: string;
@@ -10,6 +10,8 @@ export type DatasetFilters = {
   institution?: string;
   cluster?: string;
   flag?: string;
+  /** government | academic | replication */
+  source?: string;
 };
 
 export function filterDatasets(
@@ -66,6 +68,19 @@ export function filterDatasets(
     ) {
       return false;
     }
+    if (filters.source) {
+      const kind: SourceKind = d.sourceKind ?? "government";
+      if (filters.source === "government" && kind !== "government") return false;
+      if (filters.source === "academic") {
+        if (
+          kind !== "academic-reference" &&
+          kind !== "academic-survey" &&
+          kind !== "academic-project"
+        )
+          return false;
+      }
+      if (filters.source === "replication" && kind !== "replication") return false;
+    }
     if (q) {
       const hay = [
         d.title,
@@ -74,6 +89,10 @@ export function filterDatasets(
         d.institution,
         d.bestFor,
         d.exampleUses,
+        d.dataDoi,
+        d.paperDoi,
+        d.authors,
+        d.recommendedCitation,
         ...d.abbreviations,
         ...d.categories,
         ...d.technicalTags,

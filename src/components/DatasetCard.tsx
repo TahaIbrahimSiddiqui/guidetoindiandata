@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { AccessBadge } from "@/components/AccessBadge";
+import { AcademicBadgeList } from "@/components/AcademicBadge";
 import { getWaveForDataset } from "@/data/series";
 import type { Dataset } from "@/types/dataset";
 
 export function DatasetCard({ dataset }: { dataset: Dataset }) {
   const meta = getWaveForDataset(dataset.slug);
+  const isAcademic = dataset.sourceKind && dataset.sourceKind !== "government";
 
   return (
     <Link
@@ -17,6 +19,11 @@ export function DatasetCard({ dataset }: { dataset: Dataset }) {
           {meta && (
             <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-obsidian-purple-bright">
               {meta.series.shortTitle} · {meta.wave.yearLabel}
+            </p>
+          )}
+          {isAcademic && !meta && (
+            <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-violet-300/90">
+              Academic / Dataverse
             </p>
           )}
           <p className="font-mono text-xs text-obsidian-muted">
@@ -38,6 +45,7 @@ export function DatasetCard({ dataset }: { dataset: Dataset }) {
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <AccessBadge accessType={dataset.accessType} />
+        <AcademicBadgeList badges={dataset.academicBadges} />
         <span className="inline-flex items-center gap-1 rounded-full border border-obsidian-border px-2.5 py-0.5 text-xs text-obsidian-muted">
           <Layers className="h-3 w-3" aria-hidden />
           {dataset.sizeTier}

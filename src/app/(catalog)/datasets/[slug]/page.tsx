@@ -8,6 +8,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { AccessBadge } from "@/components/AccessBadge";
+import { AcademicBadgeList } from "@/components/AcademicBadge";
 import { RelatedDatasets } from "@/components/RelatedDatasets";
 import { InContentAd } from "@/components/ads/ContentWithAds";
 import { getCluster } from "@/data/clusters";
@@ -94,6 +95,7 @@ export default async function DatasetPage({ params }: Props) {
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <AccessBadge accessType={dataset.accessType} />
+          <AcademicBadgeList badges={dataset.academicBadges} />
           <span className="rounded-full border border-white/10 px-2.5 py-0.5 text-xs text-slate-300">
             {dataset.sizeTier}
           </span>
@@ -108,6 +110,14 @@ export default async function DatasetPage({ params }: Props) {
             </span>
           )}
         </div>
+        {(dataset.authors || dataset.publicationYear) && (
+          <p className="mt-3 text-sm text-obsidian-muted">
+            {dataset.authors}
+            {dataset.authors && dataset.publicationYear ? " · " : ""}
+            {dataset.publicationYear}
+            {dataset.repository ? ` · ${dataset.repository}` : ""}
+          </p>
+        )}
         <div className="mt-4 flex flex-wrap gap-2">
           {dataset.categories.map((c) => (
             <Link
@@ -238,19 +248,71 @@ export default async function DatasetPage({ params }: Props) {
         </div>
       </section>
 
+      {(dataset.dataDoi || dataset.paperDoi || dataset.recommendedCitation) && (
+        <section className="mt-8 rounded-xl border border-obsidian-border bg-obsidian-panel/60 p-5">
+          <h2 className="text-sm font-semibold text-obsidian-text">
+            Academic identifiers
+          </h2>
+          <div className="mt-3 space-y-2 text-sm text-obsidian-muted">
+            {dataset.dataDoi && (
+              <p>
+                <span className="text-obsidian-text">Data DOI:</span>{" "}
+                <a
+                  href={`https://doi.org/${dataset.dataDoi}`}
+                  className="font-mono text-obsidian-purple-bright hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {dataset.dataDoi}
+                </a>
+              </p>
+            )}
+            {dataset.paperDoi && (
+              <p>
+                <span className="text-obsidian-text">Paper DOI:</span>{" "}
+                <a
+                  href={`https://doi.org/${dataset.paperDoi}`}
+                  className="font-mono text-obsidian-purple-bright hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {dataset.paperDoi}
+                </a>
+              </p>
+            )}
+            {dataset.recommendedCitation && (
+              <p className="border-t border-obsidian-border pt-2 text-xs leading-relaxed">
+                {dataset.recommendedCitation}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+
       <div className="mt-8 flex flex-wrap gap-3">
         {dataset.accessUrl && (
           <a
             href={dataset.accessUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-400"
+            className="inline-flex items-center gap-2 rounded-xl bg-obsidian-purple px-4 py-2.5 text-sm font-semibold text-white hover:bg-obsidian-purple-bright hover:text-obsidian-bg"
           >
-            Open access portal
+            {dataset.dataDoi ? "Open data DOI" : "Open access portal"}
             <ExternalLink className="h-4 w-4" />
           </a>
         )}
-        {dataset.docsUrl && (
+        {dataset.paperDoi && (
+          <a
+            href={`https://doi.org/${dataset.paperDoi}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-obsidian-border px-4 py-2.5 text-sm text-obsidian-text hover:border-obsidian-purple/50"
+          >
+            Open paper
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        )}
+        {dataset.docsUrl && !dataset.paperDoi && (
           <a
             href={dataset.docsUrl}
             target="_blank"

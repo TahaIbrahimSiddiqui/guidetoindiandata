@@ -116,6 +116,37 @@ const ENRICHED: Record<
       { name: "Drug stocks", label: "Essential drug stock fields", group: "Logistics" },
     ],
   },
+  "access-2015": {
+    source: "ACCESS 2015 Harvard Dataverse / CEEW survey documentation",
+    url: "https://doi.org/10.7910/DVN/0NV9LF",
+    entries: [
+      { name: "Electricity access", label: "Household electricity connection and use", group: "Electricity" },
+      { name: "Cooking fuels", label: "Primary cooking fuel and clean cooking access", group: "Cooking" },
+      { name: "Service quality", label: "Reliability and quality of energy services", group: "Quality" },
+      { name: "Expenditure", label: "Energy and related household expenditure", group: "Economics" },
+      { name: "Socio-economic", label: "Household socio-economic characteristics", group: "Background" },
+    ],
+  },
+  "access-2018": {
+    source: "ACCESS 2018 Harvard Dataverse / CEEW panel documentation",
+    url: "https://doi.org/10.7910/DVN/AHFINM",
+    entries: [
+      { name: "Panel energy access", label: "Updated electricity and cooking outcomes", group: "Energy" },
+      { name: "Electricity outcomes", label: "Connection, hours, quality", group: "Electricity" },
+      { name: "Cooking outcomes", label: "Fuel mix and clean cooking", group: "Cooking" },
+    ],
+  },
+  "ires-2020": {
+    source: "IRES 2020 Harvard Dataverse documentation",
+    url: "https://doi.org/10.7910/DVN/U8NYUP",
+    entries: [
+      { name: "Access", label: "Energy access indicators", group: "Energy" },
+      { name: "Reliability", label: "Electricity reliability", group: "Electricity" },
+      { name: "Appliances", label: "Appliance ownership", group: "Demand" },
+      { name: "Fuels", label: "Cooking and heating fuel choices", group: "Fuels" },
+      { name: "Efficiency", label: "Efficiency-related indicators", group: "Efficiency" },
+    ],
+  },
 };
 
 function humanize(raw: string): string {

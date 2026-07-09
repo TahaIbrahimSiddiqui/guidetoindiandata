@@ -445,6 +445,43 @@ export const seriesList: DataSeries[] = [
       },
     ],
   },
+  {
+    slug: "access-energy",
+    title: "ACCESS Energy Access Surveys (CEEW / Harvard Dataverse)",
+    shortTitle: "ACCESS",
+    family: "academic",
+    description:
+      "Multi-state household energy-access surveys on electricity and clean cooking. Pair with IRES 2020 and related replications for a full energy stack.",
+    host: "Harvard Dataverse / CEEW",
+    cluster: "climate-infra",
+    pinned: true,
+    pairsWithSeries: [],
+    designRevisions: [
+      {
+        yearLabel: "2015 (ACCESS 2015)",
+        summary: "Baseline multidimensional energy-access survey in six energy-poor states.",
+      },
+      {
+        yearLabel: "2018 (ACCESS 2018)",
+        summary: "Panel follow-up wave updating electricity and cooking outcomes.",
+      },
+    ],
+    waves: [
+      {
+        yearLabel: "2015",
+        yearStart: 2015,
+        datasetSlug: "access-2015",
+        designNote: "Six energy-poor states; electricity and cooking access.",
+      },
+      {
+        yearLabel: "2018",
+        yearStart: 2018,
+        datasetSlug: "access-2018",
+        isLatest: true,
+        designNote: "Panel update on energy access and service quality.",
+      },
+    ],
+  },
 ];
 
 export function getSeriesBySlug(slug: string): DataSeries | undefined {
@@ -478,4 +515,5 @@ export const FAMILY_LABELS: Record<DataSeries["family"], string> = {
   nss: "NSS / NSO surveys",
   dlhs: "DLHS family",
   other: "Other multi-year series",
+  academic: "Academic / Dataverse series",
 };

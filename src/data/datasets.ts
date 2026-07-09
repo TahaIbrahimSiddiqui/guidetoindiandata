@@ -1,10 +1,11 @@
 import type { Dataset } from "@/types/dataset";
+import { academicDatasets } from "@/data/academicDatasets";
 
 /**
- * Catalog derived from content/guide_research.md.
+ * Government / national catalog from content/guide_research.md.
  * Citation tokens stripped; access URLs point at known host portals where clear.
  */
-export const datasets: Dataset[] = [
+const governmentDatasets: Dataset[] = [
   // ── Health & Demography ──────────────────────────────────────────
   {
     slug: "nfhs-1",
@@ -1693,6 +1694,12 @@ export const datasets: Dataset[] = [
     exampleUses: "Crop monitoring and urban expansion",
     cluster: "climate-infra",
   },
+];
+
+/** Combined catalog: government + academic / Dataverse layer */
+export const datasets: Dataset[] = [
+  ...governmentDatasets,
+  ...academicDatasets,
 ];
 
 export function getDatasetBySlug(slug: string): Dataset | undefined {

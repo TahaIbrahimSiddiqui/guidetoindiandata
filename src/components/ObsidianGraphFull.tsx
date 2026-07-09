@@ -289,14 +289,20 @@ export function ObsidianGraphFull() {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, w, h);
 
-      // Edges: primary theme spokes only (not ring); no fading of datasets
+      // Pulse phase for focused edges (on click/selection)
+      const t = performance.now() / 1000;
+      // 0..1 sine, ~1.5Hz
+      const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 3);
+
+      // Edges: primary theme spokes only (not ring)
       edges.forEach((e) => {
         const a = byId.get(e.a);
         const b = byId.get(e.b);
         if (!a || !b) return;
         if (e.kind === "theme-ring") return;
 
-        // Only draw primary theme→source edges by default (less clutter)
+        let isFocusedEdge = false;
+
         if (e.kind === "theme-source") {
           const theme = a.kind === "theme" ? a : b;
           const source = a.kind === "source" ? a : b;
@@ -305,7 +311,7 @@ export function ObsidianGraphFull() {
             source.themeIds[0] && theme.themeId === source.themeIds[0];
           if (!isPrimary && !hasFocus) return;
           if (hasFocus && !(focus.has(a.id) && focus.has(b.id))) return;
-          ctx.globalAlpha = hasFocus ? 0.5 : 0.2;
+          isFocusedEdge = hasFocus && focus.has(a.id) && focus.has(b.id);
         } else if (e.kind === "source-source") {
           const sel = selectedRef.current;
           const selNode = sel ? byId.get(sel) : null;
@@ -317,7 +323,7 @@ export function ObsidianGraphFull() {
             )
           )
             return;
-          ctx.globalAlpha = 0.35;
+          isFocusedEdge = true;
         } else {
           return;
         }
@@ -325,9 +331,30 @@ export function ObsidianGraphFull() {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = "rgba(200, 200, 200, 0.55)";
-        ctx.lineWidth = hasFocus ? 1.2 : 0.6;
+
+        if (isFocusedEdge && !reduced) {
+          // Pulsating brightness + width on click focus
+          const alpha = 0.35 + 0.55 * pulse;
+          const width = 1.0 + 1.8 * pulse;
+          ctx.globalAlpha = alpha;
+          ctx.strokeStyle = `rgba(243, 228, 201, ${0.55 + 0.4 * pulse})`;
+          ctx.lineWidth = width;
+          ctx.shadowColor = "rgba(243, 228, 201, 0.65)";
+          ctx.shadowBlur = 4 + 12 * pulse;
+        } else if (isFocusedEdge && reduced) {
+          ctx.globalAlpha = 0.65;
+          ctx.strokeStyle = "rgba(243, 228, 201, 0.8)";
+          ctx.lineWidth = 1.6;
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.globalAlpha = 0.2;
+          ctx.strokeStyle = "rgba(200, 200, 200, 0.45)";
+          ctx.lineWidth = 0.6;
+          ctx.shadowBlur = 0;
+        }
+
         ctx.stroke();
+        ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
       });
 
@@ -379,7 +406,8 @@ export function ObsidianGraphFull() {
         }
       });
 
-      if (!reduced) state.raf = requestAnimationFrame(draw);
+      // Always tick so edge pulse animates while focused
+      state.raf = requestAnimationFrame(draw);
     };
 
     draw();

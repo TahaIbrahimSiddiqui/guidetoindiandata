@@ -97,7 +97,7 @@ export function ObsidianGraphFull() {
           y: Math.min(h - 48, Math.max(56, y)),
           vx: (Math.random() - 0.5) * 0.3,
           vy: (Math.random() - 0.5) * 0.3,
-          r: 6,
+          r: 4,
         });
       });
 
@@ -247,28 +247,28 @@ export function ObsidianGraphFull() {
         });
       }
 
-      // Brand navy canvas
-      ctx.fillStyle = "#0A2947";
-      ctx.fillRect(0, 0, w, h);
-      const g = ctx.createRadialGradient(w / 2, h / 2, 20, w / 2, h / 2, w * 0.55);
-      g.addColorStop(0, "rgba(243, 228, 201, 0.06)");
-      g.addColorStop(1, "rgba(10, 41, 71, 0)");
-      ctx.fillStyle = g;
+      // Pure black canvas — less visual noise
+      ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, w, h);
 
-      // Edges: when theme focused, only theme-source to that theme; never light ring to other themes
+      // Edges: very faint by default; only focus links brighten
       edges.forEach((e) => {
         const a = byId.get(e.a);
         const b = byId.get(e.b);
         if (!a || !b) return;
 
+        // Skip ring + pair edges when unfocused (declutter)
+        if (!hasFocus && e.kind !== "theme-source") return;
+        if (e.kind === "theme-ring") return;
+
         let drawLit = false;
         if (!hasFocus) {
-          drawLit = e.kind !== "theme-ring";
-          ctx.globalAlpha = e.kind === "theme-ring" ? 0.1 : 0.28;
+          // Default: ultra-faint theme→source spokes only
+          ctx.globalAlpha = 0.06;
         } else if (e.kind === "theme-source") {
           drawLit = focus.has(a.id) && focus.has(b.id);
-          ctx.globalAlpha = drawLit ? 0.75 : 0.05;
+          if (!drawLit) return;
+          ctx.globalAlpha = 0.45;
         } else if (e.kind === "source-source") {
           const sel = selectedRef.current;
           const selNode = sel ? byId.get(sel) : null;
@@ -276,18 +276,19 @@ export function ObsidianGraphFull() {
             selNode?.kind === "source" &&
             focus.has(a.id) &&
             focus.has(b.id);
-          ctx.globalAlpha = drawLit ? 0.45 : 0.04;
+          if (!drawLit) return;
+          ctx.globalAlpha = 0.35;
         } else {
-          ctx.globalAlpha = 0.05;
+          return;
         }
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.strokeStyle = drawLit
-          ? "rgba(243, 228, 201, 0.75)"
-          : "rgba(211, 212, 192, 0.25)";
-        ctx.lineWidth = drawLit ? 1.5 : 0.7;
+          ? "rgba(220, 220, 220, 0.55)"
+          : "rgba(180, 180, 180, 0.35)";
+        ctx.lineWidth = drawLit ? 1.2 : 0.5;
         ctx.stroke();
         ctx.globalAlpha = 1;
       });
@@ -302,26 +303,53 @@ export function ObsidianGraphFull() {
         const lit = !hasFocus || focus.has(n.id);
         const isHover = hover === n.id;
         const isSel = selectedRef.current === n.id;
-        ctx.globalAlpha = lit ? 1 : 0.12;
+        const isSource = n.kind === "source";
+
+        // Datasets: light grey, low opacity; themes stay readable
+        if (isSource) {
+          ctx.globalAlpha = lit
+            ? isHover || isSel
+              ? 0.55
+              : hasFocus
+                ? 0.4
+                : 0.18
+            : 0.05;
+        } else {
+          ctx.globalAlpha = lit ? 1 : 0.15;
+        }
+
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r + (isHover || isSel ? 2 : 0), 0, Math.PI * 2);
-        ctx.fillStyle = n.color;
-        ctx.shadowColor = lit && (isSel || n.kind === "theme") ? n.color : "transparent";
-        ctx.shadowBlur = isSel ? 20 : lit && n.kind === "theme" ? 10 : 0;
+        ctx.fillStyle = isSource ? "#c8c8c8" : n.color;
+        ctx.shadowColor =
+          lit && n.kind === "theme" && (isSel || isHover)
+            ? n.color
+            : "transparent";
+        ctx.shadowBlur = isSel && n.kind === "theme" ? 16 : 0;
         ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.strokeStyle = lit
-          ? "rgba(243, 228, 201, 0.45)"
-          : "rgba(211, 212, 192, 0.15)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        if (n.kind === "theme") {
+          ctx.strokeStyle = lit
+            ? "rgba(200, 200, 200, 0.35)"
+            : "rgba(120, 120, 120, 0.15)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
 
-        if (n.kind === "theme" || (lit && (isHover || n.kind === "source"))) {
+        // Labels: themes always; sources only when focused or hovered
+        const showLabel =
+          n.kind === "theme" ||
+          (isSource && lit && (isHover || isSel || hasFocus));
+        if (showLabel) {
           ctx.font =
             n.kind === "theme"
-              ? "600 11px var(--font-plex-sans), system-ui, sans-serif"
-              : "500 9px var(--font-plex-sans), system-ui, sans-serif";
-          ctx.fillStyle = lit ? "#F3E4C9" : "#6B7A88";
+              ? "600 11px var(--font-body), system-ui, sans-serif"
+              : "500 9px var(--font-body), system-ui, sans-serif";
+          ctx.fillStyle = isSource
+            ? "rgba(200, 200, 200, 0.75)"
+            : lit
+              ? "#e8e8e8"
+              : "rgba(120, 120, 120, 0.5)";
           ctx.textAlign = "center";
           const label =
             n.kind === "theme" && n.label.length > 14
@@ -391,7 +419,7 @@ export function ObsidianGraphFull() {
   };
 
   return (
-    <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-hidden bg-[#0A2947]">
+    <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-hidden bg-black">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"

@@ -110,7 +110,7 @@ export function buildInterlinkedGraph(): {
       kind: "source",
       href: `/series/${s.slug}`,
       themeIds,
-      color: "#D3D4C0",
+      color: "#c8c8c8",
     });
     for (const t of themeIds) {
       edges.push({ a: `t:${t}`, b: id, kind: "theme-source" });
@@ -128,12 +128,8 @@ export function buildInterlinkedGraph(): {
       kind: "source",
       href: `/datasets/${d.slug}`,
       themeIds,
-      color:
-        d.sourceKind === "github-community"
-          ? "#8B9A8C"
-          : d.sourceKind === "replication"
-            ? "#C4A574"
-            : "#F3E4C9",
+      // Light grey datasets — low opacity applied when drawing
+      color: "#c8c8c8",
     });
     for (const t of themeIds) {
       edges.push({ a: `t:${t}`, b: id, kind: "theme-source" });

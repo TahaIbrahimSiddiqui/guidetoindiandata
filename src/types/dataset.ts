@@ -15,18 +15,44 @@ export type SourceKind =
   | "academic-reference"
   | "academic-survey"
   | "academic-project"
-  | "replication";
+  | "replication"
+  | "github-community";
 
 export type AcademicBadge =
   | "core-reference"
   | "survey-microdata"
   | "replication"
   | "mixed-restricted"
-  | "metadata-incomplete";
+  | "metadata-incomplete"
+  | "github-repo"
+  | "historical-archive";
 
+/** Full taxonomy themes for the neural graph (22). */
 export type ClusterId =
-  | "health-demography"
+  | "population-demography"
+  | "households-living"
+  | "labour-employment"
+  | "firms-industry"
+  | "agriculture-rural"
+  | "health-nutrition"
   | "education"
+  | "politics-governance"
+  | "public-finance"
+  | "banking-finance"
+  | "markets-prices"
+  | "environment-climate"
+  | "infrastructure-transport"
+  | "urban-development"
+  | "social-protection"
+  | "crime-justice"
+  | "geospatial-remote-sensing"
+  | "digital-economy"
+  | "research-replication"
+  | "github-community"
+  | "international-india"
+  | "data-catalogs"
+  // legacy aliases still accepted on records (normalized at graph time)
+  | "health-demography"
   | "labor-firms"
   | "agriculture"
   | "governance-justice"
@@ -56,7 +82,6 @@ export type Dataset = {
   geographyLevel: string[];
   timeCoverage: string;
   keyVariables: string[];
-  /** Structured listing aligned with official portal/docs field names */
   variables?: VariableEntry[];
   variablesSource?: string;
   variablesUrl?: string;
@@ -66,10 +91,8 @@ export type Dataset = {
   exampleUses: string;
   flags?: DatasetFlag[];
   cluster: ClusterId;
-  /** Optional; usually derived from series.waves */
   seriesSlug?: string;
   waveYearLabel?: string;
-  /** Default government when omitted */
   sourceKind?: SourceKind;
   academicBadges?: AcademicBadge[];
   paperDoi?: string;

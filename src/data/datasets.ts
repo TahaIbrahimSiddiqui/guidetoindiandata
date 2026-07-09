@@ -1,5 +1,6 @@
 import type { Dataset } from "@/types/dataset";
 import { academicDatasets } from "@/data/academicDatasets";
+import { githubDatasets } from "@/data/githubDatasets";
 
 /**
  * Government / national catalog from content/guide_research.md.
@@ -1696,10 +1697,11 @@ const governmentDatasets: Dataset[] = [
   },
 ];
 
-/** Combined catalog: government + academic / Dataverse layer */
+/** Combined catalog: government + academic + GitHub community */
 export const datasets: Dataset[] = [
   ...governmentDatasets,
   ...academicDatasets,
+  ...githubDatasets,
 ];
 
 export function getDatasetBySlug(slug: string): Dataset | undefined {

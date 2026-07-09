@@ -43,36 +43,45 @@ export default function AcademicPage() {
   const surveys = byKind(["academic-survey"]);
   const replications = byKind(["replication"]);
   const projects = byKind(["academic-project"]);
+  const github = byKind(["github-community"]);
 
   return (
     <div>
       <header className="mb-8">
         <h1 className="text-3xl font-semibold text-obsidian-text">
-          Academic & Dataverse
+          Academic, Dataverse & GitHub
         </h1>
         <p className="mt-3 max-w-3xl text-obsidian-muted leading-relaxed">
-          India-focused records from Harvard Dataverse and journal replication
-          archives—energy access surveys, historical census collections,
-          electoral datasets, and peer-reviewed packages. Sourced from{" "}
+          India-focused records from Harvard Dataverse, journal replications, and
+          community GitHub datasets. Sources:{" "}
           <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-violet-200">
-            content/academic_dataset_harvard.md
+            academic_dataset_harvard.md
+          </code>{" "}
+          and{" "}
+          <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-violet-200">
+            github_dataset.md
           </code>
-          . Where the audit marked fields NR (not reported), badges say{" "}
-          <strong className="text-obsidian-text">Metadata incomplete</strong>{" "}
-          rather than inventing licenses.
+          . NR fields stay{" "}
+          <strong className="text-obsidian-text">Metadata incomplete</strong>.
         </p>
         <div className="mt-4 flex flex-wrap gap-3 text-sm">
           <Link
             href="/explore?source=academic"
             className="text-obsidian-purple-bright hover:underline"
           >
-            Explore academic only
+            Academic only
           </Link>
           <Link
             href="/explore?source=replication"
             className="text-obsidian-purple-bright hover:underline"
           >
-            Explore replications
+            Replications
+          </Link>
+          <Link
+            href="/explore?source=github"
+            className="text-obsidian-purple-bright hover:underline"
+          >
+            GitHub community
           </Link>
           <Link
             href="/series/access-energy"
@@ -103,6 +112,11 @@ export default function AcademicPage() {
         title="Project-specific & thematic"
         blurb="Searchable deposits that are valuable but not the national reference spine."
         items={projects}
+      />
+      <Shelf
+        title="GitHub & community data"
+        blurb="Boundaries, elections ETL, night lights, schools, and packaging repos from content/github_dataset.md."
+        items={github}
       />
     </div>
   );

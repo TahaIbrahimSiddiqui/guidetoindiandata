@@ -6,6 +6,8 @@ const LABELS: Record<Badge, string> = {
   replication: "Replication package",
   "mixed-restricted": "Mixed / restricted inputs",
   "metadata-incomplete": "Metadata incomplete",
+  "github-repo": "GitHub repo",
+  "historical-archive": "Historical archive",
 };
 
 const STYLES: Record<Badge, string> = {
@@ -19,6 +21,10 @@ const STYLES: Record<Badge, string> = {
     "border-orange-500/40 bg-orange-500/10 text-orange-200",
   "metadata-incomplete":
     "border-neutral-500/40 bg-neutral-500/10 text-neutral-300",
+  "github-repo":
+    "border-slate-400/40 bg-slate-500/15 text-slate-200",
+  "historical-archive":
+    "border-amber-500/40 bg-amber-500/10 text-amber-200",
 };
 
 export function AcademicBadge({

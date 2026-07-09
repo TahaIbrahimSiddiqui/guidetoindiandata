@@ -80,6 +80,7 @@ export function filterDatasets(
           return false;
       }
       if (filters.source === "replication" && kind !== "replication") return false;
+      if (filters.source === "github" && kind !== "github-community") return false;
     }
     if (q) {
       const hay = [

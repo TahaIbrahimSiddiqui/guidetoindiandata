@@ -1,14 +1,11 @@
-import { clusters } from "@/data/clusters";
+import { clusters, normalizeClusterId } from "@/data/clusters";
 import { datasets } from "@/data/datasets";
 import {
-  CATEGORY_TO_THEME,
   DATASET_THEME_OVERRIDES,
   SERIES_THEME_OVERRIDES,
+  themesFromCategoryList,
 } from "@/data/themeLinks";
-import {
-  getSeriesForDataset,
-  seriesList,
-} from "@/data/series";
+import { getSeriesForDataset, seriesList } from "@/data/series";
 import type { ClusterId } from "@/types/dataset";
 
 export type GraphNodeKind = "theme" | "source";
@@ -18,7 +15,6 @@ export type GraphNodeDef = {
   label: string;
   kind: GraphNodeKind;
   href?: string;
-  /** Theme id if kind === theme */
   themeId?: ClusterId;
   themeIds: ClusterId[];
   color: string;
@@ -31,16 +27,7 @@ export type GraphEdgeDef = {
 };
 
 function uniqThemes(ids: ClusterId[]): ClusterId[] {
-  return Array.from(new Set(ids));
-}
-
-function themesFromCategories(categories: string[]): ClusterId[] {
-  const out: ClusterId[] = [];
-  for (const c of categories) {
-    const t = CATEGORY_TO_THEME[c] ?? CATEGORY_TO_THEME[c.toLowerCase()];
-    if (t) out.push(t);
-  }
-  return out;
+  return Array.from(new Set(ids.map(normalizeClusterId)));
 }
 
 export function getThemesForSeries(seriesSlug: string): ClusterId[] {
@@ -49,9 +36,13 @@ export function getThemesForSeries(seriesSlug: string): ClusterId[] {
   const fromOverride = SERIES_THEME_OVERRIDES[seriesSlug] ?? [];
   const fromWaves = series.waves.flatMap((w) => {
     const d = datasets.find((x) => x.slug === w.datasetSlug);
-    return d ? themesFromCategories(d.categories) : [];
+    return d ? themesFromCategoryList(d.categories) : [];
   });
-  return uniqThemes([...fromOverride, series.cluster, ...fromWaves]);
+  return uniqThemes([
+    ...fromOverride,
+    normalizeClusterId(series.cluster),
+    ...fromWaves,
+  ]);
 }
 
 export function getThemesForDataset(datasetSlug: string): ClusterId[] {
@@ -60,24 +51,33 @@ export function getThemesForDataset(datasetSlug: string): ClusterId[] {
   const series = getSeriesForDataset(datasetSlug);
   if (series) return getThemesForSeries(series.slug);
   const fromOverride = DATASET_THEME_OVERRIDES[datasetSlug] ?? [];
+  const extra: ClusterId[] = [];
+  if (d.sourceKind === "github-community") extra.push("github-community");
+  if (d.sourceKind === "replication") extra.push("research-replication");
+  if (
+    d.sourceKind === "academic-reference" ||
+    d.sourceKind === "academic-survey" ||
+    d.sourceKind === "academic-project"
+  ) {
+    extra.push("data-catalogs");
+  }
   return uniqThemes([
     ...fromOverride,
-    d.cluster,
-    ...themesFromCategories(d.categories),
+    normalizeClusterId(d.cluster),
+    ...themesFromCategoryList(d.categories),
+    ...extra,
   ]);
 }
 
-/** Build full interlinked graph: all themes + all sources, multi-edges. */
+/** Full interlinked graph: all themes + all sources. */
 export function buildInterlinkedGraph(): {
   nodes: GraphNodeDef[];
   edges: GraphEdgeDef[];
 } {
-  const themeColor = new Map(clusters.map((c) => [c.id, c.color] as const));
   const nodes: GraphNodeDef[] = [];
   const edges: GraphEdgeDef[] = [];
   const nodeIds = new Set<string>();
 
-  // Themes
   clusters.forEach((c) => {
     const id = `t:${c.id}`;
     nodeIds.add(id);
@@ -91,7 +91,7 @@ export function buildInterlinkedGraph(): {
     });
   });
 
-  // Theme ring (weak structure)
+  // Theme ring only for weak visual structure — NOT used in focus walks
   for (let i = 0; i < clusters.length; i++) {
     edges.push({
       a: `t:${clusters[i].id}`,
@@ -100,7 +100,6 @@ export function buildInterlinkedGraph(): {
     });
   }
 
-  // Series sources
   for (const s of seriesList) {
     const id = `s:${s.slug}`;
     nodeIds.add(id);
@@ -111,14 +110,13 @@ export function buildInterlinkedGraph(): {
       kind: "source",
       href: `/series/${s.slug}`,
       themeIds,
-      color: "#a78bfa",
+      color: "#c4b5fd",
     });
     for (const t of themeIds) {
       edges.push({ a: `t:${t}`, b: id, kind: "theme-source" });
     }
   }
 
-  // Standalone datasets (not in a series)
   for (const d of datasets) {
     if (getSeriesForDataset(d.slug)) continue;
     const id = `d:${d.slug}`;
@@ -130,17 +128,19 @@ export function buildInterlinkedGraph(): {
       kind: "source",
       href: `/datasets/${d.slug}`,
       themeIds,
-      color: "#c4b5fd",
+      color:
+        d.sourceKind === "github-community"
+          ? "#94a3b8"
+          : d.sourceKind === "replication"
+            ? "#d8b4fe"
+            : "#a78bfa",
     });
     for (const t of themeIds) {
       edges.push({ a: `t:${t}`, b: id, kind: "theme-source" });
     }
   }
 
-  // Source–source from pairsWith (dataset level → series/source nodes)
-  const edgeKey = new Set(
-    edges.map((e) => [e.a, e.b].sort().join("|"))
-  );
+  const edgeKey = new Set(edges.map((e) => [e.a, e.b].sort().join("|")));
 
   function sourceIdForDataset(slug: string): string | null {
     const series = getSeriesForDataset(slug);
@@ -162,7 +162,6 @@ export function buildInterlinkedGraph(): {
     }
   }
 
-  // Series pairsWithSeries
   for (const s of seriesList) {
     const from = `s:${s.slug}`;
     for (const other of s.pairsWithSeries ?? []) {
@@ -179,9 +178,9 @@ export function buildInterlinkedGraph(): {
 }
 
 /**
- * Focus set for Obsidian-style highlighting.
- * - Theme focus: theme + all sources linked to it + their paired sources (1-hop)
- * - Source focus: source + its themes + paired sources
+ * Theme click: ONLY that theme + sources with a direct theme-source edge.
+ * Other themes never light up. Pair edges ignored on theme focus.
+ * Source click: source + its themes + paired sources.
  */
 export function getFocusSet(
   selectedId: string | null,
@@ -196,26 +195,22 @@ export function getFocusSet(
   const sel = byId.get(selectedId);
   if (!sel) return focus;
 
-  const neighbors = (id: string) =>
-    edges
-      .filter((e) => e.a === id || e.b === id)
-      .map((e) => (e.a === id ? e.b : e.a));
-
   if (sel.kind === "theme") {
-    for (const n of neighbors(selectedId)) {
-      focus.add(n);
-      // 1-hop pairs among sources linked to this theme
-      for (const n2 of neighbors(n)) {
-        const node = byId.get(n2);
-        if (node?.kind === "source" && focus.has(n)) focus.add(n2);
-      }
+    for (const e of edges) {
+      if (e.kind !== "theme-source") continue;
+      if (e.a === selectedId) focus.add(e.b);
+      if (e.b === selectedId) focus.add(e.a);
     }
-  } else {
-    for (const n of neighbors(selectedId)) {
-      focus.add(n);
-    }
+    return focus;
   }
 
+  // Source selected
+  for (const e of edges) {
+    if (e.a !== selectedId && e.b !== selectedId) continue;
+    if (e.kind === "theme-ring") continue;
+    const other = e.a === selectedId ? e.b : e.a;
+    focus.add(other);
+  }
   return focus;
 }
 

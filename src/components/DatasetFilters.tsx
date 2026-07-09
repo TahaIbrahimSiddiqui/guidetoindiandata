@@ -78,6 +78,7 @@ export function DatasetFilters() {
             <option value="government">Government / national</option>
             <option value="academic">Academic / Dataverse</option>
             <option value="replication">Replication packages</option>
+            <option value="github">GitHub & community</option>
           </select>
         </label>
 

@@ -3,34 +3,25 @@
 import { useCallback, useEffect, useState } from "react";
 import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
 
-const STORAGE_KEY = "idg-entered-graph";
-
+/**
+ * Always show the black intro on load/refresh.
+ * Graph only after click (no sessionStorage skip).
+ */
 export function LandingExperience() {
   const [entered, setEntered] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduced(mq.matches);
-    try {
-      if (sessionStorage.getItem(STORAGE_KEY) === "1") {
-        setEntered(true);
-      }
-    } catch {
-      /* ignore */
-    }
-    setReady(true);
+    const fn = () => setReduced(mq.matches);
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
   }, []);
 
   const enter = useCallback(() => {
     if (entered || exiting) return;
-    try {
-      sessionStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      /* ignore */
-    }
     if (reduced) {
       setEntered(true);
       return;
@@ -54,13 +45,8 @@ export function LandingExperience() {
     return () => window.removeEventListener("keydown", onKey);
   }, [enter, entered]);
 
-  if (!ready) {
-    return <div className="fixed inset-0 bg-black" aria-hidden />;
-  }
-
   return (
     <div className="fixed inset-0 bg-black">
-      {/* Graph layer always under intro once ready */}
       {(entered || exiting) && <ObsidianGraphFull />}
 
       {!entered && (
@@ -87,7 +73,7 @@ export function LandingExperience() {
             Indian Data Guide
           </h1>
           <p className="mt-4 max-w-md px-6 text-center text-sm text-neutral-500">
-            A map of India&apos;s surveys and data portals
+            A map of India&apos;s surveys, academic archives, and community data
           </p>
           <p className="mt-10 font-mono text-[11px] uppercase tracking-[0.25em] text-violet-400/90">
             Click to enter the graph

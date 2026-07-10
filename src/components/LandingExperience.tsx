@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MousePointerClick } from "lucide-react";
 
-/** Stock cinematic India footage (YouTube embed — not rehosted). */
-const YT_ID = "tcxDfvMRjZI";
-const YT_EMBED = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${YT_ID}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0`;
+/** Served from public/ (copied from content/). Respects GitHub Pages basePath. */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "/guidetoindiandata";
+const LANDING_VIDEO = `${BASE}/videos/indian-street-market-background-web-1080p-muted.mp4`;
 
 /**
  * Landing only: full-viewport cinematic gate.
@@ -15,8 +15,9 @@ const YT_EMBED = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&contr
  */
 export function LandingExperience() {
   const router = useRouter();
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [reduced, setReduced] = useState(false);
-  const [ytReady, setYtReady] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const [phase, setPhase] = useState<"idle" | "zooming">("idle");
 
   useEffect(() => {
@@ -27,13 +28,25 @@ export function LandingExperience() {
     return () => mq.removeEventListener("change", fn);
   }, []);
 
+  // Autoplay muted loop (file is already muted); retry play if browser blocks briefly
   useEffect(() => {
     if (reduced) return;
-    const t = window.setTimeout(() => setYtReady(true), 600);
-    return () => window.clearTimeout(t);
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = true;
+    el.defaultMuted = true;
+    el.playsInline = true;
+    const tryPlay = () => {
+      void el.play().then(() => setVideoReady(true)).catch(() => {
+        // Still show first frame if autoplay fails
+        setVideoReady(true);
+      });
+    };
+    if (el.readyState >= 2) tryPlay();
+    else el.addEventListener("loadeddata", tryPlay, { once: true });
+    return () => el.removeEventListener("loadeddata", tryPlay);
   }, [reduced]);
 
-  // Prefetch map for snappy transition
   useEffect(() => {
     router.prefetch("/map");
   }, [router]);
@@ -84,7 +97,6 @@ export function LandingExperience() {
         }`}
         aria-hidden
       >
-        {/* Simple star dust during zoom */}
         {Array.from({ length: 48 }).map((_, i) => (
           <span
             key={i}
@@ -119,26 +131,27 @@ export function LandingExperience() {
             : "transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.75s ease-out, filter 0.75s ease-out",
         }}
       >
-        {/* Video layer */}
+        {/* Local video background */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {!reduced && (
             <div
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                ytReady ? "opacity-100" : "opacity-0"
+              className={`absolute inset-0 overflow-hidden transition-opacity duration-1000 ${
+                videoReady ? "opacity-100" : "opacity-0"
               }`}
             >
-              <iframe
-                title="India cinematic stock footage"
-                src={YT_EMBED}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-0"
+              <video
+                ref={videoRef}
+                className="absolute left-1/2 top-1/2 min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
                 style={{
                   width: "max(100vw, 177.78vh)",
                   height: "max(100vh, 56.25vw)",
-                  pointerEvents: "none",
                 }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen={false}
-                loading="eager"
+                src={LANDING_VIDEO}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
               />
             </div>
           )}
@@ -152,8 +165,8 @@ export function LandingExperience() {
                   linear-gradient(180deg, #000 0%, #0c0c0c 55%, #000 100%)
                 `
                 : `
-                  linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.42) 40%, rgba(0,0,0,0.88) 100%),
-                  linear-gradient(105deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 100%)
+                  linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.38) 42%, rgba(0,0,0,0.82) 100%),
+                  linear-gradient(105deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.55) 100%)
                 `,
             }}
           />
@@ -161,7 +174,7 @@ export function LandingExperience() {
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at center, transparent 32%, rgba(0,0,0,0.72) 100%)",
+                "radial-gradient(ellipse at center, transparent 36%, rgba(0,0,0,0.68) 100%)",
             }}
           />
         </div>
@@ -221,7 +234,6 @@ export function LandingExperience() {
         </div>
       </button>
 
-      {/* Screen-reader / non-JS fallback */}
       <div className="sr-only">
         <Link href="/map">Open solar system map</Link>
       </div>

@@ -183,10 +183,6 @@ export function LandingExperience({ stats }: Props) {
             </Button>
           </nav>
         </div>
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#C4A574]/40 to-transparent opacity-60"
-          aria-hidden
-        />
       </header>
 
       {/* ── Hero: full first screen including stats ───── */}

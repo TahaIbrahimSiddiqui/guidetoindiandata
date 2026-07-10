@@ -14,12 +14,10 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
+/** Two primary destinations: landing + solar map. Dataset pages keep this chrome. */
 const nav = [
-  { href: "/series", label: "Series" },
-  { href: "/academic", label: "Academic" },
-  { href: "/explore", label: "Explore" },
-  { href: "/clusters", label: "Themes" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Landing" },
+  { href: "/map", label: "Map" },
 ];
 
 export function SiteHeader() {
@@ -47,7 +45,10 @@ export function SiteHeader() {
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
           {nav.map((item) => {
             const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
@@ -72,64 +73,57 @@ export function SiteHeader() {
           })}
           <Button
             asChild
-            variant="outline"
             size="sm"
-            className="ml-3 h-9 border-foreground/25 bg-transparent px-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground hover:border-foreground hover:bg-foreground hover:text-background"
+            className="ml-3 h-9 bg-primary px-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary-foreground hover:bg-primary/90"
           >
-            <Link href="/series/nfhs">NFHS</Link>
+            <Link href="/map">Solar map</Link>
           </Button>
         </nav>
 
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="border-border md:hidden"
-              aria-label="Open menu"
-            >
-              <Menu className="size-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side="right"
-            className="border-border bg-sidebar text-sidebar-foreground"
-          >
-            <SheetHeader>
-              <SheetTitle className="font-display text-left text-foreground">
-                Menu
-              </SheetTitle>
-            </SheetHeader>
-            <nav className="mt-4 flex flex-col gap-1 px-2" aria-label="Mobile">
-              {nav.map((item) => {
-                const active =
-                  pathname === item.href ||
-                  pathname.startsWith(`${item.href}/`);
-                return (
+        <div className="flex items-center gap-2 md:hidden">
+          <Button asChild size="sm" className="h-9 text-[10px] uppercase tracking-[0.12em]">
+            <Link href="/map">Map</Link>
+          </Button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-11"
+                aria-label="Open menu"
+              >
+                <Menu className="size-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[min(100%,20rem)]">
+              <SheetHeader>
+                <SheetTitle className="font-display text-left">
+                  Navigate
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="mt-8 flex flex-col gap-1" aria-label="Mobile">
+                {nav.map((item) => (
                   <SheetClose asChild key={item.href}>
                     <Link
                       href={item.href}
-                      aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "rounded-md px-3 py-3 text-xs font-medium uppercase tracking-[0.16em] transition-colors",
-                        active
-                          ? "bg-accent text-accent-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                      )}
+                      className="inline-flex min-h-12 items-center rounded-lg px-3 text-sm font-medium text-foreground hover:bg-muted"
                     >
                       {item.label}
                     </Link>
                   </SheetClose>
-                );
-              })}
-              <SheetClose asChild>
-                <Button asChild className="mt-4 w-full uppercase tracking-[0.14em]">
-                  <Link href="/series/nfhs">Open NFHS series</Link>
-                </Button>
-              </SheetClose>
-            </nav>
-          </SheetContent>
-        </Sheet>
+                ))}
+                <SheetClose asChild>
+                  <Link
+                    href="/map"
+                    className="mt-4 inline-flex min-h-12 items-center justify-center rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground"
+                  >
+                    Open solar map
+                  </Link>
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

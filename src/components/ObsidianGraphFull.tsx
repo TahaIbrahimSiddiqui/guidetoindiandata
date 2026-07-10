@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -126,8 +125,11 @@ function homeId(n: GraphNodeDef): string | undefined {
  */
 export function ObsidianGraphFull({
   embedded = false,
+  showChrome = true,
 }: {
   embedded?: boolean;
+  /** Top HUD chrome (title + external nav). Off when MapExperience owns chrome. */
+  showChrome?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -356,10 +358,14 @@ export function ObsidianGraphFull({
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelectedId(null);
+      if (e.key === "Enter" && selectedRef.current) {
+        const n = stateRef.current?.byId.get(selectedRef.current);
+        if (n?.kind === "source" && n.href) router.push(n.href);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -916,62 +922,67 @@ export function ObsidianGraphFull({
         onClick={onClick}
       />
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-4 p-4 sm:p-6">
-        <div className="pointer-events-auto max-w-md rounded-xl border border-white/[0.08] bg-black/60 px-4 py-3 backdrop-blur-md">
-          {!embedded && (
-            <div className="mb-2 flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]" />
-              <p className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-                Indian Data Guide
-                <span className="align-super text-[0.65em] text-[#C4A574]/80">
-                  ®
-                </span>
-              </p>
-            </div>
-          )}
-          <p className="text-xs leading-relaxed text-[#C8C9BC]/90">
-            {selectedNode
-              ? selectedNode.kind === "theme"
-                ? `${selectedNode.label} sun — ${homeOrbitCount} home orbiters · ${focusedSources} linked (dashed = visit from another orbit)`
-                : `${selectedNode.label} · home: ${selectedNode.homeThemeId ?? selectedNode.themeIds[0] ?? "—"} · double-click to open`
-              : "Each theme is a sun. Datasets revolve around their home theme — click a sun to light every linked source."}
-          </p>
-          {selectedNode?.kind === "source" && selectedNode.href && (
-            <button
-              type="button"
-              className="mt-3 min-h-11 border border-[#F3E4C9]/30 bg-black/40 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F3E4C9] transition hover:bg-[#F3E4C9] hover:text-black"
-              onClick={() => router.push(selectedNode.href!)}
-            >
-              Open {selectedNode.label} →
-            </button>
-          )}
-        </div>
-        {!embedded && (
-          <nav
-            className="pointer-events-auto flex flex-wrap justify-end gap-3 rounded-xl border border-white/[0.08] bg-black/55 px-3 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-[#C8C9BC] backdrop-blur-md sm:gap-5"
-            aria-label="Universe graph navigation"
-          >
-            {[
-              { href: "/academic", label: "Academic" },
-              { href: "/series", label: "Series" },
-              { href: "/explore", label: "Explore" },
-              { href: "/about", label: "About" },
-            ].map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="inline-flex min-h-11 items-center link-underline hover:text-[#F3E4C9]"
+      {showChrome && (
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-4 p-4 sm:p-6">
+          <div className="pointer-events-auto max-w-md rounded-xl border border-white/[0.08] bg-black/60 px-4 py-3 backdrop-blur-md">
+            {!embedded && (
+              <div className="mb-2 flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]" />
+                <p className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
+                  Indian Data Guide
+                  <span className="align-super text-[0.65em] text-[#C4A574]/80">
+                    ®
+                  </span>
+                </p>
+              </div>
+            )}
+            <p className="text-xs leading-relaxed text-[#C8C9BC]/90">
+              {selectedNode
+                ? selectedNode.kind === "theme"
+                  ? `${selectedNode.label} sun — ${homeOrbitCount} home orbiters · ${focusedSources} linked`
+                  : `${selectedNode.label} · double-click or Open →`
+                : "Click a theme sun, then a dataset."}
+            </p>
+            {selectedNode?.kind === "source" && selectedNode.href && (
+              <button
+                type="button"
+                className="mt-3 min-h-11 border border-[#F3E4C9]/30 bg-black/40 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F3E4C9] transition hover:bg-[#F3E4C9] hover:text-black"
+                onClick={() => router.push(selectedNode.href!)}
               >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-        )}
-      </div>
+                Open {selectedNode.label} →
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
-      <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 px-4 text-center text-[10px] uppercase tracking-[0.18em] text-white/25">
-        Orbit home theme · click sun to highlight links · Esc clears
-      </p>
+      {/* Selection HUD when parent owns chrome (map page) */}
+      {!showChrome && selectedNode && (
+        <div className="pointer-events-none absolute right-4 top-20 z-20 sm:right-5 sm:top-20">
+          <div className="pointer-events-auto max-w-xs rounded-xl border border-white/[0.1] bg-black/70 px-4 py-3 backdrop-blur-md">
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#C4A574]">
+              {selectedNode.kind === "theme" ? "Theme" : "Dataset"}
+            </p>
+            <p className="mt-1 font-display text-base font-semibold text-[#F3E4C9]">
+              {selectedNode.label}
+            </p>
+            <p className="mt-1.5 text-xs leading-relaxed text-[#C8C9BC]/90">
+              {selectedNode.kind === "theme"
+                ? `${homeOrbitCount} home · ${focusedSources} linked — pick a node`
+                : "Double-click or open for full record"}
+            </p>
+            {selectedNode.kind === "source" && selectedNode.href && (
+              <button
+                type="button"
+                className="mt-3 min-h-11 w-full rounded-lg border border-[#F3E4C9]/35 bg-[#8B5E3C] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#a06d45]"
+                onClick={() => router.push(selectedNode.href!)}
+              >
+                Open full page →
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,65 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ArrowDown, Database, Network, BookOpen } from "lucide-react";
-import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
-import { ScrollStory } from "@/components/ScrollStory";
-import { Button } from "@/components/ui/button";
-import { domainClusters } from "@/lib/graphData";
-
-const STORY_SLIDES = [
-  {
-    kicker: "01",
-    title: "National data,\nmapped for research.",
-    subtitle:
-      "A public catalog of India’s statistical and administrative systems.",
-  },
-  {
-    kicker: "02",
-    title: "Honest access.\nNot just links.",
-    subtitle:
-      "Open download, dashboard, registration, DUA, request-only, paid—labeled as they really are.",
-  },
-  {
-    kicker: "03",
-    title: "Guides and variables\non every record.",
-    subtitle:
-      "Codebooks, portals, and representative field lists so you know what you’re getting.",
-  },
-  {
-    kicker: "04",
-    title: "Datasets orbit\ntheir themes.",
-    subtitle:
-      "Government surveys, academic archives, and community sources—linked for triangulation.",
-  },
-  {
-    kicker: "05",
-    title: "Maintained for\nthe public good.",
-    subtitle: "By Taha Ibrahim Siddiqui. Independent—not an official ministry portal.",
-  },
-];
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { MousePointerClick } from "lucide-react";
 
 /** Stock cinematic India footage (YouTube embed — not rehosted). */
 const YT_ID = "tcxDfvMRjZI";
 const YT_EMBED = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${YT_ID}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0`;
 
-const NAV = [
-  { href: "/explore", label: "Explore" },
-  { href: "/series", label: "Series" },
-  { href: "/academic", label: "Academic" },
-  { href: "/about", label: "About" },
-];
-
 /**
- * Scroll-first landing (boilerlab-style):
- * hero video → floating universe → catalog CTAs.
- * No click-to-enter gate.
+ * Landing only: full-viewport cinematic gate.
+ * Click / keyboard anywhere → zoom-out → solar system map (/map).
  */
 export function LandingExperience() {
+  const router = useRouter();
   const [reduced, setReduced] = useState(false);
   const [ytReady, setYtReady] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [phase, setPhase] = useState<"idle" | "zooming">("idle");
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -71,76 +29,98 @@ export function LandingExperience() {
 
   useEffect(() => {
     if (reduced) return;
-    const t = window.setTimeout(() => setYtReady(true), 700);
+    const t = window.setTimeout(() => setYtReady(true), 600);
     return () => window.clearTimeout(t);
   }, [reduced]);
 
+  // Prefetch map for snappy transition
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    router.prefetch("/map");
+  }, [router]);
+
+  const enterMap = useCallback(() => {
+    if (phase === "zooming") return;
+    if (reduced) {
+      router.push("/map");
+      return;
+    }
+    setPhase("zooming");
+    window.setTimeout(() => {
+      router.push("/map");
+    }, 920);
+  }, [phase, reduced, router]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault();
+        enterMap();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [enterMap]);
+
+  const zooming = phase === "zooming";
 
   return (
-    <div className="min-h-dvh bg-black text-[#F3E4C9]">
-      {/* Sticky chrome */}
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "border-b border-white/[0.07] bg-black/80 backdrop-blur-xl"
-            : "bg-transparent"
+    <div className="relative min-h-dvh overflow-hidden bg-black text-[#F3E4C9]">
+      {/* Deep space underlay — revealed as landing zooms out */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden
+        style={{
+          background: `
+            radial-gradient(ellipse 70% 50% at 50% 45%, rgba(40, 28, 18, 0.55), transparent 60%),
+            radial-gradient(circle at 20% 30%, rgba(196,165,116,0.06), transparent 35%),
+            radial-gradient(circle at 80% 70%, rgba(80,60,120,0.08), transparent 40%),
+            #000
+          `,
+        }}
+      />
+      <div
+        className={`pointer-events-none absolute inset-0 transition-opacity duration-700 ${
+          zooming ? "opacity-100" : "opacity-0"
         }`}
+        aria-hidden
       >
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span
-              className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]"
-              aria-hidden
-            />
-            <span className="font-display text-sm font-semibold tracking-tight">
-              Indian Data Guide
-              <span className="align-super text-[0.65em] text-[#C4A574]/85">
-                ®
-              </span>
-            </span>
-          </Link>
-          <nav
-            className="hidden items-center gap-1 md:flex"
-            aria-label="Main"
-          >
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="inline-flex min-h-11 items-center rounded-md px-3 text-[11px] font-medium uppercase tracking-[0.16em] text-[#C8C9BC] transition hover:text-[#F3E4C9]"
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Button
-              asChild
-              size="sm"
-              className="ml-3 h-10 bg-[#8B5E3C] text-white hover:bg-[#a06d45]"
-            >
-              <Link href="/explore">Open catalog</Link>
-            </Button>
-          </nav>
-          <Link
-            href="/explore"
-            className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C4A574] md:hidden"
-          >
-            Catalog →
-          </Link>
-        </div>
-      </header>
+        {/* Simple star dust during zoom */}
+        {Array.from({ length: 48 }).map((_, i) => (
+          <span
+            key={i}
+            className="absolute rounded-full bg-[#F3E4C9]"
+            style={{
+              left: `${(i * 37) % 100}%`,
+              top: `${(i * 53) % 100}%`,
+              width: i % 5 === 0 ? 2 : 1,
+              height: i % 5 === 0 ? 2 : 1,
+              opacity: 0.15 + (i % 7) * 0.08,
+            }}
+          />
+        ))}
+      </div>
 
-      {/* ── 1. Hero (full viewport) ───────────────────────── */}
-      <section className="relative flex min-h-dvh flex-col overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-0"
-          aria-hidden
-        >
+      {/* Clickable stage */}
+      <button
+        type="button"
+        onClick={enterMap}
+        disabled={zooming}
+        aria-label="Enter the solar system map"
+        className={`relative z-10 flex min-h-dvh w-full cursor-pointer flex-col border-0 bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-[#C4A574]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+          zooming ? "pointer-events-none" : ""
+        }`}
+        style={{
+          transformOrigin: "50% 45%",
+          transform: zooming ? "scale(0.28)" : "scale(1)",
+          opacity: zooming ? 0 : 1,
+          filter: zooming ? "blur(6px)" : "blur(0)",
+          transition: reduced
+            ? "none"
+            : "transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.75s ease-out, filter 0.75s ease-out",
+        }}
+      >
+        {/* Video layer */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
           {!reduced && (
             <div
               className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -186,9 +166,29 @@ export function LandingExperience() {
           />
         </div>
 
-        <div className="relative z-10 flex flex-1 flex-col justify-center px-5 pb-24 pt-28 sm:px-8 lg:px-12">
+        {/* Brand strip */}
+        <div className="relative z-10 flex h-16 items-center justify-between px-5 sm:px-8 lg:px-12">
+          <span className="flex items-center gap-2.5">
+            <span
+              className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]"
+              aria-hidden
+            />
+            <span className="font-display text-sm font-semibold tracking-tight">
+              Indian Data Guide
+              <span className="align-super text-[0.65em] text-[#C4A574]/85">
+                ®
+              </span>
+            </span>
+          </span>
+          <span className="hidden text-[10px] font-medium uppercase tracking-[0.18em] text-[#C8C9BC]/80 sm:inline">
+            Public research catalog
+          </span>
+        </div>
+
+        {/* Hero copy */}
+        <div className="relative z-10 flex flex-1 flex-col justify-center px-5 pb-28 pt-8 sm:px-8 lg:px-12">
           <div className="mx-auto w-full max-w-[1400px]">
-            <p className="eyebrow mb-6 text-[#C8C9BC] drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+            <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[#C8C9BC] drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
               India · Data · Discovery
             </p>
             <h1 className="font-display max-w-4xl text-[clamp(2.75rem,8vw,6rem)] font-bold leading-[1.06] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
@@ -198,171 +198,42 @@ export function LandingExperience() {
               <br />
               research.
             </h1>
-            <p className="mt-7 max-w-xl text-base leading-relaxed text-[#E4E2D4]/95 drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] sm:text-lg">
-              Honest access labels, usage guides, and variable tables—across
-              government surveys, academic archives, and community sources.
+            <p className="mt-7 max-w-lg text-base leading-relaxed text-[#E4E2D4]/95 drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] sm:text-lg">
+              Themes are suns. Datasets orbit them. Click a sun, then a
+              dataset—open the record for guides, variables, and access truth.
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="h-12 bg-[#8B5E3C] px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white hover:bg-[#a06d45]"
-              >
-                <Link href="/explore">Browse catalog</Link>
-              </Button>
-              <a
-                href="#story"
-                className="inline-flex min-h-12 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] transition hover:text-[#F3E4C9]"
-              >
-                Scroll to explore
-                <ArrowDown className="size-4 animate-bounce" aria-hidden />
-              </a>
-            </div>
           </div>
         </div>
 
-        <a
-          href="#story"
-          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/45 transition hover:text-white/70"
-        >
-          Scroll down to explore
-          <ArrowDown className="size-4" aria-hidden />
-        </a>
-      </section>
+        {/* Affordance */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-10 z-20 flex flex-col items-center gap-3 px-4">
+          <span
+            className={`inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#F3E4C9] backdrop-blur-md transition ${
+              zooming ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <MousePointerClick className="size-4 text-[#C4A574]" aria-hidden />
+            Click anywhere to enter the map
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.18em] text-white/35">
+            Enter · Space · or click
+          </span>
+        </div>
+      </button>
 
-      {/* ── 2. Scroll story (boilerlab expand → vanish) ───── */}
-      <div id="story">
-        <ScrollStory slides={STORY_SLIDES} vhPerSlide={1.2} />
+      {/* Screen-reader / non-JS fallback */}
+      <div className="sr-only">
+        <Link href="/map">Open solar system map</Link>
       </div>
 
-      {/* ── 3. Floating universe (full viewport) ──────────── */}
-      <section
-        id="universe"
-        className="relative h-[100dvh] w-full border-t border-white/[0.06] bg-black"
-      >
-        <div className="absolute left-5 top-5 z-20 sm:left-8 sm:top-6">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
-            Universe
-          </p>
-          <h2 className="font-display mt-1 text-2xl font-semibold text-[#F3EAD4] sm:text-3xl">
-            Floating data map
-          </h2>
-        </div>
-        <ObsidianGraphFull embedded />
-      </section>
-
-      {/* ── 4. Proof / catalog bridge ─────────────────────── */}
-      <section className="relative border-t border-white/[0.06] bg-[#030303] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
-        <div className="mx-auto max-w-[1400px]">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
-            Catalog
-          </p>
-          <h2 className="font-display mt-3 max-w-2xl text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-tight text-[#F3E4C9]">
-            Built for researchers who need truth about access friction.
-          </h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-[#C8C9BC]/90">
-            Every record includes best-for guidance, limitations, usage guides,
-            and representative variables—not just a dump of portal links.
-          </p>
-
-          <div className="mt-14 grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                icon: Database,
-                label: "111+",
-                blurb: "Dataset records across gov, academic & GitHub layers",
-              },
-              {
-                icon: Network,
-                label: String(domainClusters.length),
-                blurb: "Each theme is a sun — sources revolve around home, multi-link on click",
-              },
-              {
-                icon: BookOpen,
-                label: "Guides",
-                blurb: "Codebooks, portals, and tutorials on every page",
-              },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent p-6"
-              >
-                <item.icon
-                  className="size-5 text-[#C4A574]"
-                  aria-hidden
-                />
-                <p className="font-display mt-4 text-3xl font-semibold text-[#F3E4C9]">
-                  {item.label}
-                </p>
-                <p className="mt-2 text-sm leading-relaxed text-[#C8C9BC]/85">
-                  {item.blurb}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 flex flex-wrap gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="h-12 bg-[#8B5E3C] px-6 uppercase tracking-[0.14em] text-white hover:bg-[#a06d45]"
-            >
-              <Link href="/explore">Explore datasets</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="h-12 border-white/15 bg-transparent uppercase tracking-[0.14em] text-[#F3E4C9] hover:bg-white/5"
-            >
-              <Link href="/series">Browse series</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="h-12 border-white/15 bg-transparent uppercase tracking-[0.14em] text-[#F3E4C9] hover:bg-white/5"
-            >
-              <Link href="/academic">Academic & GitHub</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4. Footer ─────────────────────────────────────── */}
-      <footer className="border-t border-white/[0.06] bg-black px-5 py-12 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]" />
-              <p className="font-display text-lg font-semibold text-[#F3E4C9]">
-                Indian Data Guide®
-              </p>
-            </div>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/45">
-              Not an official government portal. Always verify current access
-              rules on the host site.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.14em] text-white/40">
-            {NAV.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="hover:text-[#F3E4C9]"
-              >
-                {l.label}
-              </Link>
-            ))}
-            <Link href="/privacy" className="hover:text-[#F3E4C9]">
-              Privacy
-            </Link>
-          </div>
-        </div>
-        <p className="mx-auto mt-10 max-w-[1400px] text-[10px] uppercase tracking-[0.14em] text-white/25">
-          © {new Date().getFullYear()} · Stock video via YouTube embed
+      {zooming && (
+        <p
+          className="pointer-events-none absolute inset-x-0 bottom-12 z-30 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]"
+          aria-live="polite"
+        >
+          Entering the map…
         </p>
-      </footer>
+      )}
     </div>
   );
 }

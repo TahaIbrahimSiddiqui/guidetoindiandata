@@ -2,21 +2,17 @@ import Link from "next/link";
 
 const footerNav = [
   {
-    title: "Catalog",
+    title: "Main",
     links: [
-      { href: "/explore", label: "Explore datasets" },
-      { href: "/series", label: "Series timelines" },
-      { href: "/clusters", label: "Themes" },
-      { href: "/academic", label: "Academic & GitHub" },
+      { href: "/", label: "Landing" },
+      { href: "/map", label: "Solar system map" },
     ],
   },
   {
-    title: "Guide",
+    title: "Legal",
     links: [
-      { href: "/about", label: "About" },
       { href: "/privacy", label: "Privacy & ads" },
-      { href: "/series/nfhs", label: "Start with NFHS" },
-      { href: "/series/plfs", label: "Start with PLFS" },
+      { href: "/about", label: "About the maintainer" },
     ],
   },
 ];

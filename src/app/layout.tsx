@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: "%s · Indian Data Guide",
   },
   description:
-    "Discover Indian datasets across health, labour, agriculture, elections, climate, academic archives, and community GitHub sources.",
+    "India’s research data, mapped as a solar system—click a theme sun, open a dataset, and get honest access, guides, and variables.",
 };
 
 export default function RootLayout({

@@ -36,16 +36,24 @@ export default async function SeriesDetailPage({ params }: Props) {
         className="mb-3 flex flex-wrap items-center gap-2 text-sm text-obsidian-muted"
       >
         <Link
-          href="/series"
+          href="/map"
           className="transition-colors hover:text-obsidian-purple-bright"
         >
-          Series
+          Map
         </Link>
         <span aria-hidden className="text-obsidian-muted/50">
           /
         </span>
         <span className="text-obsidian-text">{series.shortTitle}</span>
       </nav>
+      <div className="mb-6">
+        <Link
+          href="/map"
+          className="inline-flex min-h-10 items-center text-xs font-medium uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
+        >
+          ← Back to solar map
+        </Link>
+      </div>
 
       <header className="border-b border-obsidian-border pb-8">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-obsidian-purple-bright">

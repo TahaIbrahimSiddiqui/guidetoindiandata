@@ -74,10 +74,10 @@ export default async function DatasetPage({ params }: Props) {
         className="mb-3 flex flex-wrap items-center gap-2 text-sm text-obsidian-muted"
       >
         <Link
-          href="/explore"
+          href="/map"
           className="transition-colors hover:text-obsidian-purple-bright"
         >
-          Explore
+          Map
         </Link>
         <span aria-hidden className="text-obsidian-muted/50">
           /
@@ -98,22 +98,28 @@ export default async function DatasetPage({ params }: Props) {
             </span>
           </>
         ) : (
-          cluster && (
-            <>
-              <Link
-                href={`/explore?cluster=${cluster.id}`}
-                className="transition-colors hover:text-obsidian-purple-bright"
-              >
-                {cluster.shortName}
-              </Link>
-              <span aria-hidden className="text-obsidian-muted/50">
-                /
-              </span>
-              <span className="text-obsidian-text">{dataset.shortTitle}</span>
-            </>
-          )
+          <>
+            {cluster && (
+              <>
+                <span className="text-obsidian-muted">{cluster.shortName}</span>
+                <span aria-hidden className="text-obsidian-muted/50">
+                  /
+                </span>
+              </>
+            )}
+            <span className="text-obsidian-text">{dataset.shortTitle}</span>
+          </>
         )}
       </nav>
+
+      <div className="mb-6">
+        <Link
+          href="/map"
+          className="inline-flex min-h-10 items-center gap-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
+        >
+          ← Back to solar map
+        </Link>
+      </div>
 
       {/* Header */}
       <header className="border-b border-obsidian-border pb-8">

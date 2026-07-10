@@ -132,8 +132,8 @@ export function LandingExperience({ stats }: Props) {
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (phase === "zooming") return;
-      const nearTop = e.clientY < 72;
-      if (nearTop) {
+      const nearBottom = e.clientY > window.innerHeight - 80;
+      if (nearBottom) {
         if (topHoverTimer.current == null) {
           topHoverTimer.current = window.setTimeout(() => {
             topHoverTimer.current = null;
@@ -157,7 +157,8 @@ export function LandingExperience({ stats }: Props) {
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (phase === "zooming") return;
-      if (window.scrollY <= 8 && e.deltaY < -12) {
+      // Scroll down on the first screen enters the map
+      if (window.scrollY <= 8 && e.deltaY > 12) {
         e.preventDefault();
         enterMap();
       }

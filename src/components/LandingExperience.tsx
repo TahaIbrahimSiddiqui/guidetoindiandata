@@ -18,7 +18,6 @@ const LANDING_VIDEO = `${BASE}/videos/indian-street-market-background-web-1080p-
 /** Rotating affordance lines — any of these enters the solar map. */
 const ACTION_LINES = [
   "Scroll down",
-  "Move your cursor toward the bottom",
   "Click anywhere on the hero",
   "Press Enter or Space",
   "Use the button below",
@@ -35,7 +34,6 @@ type Props = {
 export function LandingExperience({ stats }: Props) {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const topHoverTimer = useRef<number | null>(null);
   const [reduced, setReduced] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [phase, setPhase] = useState<"idle" | "zooming">("idle");
@@ -129,35 +127,12 @@ export function LandingExperience({ stats }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [enterMap]);
 
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      if (phase === "zooming") return;
-      const nearBottom = e.clientY > window.innerHeight - 80;
-      if (nearBottom) {
-        if (topHoverTimer.current == null) {
-          topHoverTimer.current = window.setTimeout(() => {
-            topHoverTimer.current = null;
-            enterMap();
-          }, reduced ? 0 : 450);
-        }
-      } else if (topHoverTimer.current != null) {
-        window.clearTimeout(topHoverTimer.current);
-        topHoverTimer.current = null;
-      }
-    };
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      if (topHoverTimer.current != null) {
-        window.clearTimeout(topHoverTimer.current);
-      }
-    };
-  }, [enterMap, phase, reduced]);
-
+  // Wheel: scroll down opens the map. Scroll up does nothing (no transition).
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (phase === "zooming") return;
-      // Scroll down on the first screen enters the map
+      // Ignore scroll up and horizontal trackpad pans
+      if (e.deltaY <= 0) return;
       if (window.scrollY <= 8 && e.deltaY > 12) {
         e.preventDefault();
         enterMap();
@@ -419,7 +394,7 @@ export function LandingExperience({ stats }: Props) {
               {
                 n: "01",
                 t: "Open the solar map",
-                d: "Enter via the button, scroll down, a click on the hero, cursor toward the bottom, or keyboard.",
+                d: "Enter via the button, scroll down on the hero, a click on the hero, or keyboard. Scroll up does not open the map.",
               },
               {
                 n: "02",

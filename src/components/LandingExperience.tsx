@@ -155,18 +155,19 @@ export function LandingExperience() {
               />
             </div>
           )}
+          {/* Cover scrim — half the previous opacity so the video reads clearly */}
           <div
             className="absolute inset-0"
             style={{
               background: reduced
                 ? `
-                  radial-gradient(ellipse 80% 55% at 55% 35%, rgba(139,94,60,0.22), transparent 58%),
-                  radial-gradient(ellipse 50% 40% at 15% 85%, rgba(196,165,116,0.1), transparent 50%),
-                  linear-gradient(180deg, #000 0%, #0c0c0c 55%, #000 100%)
+                  radial-gradient(ellipse 80% 55% at 55% 35%, rgba(139,94,60,0.11), transparent 58%),
+                  radial-gradient(ellipse 50% 40% at 15% 85%, rgba(196,165,116,0.05), transparent 50%),
+                  linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(12,12,12,0.5) 55%, rgba(0,0,0,0.5) 100%)
                 `
                 : `
-                  linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.38) 42%, rgba(0,0,0,0.82) 100%),
-                  linear-gradient(105deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.55) 100%)
+                  linear-gradient(180deg, rgba(0,0,0,0.36) 0%, rgba(0,0,0,0.19) 42%, rgba(0,0,0,0.41) 100%),
+                  linear-gradient(105deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.28) 100%)
                 `,
             }}
           />
@@ -174,7 +175,7 @@ export function LandingExperience() {
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at center, transparent 36%, rgba(0,0,0,0.68) 100%)",
+                "radial-gradient(ellipse at center, transparent 36%, rgba(0,0,0,0.34) 100%)",
             }}
           />
         </div>
@@ -186,14 +187,14 @@ export function LandingExperience() {
               className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]"
               aria-hidden
             />
-            <span className="font-display text-sm font-semibold tracking-tight">
-              Indian Data Guide
+            <span className="font-display text-sm font-semibold tracking-tight drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]">
+              Guide to Indian Data
               <span className="align-super text-[0.65em] text-[#C4A574]/85">
                 ®
               </span>
             </span>
           </span>
-          <span className="hidden text-[10px] font-medium uppercase tracking-[0.18em] text-[#C8C9BC]/80 sm:inline">
+          <span className="hidden text-[10px] font-medium uppercase tracking-[0.18em] text-[#C8C9BC] drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)] sm:inline">
             Public research catalog
           </span>
         </div>
@@ -204,14 +205,12 @@ export function LandingExperience() {
             <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.22em] text-[#C8C9BC] drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
               India · Data · Discovery
             </p>
-            <h1 className="font-display max-w-4xl text-[clamp(2.75rem,8vw,6rem)] font-bold leading-[1.06] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
-              National data,
+            <h1 className="font-display max-w-5xl text-[clamp(2.5rem,7.5vw,5.5rem)] font-bold leading-[1.06] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)]">
+              Guide to
               <br />
-              mapped for
-              <br />
-              research.
+              Indian Data
             </h1>
-            <p className="mt-7 max-w-lg text-base leading-relaxed text-[#E4E2D4]/95 drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] sm:text-lg">
+            <p className="mt-7 max-w-lg text-base leading-relaxed text-[#E4E2D4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)] sm:text-lg">
               Themes are suns. Datasets orbit them. Click a sun, then a
               dataset—open the record for guides, variables, and access truth.
             </p>

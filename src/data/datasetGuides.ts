@@ -345,6 +345,90 @@ export const GUIDES_BY_SLUG: Record<string, GuideLink[]> = {
     g("District Census Handbooks (ORGI)", "https://censusindia.gov.in/", "report"),
     g("Village Directory / amenities tables", "https://censusindia.gov.in/", "codebook"),
   ],
+  "census-tables": [
+    g("Census tables portal (ORGI)", "https://censusindia.gov.in/census.website/data/census-tables", "portal"),
+    g("Census of India home", "https://censusindia.gov.in/", "official"),
+  ],
+  shrug: [
+    g("SHRUG / SHRID platform", "https://www.devdatalab.org/shrug", "portal"),
+    g("Development Data Lab — documentation & downloads", "https://www.devdatalab.org/shrug", "user-guide"),
+  ],
+  "secc-2011": [
+    g("SECC 2011 portal", "https://secc.dord.gov.in/", "portal"),
+    g("SECC public reports / query interface", "https://secc.dord.gov.in/", "official"),
+  ],
+  "economic-census": [
+    g("MoSPI Economic Census product page", "https://www.mospi.gov.in/themes/product/55-economic-census", "portal"),
+    g("MoSPI publications home", "https://www.mospi.gov.in/", "report"),
+  ],
+  "nss-microdata-catalog": [
+    ...MOSPI_NADA,
+    g("MoSPI NADA full catalog", "https://microdata.gov.in/NADA/index.php/catalog", "portal"),
+  ],
+  "ahs-eag": [
+    g("AHS ICPSR study page", "https://www.icpsr.umich.edu/web/DSDR/studies/38097", "portal"),
+    g("ICPSR data access instructions", "https://www.icpsr.umich.edu/web/pages/ICPSR/access/index.html", "user-guide"),
+  ],
+  "cnns-2016-18": [
+    g("NHM CNNS page", "https://nhm.gov.in/index1.php?lang=1&level=2&lid=713&sublinkid=1332", "portal"),
+    g("NHM / nutrition programme resources", "https://nhm.gov.in/", "report"),
+  ],
+  "mgnrega-mis": [
+    g("MGNREGA official portal", "https://nrega.nic.in/", "portal"),
+    g("NREGA public data / MIS entry points", "https://nrega.nic.in/", "user-guide"),
+  ],
+  lgd: [
+    g("Local Government Directory", "https://lgdirectory.gov.in/", "portal"),
+    g("LGD code download / search", "https://lgdirectory.gov.in/", "user-guide"),
+  ],
+  "egram-swaraj": [
+    g("eGramSwaraj portal", "https://www.egramswaraj.gov.in/welcome.do", "portal"),
+    g("MoPR eGramSwaraj overview", "https://www.egramswaraj.gov.in/", "official"),
+  ],
+  "pmay-g": [
+    g("PMAY-G home", "https://pmayg.dord.gov.in/netiayHome/Home.aspx", "portal"),
+    g("PMAY-G reports / progress", "https://pmayg.dord.gov.in/", "report"),
+  ],
+  "pmay-u": [
+    g("PMAY-U portal", "https://pmay-urban.gov.in/", "portal"),
+    g("PMAY-U progress / dashboards", "https://pmay-urban.gov.in/", "official"),
+  ],
+  "im-pds": [
+    g("IM-PDS sale / transaction dashboard", "https://impds.nic.in/sale", "portal"),
+    g("IM-PDS / food distribution systems", "https://impds.nic.in/", "official"),
+  ],
+  "poshan-tracker": [
+    g("Poshan Tracker", "https://www.poshantracker.in/", "portal"),
+    g("Poshan Abhiyaan / MoWCD resources", "https://wcd.nic.in/", "report"),
+  ],
+  "pm-poshan": [
+    g("PM-POSHAN portal", "https://pmposhan.education.gov.in/", "portal"),
+    g("School education / mid-day meal programme pages", "https://pmposhan.education.gov.in/", "official"),
+  ],
+  "epfo-payroll": [
+    g("EPFO estimate of payroll", "https://www.epfindia.gov.in/site_en/Estimate_of_Payroll.php", "portal"),
+    g("EPFO home / publications", "https://www.epfindia.gov.in/", "report"),
+  ],
+  vahan: [
+    g("VAHAN 4 dashboard", "https://vahan.parivahan.gov.in/vahan4dashboard/", "portal"),
+    g("Parivahan / MoRTH services", "https://parivahan.gov.in/", "official"),
+  ],
+  "trai-subscriptions": [
+    g("TRAI telecom subscriptions reports", "https://www.trai.gov.in/release-publication/reports/telecom-subscriptions-reports", "portal"),
+    g("TRAI release & publications", "https://www.trai.gov.in/release-publication/reports", "report"),
+  ],
+  "npci-upi": [
+    g("NPCI UPI product statistics", "https://www.npci.org.in/product/upi/product-statistics", "portal"),
+    g("NPCI product statistics hub", "https://www.npci.org.in/", "official"),
+  ],
+  pmjdy: [
+    g("PMJDY account statistics", "https://pmjdy.gov.in/account", "portal"),
+    g("PMJDY scheme home", "https://pmjdy.gov.in/", "official"),
+  ],
+  "epwrf-its": [
+    g("EPWRF India Time Series", "https://epwrfits.in/", "portal"),
+    g("EPWRFITS subscription / modules", "https://epwrfits.in/", "user-guide"),
+  ],
   "bhuvan-thematic": [
     g("Bhuvan geoportal", "https://bhuvan.nrsc.gov.in/", "portal"),
     g("Bhuvan data / OGC services help", "https://bhuvan.nrsc.gov.in/", "user-guide"),

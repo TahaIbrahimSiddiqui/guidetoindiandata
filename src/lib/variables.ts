@@ -1282,6 +1282,242 @@ const ENRICHED: Record<
       { name: "Rural boundaries", label: "Rural cadastral / settlement extents", group: "Boundaries" },
     ],
   },
+
+  // ── New catalog additions (research, welfare, digital) ──────────
+  shrug: {
+    source: "Development Data Lab SHRUG / SHRID documentation",
+    url: "https://www.devdatalab.org/shrug",
+    entries: [
+      { name: "SHRID", label: "Socioeconomic High-resolution Rural-Urban ID", group: "IDs" },
+      { name: "Village / town keys", label: "Place identifiers for merges", group: "Geography" },
+      { name: "Census-linked demographics", label: "Linked population and demographic fields", group: "Demography" },
+      { name: "Amenities layers", label: "Linked amenity / infrastructure fields", group: "Amenities" },
+      { name: "Admin crosswalks", label: "Boundary and code crosswalk tables", group: "Crosswalks" },
+    ],
+  },
+  "secc-2011": {
+    source: "SECC 2011 portal field descriptions",
+    url: "https://secc.dord.gov.in/",
+    entries: [
+      { name: "Deprivation criteria", label: "Household deprivation flags used for targeting", group: "Welfare" },
+      { name: "Assets / housing", label: "Asset and housing condition fields", group: "Assets" },
+      { name: "Landlessness", label: "Land ownership / landless markers", group: "Land" },
+      { name: "Social category", label: "Caste / social group fields", group: "Social" },
+      { name: "Inclusion / exclusion", label: "Automatic inclusion and exclusion criteria", group: "Targeting" },
+    ],
+  },
+  "economic-census": {
+    source: "MoSPI Economic Census product documentation",
+    url: "https://www.mospi.gov.in/themes/product/55-economic-census",
+    entries: [
+      { name: "Establishments", label: "Count of establishments by activity", group: "Structure" },
+      { name: "Employment", label: "Persons employed in establishments", group: "Labour" },
+      { name: "Ownership type", label: "Ownership / organization type", group: "Structure" },
+      { name: "Rural / urban", label: "Location type of establishment", group: "Geography" },
+      { name: "NIC codes", label: "Industry classification codes", group: "Industry" },
+    ],
+  },
+  "nss-microdata-catalog": {
+    source: "MoSPI NADA catalog collections and study metadata",
+    url: "https://microdata.gov.in/NADA/index.php/catalog",
+    entries: [
+      { name: "Study title / ID", label: "Catalog study identifier and title", group: "Catalog" },
+      { name: "Health / morbidity rounds", label: "NSS health-topic unit studies", group: "Topics" },
+      { name: "Education rounds", label: "Education and literacy survey files", group: "Topics" },
+      { name: "Migration modules", label: "Migration-related schedules where available", group: "Topics" },
+      { name: "Debt & investment", label: "AIDIS / debt-investment studies", group: "Topics" },
+      { name: "Housing / sanitation", label: "Housing condition and WASH-related rounds", group: "Topics" },
+      { name: "DDI metadata", label: "Variable and file documentation per study", group: "Docs" },
+    ],
+  },
+  "census-tables": {
+    source: "ORGI Census tables portal family index",
+    url: "https://censusindia.gov.in/census.website/data/census-tables",
+    entries: [
+      { name: "Religion tables", label: "Population by religion", group: "Demography" },
+      { name: "Language tables", label: "Mother tongue / language", group: "Demography" },
+      { name: "Migration tables", label: "Migrants by place of last residence / reason", group: "Migration" },
+      { name: "Workers tables", label: "Main/marginal workers and industrial categories", group: "Labour" },
+      { name: "SC/ST tables", label: "Scheduled Caste and Scheduled Tribe tables", group: "Social" },
+      { name: "Housing / houselisting", label: "Housing stock and houselisting amenities", group: "Housing" },
+    ],
+  },
+  "ahs-eag": {
+    source: "ICPSR AHS study 38097 documentation",
+    url: "https://www.icpsr.umich.edu/web/DSDR/studies/38097",
+    entries: [
+      { name: "District ID", label: "District geography for EAG states", group: "Geography" },
+      { name: "Fertility / mortality", label: "District vital indicators", group: "Demography" },
+      { name: "Maternal care", label: "ANC, delivery, and maternal service use", group: "Maternal" },
+      { name: "Child health", label: "Child health and immunization markers", group: "Child health" },
+      { name: "Household characteristics", label: "Household background fields", group: "Household" },
+    ],
+  },
+  "cnns-2016-18": {
+    source: "NHM CNNS reports and biomarker documentation",
+    url: "https://nhm.gov.in/index1.php?lang=1&level=2&lid=713&sublinkid=1332",
+    entries: [
+      { name: "Child anthropometry", label: "Height, weight, and growth indicators", group: "Nutrition" },
+      { name: "Adolescent nutrition", label: "Adolescent dietary and growth measures", group: "Nutrition" },
+      { name: "Micronutrients", label: "Micronutrient deficiency biomarkers", group: "Biomarkers" },
+      { name: "Dietary indicators", label: "Diet diversity / intake markers", group: "Diet" },
+      { name: "State estimates", label: "State-level survey estimates", group: "Geography" },
+    ],
+  },
+  "mgnrega-mis": {
+    source: "MGNREGA public MIS dashboard field language",
+    url: "https://nrega.nic.in/",
+    entries: [
+      { name: "Job cards", label: "Registered job cards / households", group: "Registration" },
+      { name: "Person-days", label: "Person-days of employment generated", group: "Employment" },
+      { name: "Wages paid", label: "Wage expenditure and payments", group: "Finance" },
+      { name: "Works", label: "Works sanctioned and completed", group: "Assets" },
+      { name: "GP / block / district", label: "Administrative geography keys", group: "Geography" },
+    ],
+  },
+  lgd: {
+    source: "Local Government Directory code documentation",
+    url: "https://lgdirectory.gov.in/",
+    entries: [
+      { name: "State / district codes", label: "Standard state and district LGD codes", group: "Codes" },
+      { name: "Block / sub-district", label: "Intermediate rural admin units", group: "Codes" },
+      { name: "GP / village codes", label: "Panchayat and village identifiers", group: "Codes" },
+      { name: "ULB codes", label: "Urban local body codes", group: "Codes" },
+      { name: "Hierarchy / status", label: "Parent links and active/inactive status", group: "Structure" },
+    ],
+  },
+  "egram-swaraj": {
+    source: "eGramSwaraj portal modules (plans, works, finance)",
+    url: "https://www.egramswaraj.gov.in/welcome.do",
+    entries: [
+      { name: "Panchayat plans", label: "GP development plans", group: "Planning" },
+      { name: "Works / assets", label: "Works and asset records", group: "Works" },
+      { name: "Finance / payments", label: "Panchayat finance and payment status", group: "Finance" },
+      { name: "Progress status", label: "Implementation progress markers", group: "Monitoring" },
+      { name: "GP identifiers", label: "Panchayat geography keys", group: "Geography" },
+    ],
+  },
+  "pmay-g": {
+    source: "PMAY-G dashboard progress indicators",
+    url: "https://pmayg.dord.gov.in/netiayHome/Home.aspx",
+    entries: [
+      { name: "Houses sanctioned", label: "Rural houses sanctioned", group: "Delivery" },
+      { name: "Houses completed", label: "Rural houses completed", group: "Delivery" },
+      { name: "Beneficiaries", label: "Beneficiary registration and lists", group: "Targeting" },
+      { name: "Instalments", label: "Payment instalment status", group: "Finance" },
+      { name: "Geo-tagged progress", label: "Stage-wise geo-tagged construction", group: "Monitoring" },
+    ],
+  },
+  "pmay-u": {
+    source: "PMAY-U portal progress indicators",
+    url: "https://pmay-urban.gov.in/",
+    entries: [
+      { name: "Sanctioned / grounded / completed", label: "Urban housing stage counts", group: "Delivery" },
+      { name: "Vertical / component", label: "Mission vertical breakdowns", group: "Structure" },
+      { name: "City / ULB", label: "Urban local body geography", group: "Geography" },
+      { name: "Central assistance", label: "Financial assistance indicators", group: "Finance" },
+      { name: "Beneficiaries", label: "Beneficiary coverage", group: "Targeting" },
+    ],
+  },
+  "im-pds": {
+    source: "IM-PDS dashboard sale / transaction views",
+    url: "https://impds.nic.in/sale",
+    entries: [
+      { name: "Ration cards", label: "Card counts and categories", group: "Cards" },
+      { name: "ePoS transactions", label: "Fair-price shop transaction volumes", group: "Delivery" },
+      { name: "Aadhaar seeding", label: "Aadhaar-linked card status", group: "KYC" },
+      { name: "Foodgrain distribution", label: "Commodity distribution quantities", group: "Commodities" },
+      { name: "ONORC portability", label: "Inter-state portability markers", group: "Portability" },
+    ],
+  },
+  "poshan-tracker": {
+    source: "Poshan Tracker public monitoring fields",
+    url: "https://www.poshantracker.in/",
+    entries: [
+      { name: "AWC service delivery", label: "Anganwadi centre service markers", group: "Delivery" },
+      { name: "Beneficiary coverage", label: "Registered and served beneficiaries", group: "Coverage" },
+      { name: "Growth monitoring", label: "Child growth monitoring indicators", group: "Nutrition" },
+      { name: "Supplementary nutrition", label: "SNP distribution / take-home ration markers", group: "Nutrition" },
+      { name: "Geography keys", label: "State / district / project hierarchy", group: "Geography" },
+    ],
+  },
+  "pm-poshan": {
+    source: "PM-POSHAN school meal monitoring indicators",
+    url: "https://pmposhan.education.gov.in/",
+    entries: [
+      { name: "Meals served", label: "Meals served counts", group: "Delivery" },
+      { name: "Enrolment covered", label: "Students covered under the scheme", group: "Coverage" },
+      { name: "School coverage", label: "Schools implementing PM-POSHAN", group: "Coverage" },
+      { name: "Foodgrain / funds", label: "Utilization of foodgrain and funds", group: "Finance" },
+      { name: "Monitoring flags", label: "Inspection and compliance markers", group: "Monitoring" },
+    ],
+  },
+  "epfo-payroll": {
+    source: "EPFO monthly payroll estimate tables",
+    url: "https://www.epfindia.gov.in/site_en/Estimate_of_Payroll.php",
+    entries: [
+      { name: "Payroll additions", label: "Net new EPFO subscribers / payroll estimates", group: "Employment" },
+      { name: "Age bands", label: "Age-group breakdown of new subscribers", group: "Demography" },
+      { name: "Gender", label: "Gender breakdown where published", group: "Demography" },
+      { name: "Month", label: "Reference month of estimate", group: "Time" },
+      { name: "Industry notes", label: "Sectoral notes in accompanying releases", group: "Industry" },
+    ],
+  },
+  vahan: {
+    source: "VAHAN 4 dashboard dimensions",
+    url: "https://vahan.parivahan.gov.in/vahan4dashboard/",
+    entries: [
+      { name: "Vehicle category", label: "Two-wheeler, car, commercial, etc.", group: "Vehicle" },
+      { name: "Fuel type", label: "Petrol, diesel, EV, CNG, etc.", group: "Vehicle" },
+      { name: "Maker / model", label: "Manufacturer and model fields", group: "Vehicle" },
+      { name: "Registrations", label: "Registration counts", group: "Volume" },
+      { name: "State / RTO", label: "State and RTO geography", group: "Geography" },
+    ],
+  },
+  "trai-subscriptions": {
+    source: "TRAI monthly telecom subscription report tables",
+    url: "https://www.trai.gov.in/release-publication/reports/telecom-subscriptions-reports",
+    entries: [
+      { name: "Wireless subscribers", label: "Mobile wireless subscription totals", group: "Subscriptions" },
+      { name: "Wireline subscribers", label: "Wireline subscription totals", group: "Subscriptions" },
+      { name: "Broadband", label: "Broadband subscriber counts", group: "Subscriptions" },
+      { name: "Tele-density", label: "Tele-density indicators", group: "Indicators" },
+      { name: "Service area", label: "Telecom circle / service-area geography", group: "Geography" },
+    ],
+  },
+  "npci-upi": {
+    source: "NPCI UPI product statistics tables",
+    url: "https://www.npci.org.in/product/upi/product-statistics",
+    entries: [
+      { name: "Volume", label: "Number of UPI transactions", group: "Payments" },
+      { name: "Value", label: "Value of UPI transactions (₹)", group: "Payments" },
+      { name: "Month", label: "Statistics reference month", group: "Time" },
+      { name: "Product breakdowns", label: "Published product / participant tables", group: "Structure" },
+      { name: "App / bank tables", label: "App and member bank statistics where listed", group: "Participants" },
+    ],
+  },
+  pmjdy: {
+    source: "PMJDY account statistics dashboard",
+    url: "https://pmjdy.gov.in/account",
+    entries: [
+      { name: "Accounts opened", label: "Cumulative and period account counts", group: "Accounts" },
+      { name: "Deposits", label: "Deposit balances under PMJDY", group: "Finance" },
+      { name: "Rural / urban", label: "Rural and urban account split", group: "Geography" },
+      { name: "Bank type", label: "Public / private / RRB / other bank-type split", group: "Structure" },
+      { name: "RuPay / DBT flags", label: "Card and benefit-transfer related indicators", group: "Services" },
+    ],
+  },
+  "epwrf-its": {
+    source: "EPWRFITS module catalogue (subscription product)",
+    url: "https://epwrfits.in/",
+    entries: [
+      { name: "National accounts modules", label: "Harmonized national accounts series", group: "Macro" },
+      { name: "Prices / money", label: "Price and monetary series", group: "Macro" },
+      { name: "Banking series", label: "Banking and financial sector series", group: "Finance" },
+      { name: "State domestic product", label: "State GSDP and related series", group: "States" },
+      { name: "Social sector series", label: "Selected social-sector time series", group: "Social" },
+    ],
+  },
 };
 
 function humanize(raw: string): string {

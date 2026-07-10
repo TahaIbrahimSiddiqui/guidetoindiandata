@@ -1,532 +1,454 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
-  buildInterlinkedGraph,
-  getFocusSet,
-  type GraphNodeDef,
-} from "@/lib/graphData";
+  ArrowUpRight,
+  Database,
+  Layers3,
+  Network,
+  Search,
+} from "lucide-react";
+import { buildInterlinkedGraph, type GraphNodeDef } from "@/lib/graphData";
 
-type SimNode = GraphNodeDef & {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  r: number;
-};
+const DEFAULT_THEME_ID = "t:population-demography";
+const SOURCE_NODE_POSITIONS = [
+  { x: 52, y: 14 },
+  { x: 69, y: 20 },
+  { x: 82, y: 34 },
+  { x: 78, y: 56 },
+  { x: 62, y: 72 },
+  { x: 43, y: 78 },
+  { x: 25, y: 64 },
+  { x: 18, y: 43 },
+  { x: 28, y: 24 },
+  { x: 50, y: 31 },
+  { x: 65, y: 42 },
+  { x: 54, y: 61 },
+  { x: 36, y: 54 },
+  { x: 38, y: 37 },
+  { x: 72, y: 76 },
+  { x: 20, y: 78 },
+  { x: 86, y: 16 },
+  { x: 12, y: 18 },
+];
 
-type SimEdge = { a: string; b: string; kind: string };
+function sourceLabel(node: GraphNodeDef) {
+  return node.label.length > 42 ? `${node.label.slice(0, 39)}...` : node.label;
+}
+
+function sourceRank(node: GraphNodeDef) {
+  const label = node.label.toLowerCase();
+  if (/census|nfhs|plfs|udise|imd|data\.gov|hmis|ncrb/.test(label)) return 0;
+  if (/survey|database|portal|catalog|collection/.test(label)) return 1;
+  if (/github|datameet|replication/.test(label)) return 3;
+  return 2;
+}
 
 export function ObsidianGraphFull() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const router = useRouter();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [hover, setHover] = useState<string | null>(null);
-  const [reduced, setReduced] = useState(false);
-  const [lastSourceClick, setLastSourceClick] = useState<{
-    id: string;
-    t: number;
-  } | null>(null);
-
   const graph = useMemo(() => buildInterlinkedGraph(), []);
-  const selectedRef = useRef<string | null>(null);
-  selectedRef.current = selectedId;
-
-  const stateRef = useRef<{
-    nodes: SimNode[];
-    edges: SimEdge[];
-    byId: Map<string, SimNode>;
-    w: number;
-    h: number;
-    raf: number;
-  } | null>(null);
-
-  const focusSet = useMemo(
-    () => getFocusSet(selectedId, graph.nodes, graph.edges),
-    [selectedId, graph]
+  const themes = useMemo(
+    () => graph.nodes.filter((node) => node.kind === "theme"),
+    [graph.nodes],
   );
-  const focusRef = useRef(focusSet);
-  focusRef.current = focusSet;
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const fn = () => setReduced(mq.matches);
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
-  }, []);
-
-  const initSim = useCallback(
-    (w: number, h: number) => {
-      const cx = w / 2;
-      const cy = h / 2;
-      // Themes near screen edge — full viewport use
-      const themeRing = Math.min(w, h) * 0.4;
-
-      const themes = graph.nodes.filter((n) => n.kind === "theme");
-      const sources = graph.nodes.filter((n) => n.kind === "source");
-
-      const nodes: SimNode[] = [];
-      const themePos = new Map<string, { x: number; y: number; angle: number }>();
-
-      themes.forEach((n, i) => {
-        const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
-        const x = cx + Math.cos(angle) * themeRing;
-        const y = cy + Math.sin(angle) * themeRing;
-        themePos.set(n.id, { x, y, angle });
-        nodes.push({
-          ...n,
-          x,
-          y,
-          vx: 0,
-          vy: 0,
-          r: 14,
-        });
-      });
-
-      // Place each source near its *primary* theme (first themeId)
-      // so NFHS sits by Health, not in the center cluster.
-      const byPrimary = new Map<string, GraphNodeDef[]>();
-      sources.forEach((n) => {
-        const primary = n.themeIds[0] ?? "data-catalogs";
-        const key = `t:${primary}`;
-        const list = byPrimary.get(key) ?? [];
-        list.push(n);
-        byPrimary.set(key, list);
-      });
-
-      byPrimary.forEach((list, themeKey) => {
-        const anchor = themePos.get(themeKey);
-        const baseAngle = anchor?.angle ?? 0;
-        const ax = anchor?.x ?? cx;
-        const ay = anchor?.y ?? cy;
-
-        list.forEach((n, j) => {
-          // Fan around the primary theme, slightly inward toward center
-          const spread =
-            list.length === 1
-              ? 0
-              : ((j / (list.length - 1)) - 0.5) * Math.min(1.1, 0.12 * list.length + 0.35);
-          const dist = 52 + (j % 4) * 18 + Math.random() * 10;
-          const a = baseAngle + Math.PI + spread; // sit inward from outer ring
-          const x = ax + Math.cos(a) * dist * 0.35 + Math.cos(baseAngle + spread) * dist * 0.55;
-          const y = ay + Math.sin(a) * dist * 0.35 + Math.sin(baseAngle + spread) * dist * 0.55;
-          nodes.push({
-            ...n,
-            x: Math.min(w - 20, Math.max(20, x)),
-            y: Math.min(h - 40, Math.max(48, y)),
-            vx: 0,
-            vy: 0,
-            r: 5,
-          });
-        });
-      });
-
-      const byId = new Map(nodes.map((n) => [n.id, n]));
-      const edges: SimEdge[] = graph.edges.map((e) => ({
-        a: e.a,
-        b: e.b,
-        kind: e.kind,
-      }));
-
-      return {
-        nodes,
-        edges,
-        byId,
-        w,
-        h,
-        raf: stateRef.current?.raf ?? 0,
-      };
-    },
-    [graph]
+  const sources = useMemo(
+    () => graph.nodes.filter((node) => node.kind === "source"),
+    [graph.nodes],
   );
+  const themeById = useMemo(
+    () => new Map(themes.map((theme) => [theme.id, theme])),
+    [themes],
+  );
+  const sourceById = useMemo(
+    () => new Map(sources.map((source) => [source.id, source])),
+    [sources],
+  );
+  const sourcesByTheme = useMemo(() => {
+    const next = new Map<string, GraphNodeDef[]>();
 
-  const resize = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
-    const ctx = canvas.getContext("2d");
-    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    const prev = stateRef.current;
-    const next = initSim(w, h);
-    if (prev && prev.w === w && prev.h === h) {
-      for (const n of next.nodes) {
-        const p = prev.byId.get(n.id);
-        if (p) {
-          n.x = p.x;
-          n.y = p.y;
-          n.vx = p.vx;
-          n.vy = p.vy;
-        }
-      }
-      next.byId = new Map(next.nodes.map((n) => [n.id, n]));
+    for (const theme of themes) {
+      next.set(theme.id, []);
     }
-    stateRef.current = next;
-  }, [initSim]);
+
+    for (const edge of graph.edges) {
+      if (edge.kind !== "theme-source") continue;
+      const themeId = edge.a.startsWith("t:") ? edge.a : edge.b;
+      const sourceId = edge.a.startsWith("t:") ? edge.b : edge.a;
+      const source = sourceById.get(sourceId);
+      if (!source) continue;
+      next.set(themeId, [...(next.get(themeId) ?? []), source]);
+    }
+
+    for (const [themeId, list] of next) {
+      next.set(
+        themeId,
+        [...list].sort(
+          (a, b) => sourceRank(a) - sourceRank(b) || a.label.localeCompare(b.label),
+        ),
+      );
+    }
+
+    return next;
+  }, [graph.edges, sourceById, themes]);
+
+  const [selectedThemeId, setSelectedThemeId] = useState(DEFAULT_THEME_ID);
+  const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
 
   useEffect(() => {
-    resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, [resize]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedId(null);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setSelectedSourceId(null);
+      setSelectedThemeId(DEFAULT_THEME_ID);
     };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let alive = true;
-
-    const draw = () => {
-      const state = stateRef.current;
-      if (!state || !alive) return;
-      const { nodes, edges, byId, w, h } = state;
-      const focus = focusRef.current;
-      const hasFocus = focus.size > 0;
-
-      if (!reduced) {
-        // Soft repulsion only
-        for (let i = 0; i < nodes.length; i++) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const a = nodes[i];
-            const b = nodes[j];
-            let dx = b.x - a.x;
-            let dy = b.y - a.y;
-            const dist = Math.hypot(dx, dy) || 1;
-            const minDist =
-              a.r + b.r + (a.kind === "theme" || b.kind === "theme" ? 28 : 16);
-            if (dist < minDist) {
-              const f = ((minDist - dist) / dist) * 0.035;
-              a.vx -= dx * f;
-              a.vy -= dy * f;
-              b.vx += dx * f;
-              b.vy += dy * f;
-            }
-          }
-        }
-
-        // Strong pull only to *primary* theme (themeIds[0]) so sources stay near it
-        nodes.forEach((n) => {
-          if (n.kind !== "source") return;
-          const primary = n.themeIds[0];
-          if (!primary) return;
-          const theme = byId.get(`t:${primary}`);
-          if (!theme) return;
-          const dx = theme.x - n.x;
-          const dy = theme.y - n.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const target = 70;
-          const f = ((dist - target) / dist) * 0.012;
-          n.vx += dx * f;
-          n.vy += dy * f;
-        });
-
-        // Weak links to secondary themes only (keeps multi-link without centering)
-        edges.forEach((e) => {
-          if (e.kind !== "theme-source") return;
-          const a = byId.get(e.a);
-          const b = byId.get(e.b);
-          if (!a || !b) return;
-          const theme = a.kind === "theme" ? a : b;
-          const source = a.kind === "source" ? a : b;
-          if (theme.kind !== "theme" || source.kind !== "source") return;
-          const primary = source.themeIds[0];
-          if (primary && theme.themeId === primary) return; // already strong-pull
-          const dx = theme.x - source.x;
-          const dy = theme.y - source.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const f = ((dist - 140) / dist) * 0.0015;
-          source.vx += dx * f;
-          source.vy += dy * f;
-        });
-
-        // Themes gently anchored on outer ring
-        const cx = w / 2;
-        const cy = h / 2;
-        const themeRing = Math.min(w, h) * 0.4;
-        const themes = nodes.filter((n) => n.kind === "theme");
-        themes.forEach((n, i) => {
-          const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
-          const tx = cx + Math.cos(angle) * themeRing;
-          const ty = cy + Math.sin(angle) * themeRing;
-          n.vx += (tx - n.x) * 0.02;
-          n.vy += (ty - n.y) * 0.02;
-        });
-
-        // Keep nodes on screen — no center gravity
-        nodes.forEach((n) => {
-          if (n.x < 16) n.vx += 0.2;
-          if (n.x > w - 16) n.vx -= 0.2;
-          if (n.y < 48) n.vy += 0.2;
-          if (n.y > h - 36) n.vy -= 0.2;
-          n.vx *= 0.86;
-          n.vy *= 0.86;
-          n.x += n.vx;
-          n.y += n.vy;
-          n.x = Math.max(n.r + 12, Math.min(w - n.r - 12, n.x));
-          n.y = Math.max(n.r + 52, Math.min(h - n.r - 44, n.y));
-        });
-      }
-
-      // Pure black canvas — less visual noise
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, w, h);
-
-      // Pulse phase for focused edges (on click/selection)
-      const t = performance.now() / 1000;
-      // 0..1 sine, ~1.5Hz
-      const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 3);
-
-      // Edges: primary theme spokes only (not ring)
-      edges.forEach((e) => {
-        const a = byId.get(e.a);
-        const b = byId.get(e.b);
-        if (!a || !b) return;
-        if (e.kind === "theme-ring") return;
-
-        let isFocusedEdge = false;
-
-        if (e.kind === "theme-source") {
-          const theme = a.kind === "theme" ? a : b;
-          const source = a.kind === "source" ? a : b;
-          if (theme.kind !== "theme" || source.kind !== "source") return;
-          const isPrimary =
-            source.themeIds[0] && theme.themeId === source.themeIds[0];
-          if (!isPrimary && !hasFocus) return;
-          if (hasFocus && !(focus.has(a.id) && focus.has(b.id))) return;
-          isFocusedEdge = hasFocus && focus.has(a.id) && focus.has(b.id);
-        } else if (e.kind === "source-source") {
-          const sel = selectedRef.current;
-          const selNode = sel ? byId.get(sel) : null;
-          if (
-            !(
-              selNode?.kind === "source" &&
-              focus.has(a.id) &&
-              focus.has(b.id)
-            )
-          )
-            return;
-          isFocusedEdge = true;
-        } else {
-          return;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-
-        if (isFocusedEdge && !reduced) {
-          // Pulsating brightness + width on click focus
-          const alpha = 0.35 + 0.55 * pulse;
-          const width = 1.0 + 1.8 * pulse;
-          ctx.globalAlpha = alpha;
-          ctx.strokeStyle = `rgba(243, 228, 201, ${0.55 + 0.4 * pulse})`;
-          ctx.lineWidth = width;
-          ctx.shadowColor = "rgba(243, 228, 201, 0.65)";
-          ctx.shadowBlur = 4 + 12 * pulse;
-        } else if (isFocusedEdge && reduced) {
-          ctx.globalAlpha = 0.65;
-          ctx.strokeStyle = "rgba(243, 228, 201, 0.8)";
-          ctx.lineWidth = 1.6;
-          ctx.shadowBlur = 0;
-        } else {
-          ctx.globalAlpha = 0.2;
-          ctx.strokeStyle = "rgba(200, 200, 200, 0.45)";
-          ctx.lineWidth = 0.6;
-          ctx.shadowBlur = 0;
-        }
-
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-      });
-
-      // Draw all nodes fully visible — no fade
-      const ordered = [...nodes].sort((a, b) =>
-        a.kind === "theme" ? 1 : b.kind === "theme" ? -1 : 0
-      );
-
-      ordered.forEach((n) => {
-        const isHover = hover === n.id;
-        const isSel = selectedRef.current === n.id;
-        const isSource = n.kind === "source";
-        const inFocus = !hasFocus || focus.has(n.id);
-
-        // No fade: full opacity for all nodes; focus only thickens/highlights
-        ctx.globalAlpha = 1;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r + (isHover || isSel ? 2 : 0), 0, Math.PI * 2);
-        ctx.fillStyle = isSource ? "#c8c8c8" : n.color;
-        ctx.shadowColor =
-          (isSel || isHover) && n.kind === "theme" ? n.color : "transparent";
-        ctx.shadowBlur = isSel && n.kind === "theme" ? 16 : 0;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        if (n.kind === "theme") {
-          ctx.strokeStyle = inFocus
-            ? "rgba(230, 230, 230, 0.5)"
-            : "rgba(160, 160, 160, 0.35)";
-          ctx.lineWidth = inFocus && hasFocus ? 2 : 1;
-          ctx.stroke();
-        }
-
-        // Theme labels always; source labels on hover or when theme focused
-        const showLabel =
-          n.kind === "theme" ||
-          (isSource && (isHover || isSel || (hasFocus && inFocus)));
-        if (showLabel) {
-          ctx.font =
-            n.kind === "theme"
-              ? "600 11px var(--font-body), system-ui, sans-serif"
-              : "500 9px var(--font-body), system-ui, sans-serif";
-          ctx.fillStyle = isSource ? "#d0d0d0" : "#eaeaea";
-          ctx.textAlign = "center";
-          const label =
-            n.kind === "theme" && n.label.length > 14
-              ? n.label.slice(0, 12) + "…"
-              : n.label;
-          ctx.fillText(label, n.x, n.y + n.r + 12);
-        }
-      });
-
-      // Always tick so edge pulse animates while focused
-      state.raf = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      alive = false;
-      if (stateRef.current?.raf) cancelAnimationFrame(stateRef.current.raf);
-    };
-  }, [hover, reduced, selectedId]);
-
-  const hitTest = useCallback((clientX: number, clientY: number) => {
-    const canvas = canvasRef.current;
-    const state = stateRef.current;
-    if (!canvas || !state) return null;
-    const rect = canvas.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    for (let i = state.nodes.length - 1; i >= 0; i--) {
-      const n = state.nodes[i];
-      if (Math.hypot(n.x - x, n.y - y) <= n.r + 8) return n;
-    }
-    return null;
-  }, []);
-
-  const selectedNode = graph.nodes.find((n) => n.id === selectedId);
-  const focusedSources = useMemo(() => {
-    if (!selectedId) return 0;
-    let c = 0;
-    focusSet.forEach((id) => {
-      if (id.startsWith("s:") || id.startsWith("d:")) c++;
-    });
-    return c;
-  }, [focusSet, selectedId]);
-
-  const onClick = (e: React.MouseEvent) => {
-    const n = hitTest(e.clientX, e.clientY);
-    if (!n) {
-      setSelectedId(null);
-      return;
-    }
-    if (n.kind === "theme") {
-      setSelectedId((prev) => (prev === n.id ? null : n.id));
-      return;
-    }
-    const now = Date.now();
-    if (
-      lastSourceClick &&
-      lastSourceClick.id === n.id &&
-      now - lastSourceClick.t < 1200 &&
-      n.href
-    ) {
-      router.push(n.href);
-      return;
-    }
-    setLastSourceClick({ id: n.id, t: now });
-    setSelectedId(n.id);
-  };
+  const selectedTheme = themeById.get(selectedThemeId) ?? themes[0];
+  const activeSources = selectedTheme
+    ? sourcesByTheme.get(selectedTheme.id) ?? []
+    : [];
+  const selectedSource = selectedSourceId
+    ? sourceById.get(selectedSourceId)
+    : activeSources[0];
+  const plottedSources = activeSources.slice(0, SOURCE_NODE_POSITIONS.length);
+  const sourceCount = activeSources.length;
+  const mapSummary = selectedTheme
+    ? `${selectedTheme.label}: ${sourceCount} linked sources`
+    : "Choose a theme to inspect linked sources";
 
   return (
-    <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-hidden bg-black">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 h-full w-full"
-        role="img"
-        aria-label="Full-screen interlinked data graph. Click a theme to highlight only its connected datasets."
-        onMouseMove={(e) => {
-          const n = hitTest(e.clientX, e.clientY);
-          setHover(n?.id ?? null);
-          if (canvasRef.current)
-            canvasRef.current.style.cursor = n ? "pointer" : "default";
+    <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-y-auto bg-[#0A2947] text-[#F3E4C9]">
+      <div
+        className="pointer-events-none fixed inset-0 opacity-80"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(243,228,201,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(243,228,201,0.04) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.45) 62%, rgba(0,0,0,0.7))",
         }}
-        onMouseLeave={() => setHover(null)}
-        onClick={onClick}
+        aria-hidden
       />
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-4 p-5 sm:p-8">
-        <div className="pointer-events-auto max-w-md">
+      <header className="relative z-20 flex flex-wrap items-start justify-between gap-5 px-5 py-5 sm:px-8 lg:px-10">
+        <div className="max-w-sm">
           <div className="flex items-center gap-2">
             <span className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]" />
-            <p className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-              Indian Data Guide®
+            <p className="font-display text-base font-semibold tracking-tight">
+              Indian Data Guide
+              <span className="align-super text-[0.65em] text-[#C4A574]/80">
+                ®
+              </span>
             </p>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/80">
-            {selectedNode
-              ? selectedNode.kind === "theme"
-                ? `${selectedNode.label} — ${focusedSources} sources · others dim`
-                : `${selectedNode.label} · double-click or open`
-              : "Click a theme. Only linked sources light up."}
+            {mapSummary}. Select a lens, then open the best source for your
+            research question.
           </p>
-          {selectedNode?.kind === "source" && selectedNode.href && (
-            <button
-              type="button"
-              className="mt-3 border border-[#F3E4C9]/30 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F3E4C9] transition hover:bg-[#F3E4C9] hover:text-[#0A2947]"
-              onClick={() => router.push(selectedNode.href!)}
-            >
-              Open {selectedNode.label} →
-            </button>
-          )}
         </div>
-        <nav className="pointer-events-auto flex flex-wrap justify-end gap-5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#D3D4C0]">
+
+        <nav
+          className="flex flex-wrap justify-end gap-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#D3D4C0]"
+          aria-label="Knowledge map navigation"
+        >
           {[
             { href: "/academic", label: "Academic" },
             { href: "/series", label: "Series" },
             { href: "/explore", label: "Explore" },
             { href: "/about", label: "About" },
-          ].map((l) => (
+          ].map((link) => (
             <Link
-              key={l.href}
-              href={l.href}
-              className="link-underline hover:text-[#F3E4C9]"
+              key={link.href}
+              href={link.href}
+              className="inline-flex min-h-11 items-center link-underline hover:text-[#F3E4C9]"
             >
-              {l.label}
+              {link.label}
             </Link>
           ))}
         </nav>
-      </div>
+      </header>
 
-      <p className="pointer-events-none absolute bottom-5 left-0 right-0 z-10 px-4 text-center text-[10px] uppercase tracking-[0.18em] text-[#D3D4C0]/40">
-        Esc clears · theme focus is exclusive
+      <main className="relative z-10 grid min-h-[calc(100dvh-6rem)] gap-5 px-5 pb-8 sm:px-8 lg:grid-cols-[18rem_minmax(0,1fr)_22rem] lg:px-10">
+        <aside className="surface-elevated order-2 p-4 lg:order-1 lg:max-h-[calc(100dvh-8rem)] lg:overflow-y-auto">
+          <div className="flex items-center gap-2 text-[#C4A574]">
+            <Layers3 className="size-4" aria-hidden />
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+              Data lenses
+            </h2>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-1">
+            {themes.map((theme) => {
+              const active = theme.id === selectedTheme?.id;
+              const count = sourcesByTheme.get(theme.id)?.length ?? 0;
+
+              return (
+                <button
+                  key={theme.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedThemeId(theme.id);
+                    setSelectedSourceId(null);
+                  }}
+                  className={`group flex min-h-12 items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition-all duration-200 ${
+                    active
+                      ? "border-[#C4A574]/70 bg-[#C4A574]/12 text-[#F3E4C9] shadow-[0_10px_28px_rgba(0,0,0,0.18)]"
+                      : "border-[#D3D4C0]/14 bg-[#071F36]/42 text-[#D3D4C0] hover:border-[#C4A574]/45 hover:bg-[#0D3152]"
+                  }`}
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <span
+                      className="size-2 shrink-0 rotate-45"
+                      style={{ backgroundColor: theme.color }}
+                      aria-hidden
+                    />
+                    <span className="truncate text-sm font-medium">
+                      {theme.label}
+                    </span>
+                  </span>
+                  <span className="shrink-0 rounded-full border border-current/20 px-2 py-0.5 text-[10px] tabular-nums opacity-70">
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </aside>
+
+        <section className="order-1 lg:order-2" aria-labelledby="map-title">
+          <div className="surface-elevated relative overflow-hidden p-4 sm:p-5 lg:min-h-[calc(100dvh-8rem)]">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p className="page-kicker mb-3">Curated Knowledge Map</p>
+                <h1
+                  id="map-title"
+                  className="font-display max-w-2xl text-[clamp(2.2rem,5vw,4.5rem)] font-bold leading-[1.02] text-[#F3E4C9]"
+                >
+                  {selectedTheme?.label ?? "Indian data"} sources, mapped by
+                  use.
+                </h1>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                {[
+                  { label: "Themes", value: themes.length },
+                  { label: "Sources", value: sources.length },
+                  { label: "Linked", value: sourceCount },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-md border border-[#D3D4C0]/14 bg-[#071F36]/55 px-3 py-2"
+                  >
+                    <p className="font-mono text-lg text-[#F3E4C9]">
+                      {stat.value}
+                    </p>
+                    <p className="text-[9px] uppercase tracking-[0.14em] text-[#D3D4C0]/55">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className="relative mt-6 hidden min-h-[420px] overflow-hidden rounded-md border border-[#D3D4C0]/14 bg-[#071F36]/62 md:block"
+              aria-label={mapSummary}
+            >
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(211,212,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.035) 1px, transparent 1px)",
+                  backgroundSize: "44px 44px",
+                }}
+                aria-hidden
+              />
+              <svg
+                className="absolute inset-0 size-full"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden
+              >
+                {plottedSources.map((source, index) => {
+                  const position = SOURCE_NODE_POSITIONS[index];
+                  const selected = source.id === selectedSource?.id;
+
+                  return (
+                    <line
+                      key={source.id}
+                      x1="50"
+                      y1="50"
+                      x2={position.x}
+                      y2={position.y}
+                      stroke={
+                        selected
+                          ? "rgba(196,165,116,0.72)"
+                          : "rgba(211,212,192,0.16)"
+                      }
+                      strokeWidth={selected ? 0.38 : 0.18}
+                    />
+                  );
+                })}
+              </svg>
+
+              <div className="absolute left-1/2 top-1/2 z-10 w-56 -translate-x-1/2 -translate-y-1/2 rounded-md border border-[#C4A574]/45 bg-[#0A2947]/95 p-5 text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+                <span
+                  className="mx-auto block size-3 rotate-45"
+                  style={{ backgroundColor: selectedTheme?.color }}
+                  aria-hidden
+                />
+                <p className="mt-3 font-display text-2xl font-semibold leading-tight">
+                  {selectedTheme?.label}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/80">
+                  {sourceCount} linked sources with guide pages, access notes,
+                  and variable clues.
+                </p>
+              </div>
+
+              {plottedSources.map((source, index) => {
+                const position = SOURCE_NODE_POSITIONS[index];
+                const selected = source.id === selectedSource?.id;
+
+                return (
+                  <button
+                    key={source.id}
+                    type="button"
+                    onClick={() => setSelectedSourceId(source.id)}
+                    className={`absolute z-20 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border text-[10px] font-semibold tabular-nums transition-all duration-200 hover:scale-110 focus-visible:scale-110 ${
+                      selected
+                        ? "border-[#F3E4C9] bg-[#C4A574] text-[#071F36] shadow-[0_0_0_6px_rgba(196,165,116,0.16)]"
+                        : "border-[#D3D4C0]/30 bg-[#D3D4C0] text-[#071F36] hover:border-[#F3E4C9]"
+                    }`}
+                    style={{ left: `${position.x}%`, top: `${position.y}%` }}
+                    title={source.label}
+                    aria-label={`Inspect ${source.label}`}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 grid gap-3 md:hidden">
+              <div className="rounded-md border border-[#D3D4C0]/14 bg-[#071F36]/62 p-4">
+                <div className="flex items-center gap-2 text-[#C4A574]">
+                  <Network className="size-4" aria-hidden />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+                    Mobile map
+                  </p>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/82">
+                  {selectedTheme?.label} is open. The sources below are the
+                  readable mobile version of the graph.
+                </p>
+              </div>
+              {activeSources.slice(0, 8).map((source, index) => (
+                <button
+                  key={source.id}
+                  type="button"
+                  onClick={() => setSelectedSourceId(source.id)}
+                  className={`flex min-h-14 items-center gap-3 rounded-md border p-3 text-left transition ${
+                    selectedSource?.id === source.id
+                      ? "border-[#C4A574]/70 bg-[#C4A574]/12"
+                      : "border-[#D3D4C0]/14 bg-[#071F36]/52"
+                  }`}
+                >
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#D3D4C0] font-mono text-xs text-[#071F36]">
+                    {index + 1}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-semibold text-[#F3E4C9]">
+                      {source.label}
+                    </span>
+                    <span className="text-xs text-[#D3D4C0]/65">
+                      Tap to preview, then open from the detail panel.
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href={`/explore?cluster=${selectedTheme?.themeId ?? ""}`}
+                className="btn-primary"
+              >
+                <Search className="size-4" aria-hidden />
+                Search this lens
+              </Link>
+              <Link href="/explore" className="btn-secondary">
+                Open full catalog
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <aside className="surface-elevated order-3 p-4 lg:max-h-[calc(100dvh-8rem)] lg:overflow-y-auto">
+          <div className="flex items-center gap-2 text-[#C4A574]">
+            <Database className="size-4" aria-hidden />
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+              Source detail
+            </h2>
+          </div>
+
+          {selectedSource ? (
+            <div className="mt-4 rounded-md border border-[#C4A574]/32 bg-[#071F36]/58 p-4">
+              <p className="font-display text-2xl font-semibold leading-tight">
+                {selectedSource.label}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/82">
+                Open the record for access friction, best uses, limitations,
+                variables, and related sources.
+              </p>
+              {selectedSource.href && (
+                <Link href={selectedSource.href} className="btn-primary mt-5">
+                  Open source
+                  <ArrowUpRight className="size-4" aria-hidden />
+                </Link>
+              )}
+            </div>
+          ) : null}
+
+          <div className="mt-6">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
+                Linked sources
+              </p>
+              <span className="font-mono text-xs text-[#D3D4C0]/55">
+                {sourceCount}
+              </span>
+            </div>
+            <div className="mt-3 space-y-2">
+              {activeSources.slice(0, 10).map((source, index) => (
+                <button
+                  key={source.id}
+                  type="button"
+                  onClick={() => setSelectedSourceId(source.id)}
+                  className={`group flex w-full min-h-12 items-center gap-3 rounded-md border px-3 py-2 text-left transition ${
+                    selectedSource?.id === source.id
+                      ? "border-[#C4A574]/70 bg-[#C4A574]/12"
+                      : "border-[#D3D4C0]/12 bg-[#071F36]/42 hover:border-[#C4A574]/42 hover:bg-[#0D3152]"
+                  }`}
+                >
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-[#D3D4C0]/20 font-mono text-[10px] text-[#D3D4C0]/72">
+                    {index + 1}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-medium text-[#F3E4C9]">
+                      {sourceLabel(source)}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <p className="relative z-10 pb-5 text-center text-[10px] uppercase tracking-[0.18em] text-[#D3D4C0]/45">
+        Esc resets · numbered nodes preview sources · catalog pages hold the
+        full records
       </p>
     </div>
   );

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { SearchX, Sparkles } from "lucide-react";
+import { Database, SearchX, Sparkles } from "lucide-react";
 import { DatasetCard } from "@/components/DatasetCard";
 import { DatasetFilters } from "@/components/DatasetFilters";
 import { InContentAd } from "@/components/ads/ContentWithAds";
@@ -47,19 +47,55 @@ export function ExploreClient() {
     () => filterDatasets(datasets, filters),
     [filters],
   );
+  const sourceCounts = useMemo(
+    () => ({
+      government: datasets.filter(
+        (d) => !d.sourceKind || d.sourceKind === "government",
+      ).length,
+      academic: datasets.filter((d) =>
+        d.sourceKind?.startsWith("academic"),
+      ).length,
+      github: datasets.filter((d) => d.sourceKind === "github-community")
+        .length,
+    }),
+    [],
+  );
 
   return (
-    <div>
-      <header className="mb-8 max-w-3xl sm:mb-10">
-        <p className="page-kicker">Catalog</p>
-        <h1 className="page-title">Explore datasets</h1>
-        <p className="page-lede">
-          Documentation-style discovery: search first, filter by access friction
-          and geography, then open guides and variable tables on each record.
-        </p>
+    <div className="min-w-0">
+      <header className="mb-8 overflow-hidden rounded-md border border-border bg-card/60 p-5 ring-1 ring-border sm:mb-10 sm:p-7">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+          <div className="min-w-0">
+            <p className="page-kicker">Catalog</p>
+            <h1 className="page-title">Explore datasets</h1>
+            <p className="page-lede">
+              Search first, then narrow by access friction, geography, source
+              layer, and host. Each record keeps the practical notes close:
+              best uses, limitations, variables, and related data.
+            </p>
+          </div>
+          <div className="grid grid-cols-3 gap-2 lg:grid-cols-1">
+            {[
+              ["Government", sourceCounts.government],
+              ["Academic", sourceCounts.academic],
+              ["GitHub", sourceCounts.github],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="rounded-md border border-border bg-background/45 px-3 py-2"
+              >
+                <p className="font-mono text-lg text-foreground tabular-nums">
+                  {value}
+                </p>
+                <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </header>
 
-      {/* Popular themes — documentation landing pattern */}
       <section className="mb-8" aria-labelledby="popular-themes">
         <div className="mb-3 flex items-center gap-2">
           <Sparkles
@@ -73,7 +109,7 @@ export function ExploreClient() {
             Popular themes
           </h2>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
           {QUICK_THEMES.map((c) => (
             <Link
               key={c.id}
@@ -106,24 +142,33 @@ export function ExploreClient() {
           of <span className="tabular-nums">{datasets.length}</span> datasets
         </p>
         <div className="flex flex-wrap gap-2">
-          <Link href="/explore?source=government" className="quick-chip !min-h-9 text-xs">
+          <Link
+            href="/explore?source=government"
+            className="quick-chip !min-h-9 text-xs"
+          >
             Government
           </Link>
-          <Link href="/explore?source=academic" className="quick-chip !min-h-9 text-xs">
+          <Link
+            href="/explore?source=academic"
+            className="quick-chip !min-h-9 text-xs"
+          >
             Academic
           </Link>
-          <Link href="/explore?source=github" className="quick-chip !min-h-9 text-xs">
+          <Link
+            href="/explore?source=github"
+            className="quick-chip !min-h-9 text-xs"
+          >
             GitHub
           </Link>
         </div>
       </div>
 
-      <div className="mt-5 grid-hairline sm:grid-cols-2">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {results.map((d, i) => (
           <div key={d.slug} className="contents">
             <DatasetCard dataset={d} />
-            {(i + 1) % 6 === 0 && i < results.length - 1 ? (
-              <div className="bg-background sm:col-span-2">
+            {(i + 1) % 8 === 0 && i < results.length - 1 ? (
+              <div className="sm:col-span-2">
                 <InContentAd />
               </div>
             ) : null}
@@ -138,6 +183,7 @@ export function ExploreClient() {
               className="size-8 text-accent-foreground/70"
               aria-hidden
             />
+            <Database className="sr-only" aria-hidden />
             <CardTitle className="font-display text-xl text-foreground">
               No datasets match these filters
             </CardTitle>

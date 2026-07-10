@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, X } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useCallback, useMemo, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import type { AccessType } from "@/types/dataset";
 
 const selectClass =
-  "h-11 w-full appearance-none rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:h-10";
+  "h-11 w-full min-w-0 appearance-none rounded-md border border-input bg-background/80 px-3 py-2 text-sm text-foreground outline-none transition-colors hover:border-ring/40 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
 
 export function DatasetFilters() {
   const router = useRouter();
@@ -70,15 +70,25 @@ export function DatasetFilters() {
   return (
     <Card
       className={cn(
-        "border-border bg-card ring-1 ring-border transition-opacity duration-200",
+        "overflow-hidden rounded-md border-border bg-card/85 ring-1 ring-border transition-opacity duration-200",
         pending && "opacity-70",
       )}
       aria-busy={pending}
     >
-      <CardHeader className="flex flex-row items-center justify-between gap-3 border-b border-border/60 pb-(--card-spacing)">
-        <CardTitle className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-foreground">
-          Filters
-        </CardTitle>
+      <CardHeader className="flex flex-row items-start justify-between gap-3 border-b border-border/60 pb-5">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-background/60 text-accent-foreground">
+            <SlidersHorizontal className="size-4" aria-hidden />
+          </span>
+          <div>
+            <CardTitle className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-foreground">
+              Filters
+            </CardTitle>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Begin with search, then narrow the catalog without losing context.
+            </p>
+          </div>
+        </div>
         {activeCount > 0 && (
           <Button
             type="button"
@@ -93,10 +103,10 @@ export function DatasetFilters() {
         )}
       </CardHeader>
 
-      <CardContent className="space-y-5 pt-1">
+      <CardContent className="space-y-5 pt-5">
         <div className="relative">
           <Search
-            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground/50"
+            className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground/55"
             aria-hidden
           />
           <Input
@@ -104,12 +114,12 @@ export function DatasetFilters() {
             placeholder="Search title, variables, host…"
             defaultValue={params.get("q") ?? ""}
             onChange={(e) => setParam("q", e.target.value)}
-            className="h-11 bg-background pl-10 text-sm md:text-sm"
+            className="h-14 rounded-md bg-background/85 pl-12 text-base md:text-base"
             aria-label="Search datasets"
           />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <div className="space-y-1.5">
             <Label
               htmlFor="filter-source"

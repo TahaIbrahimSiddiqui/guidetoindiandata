@@ -13,7 +13,7 @@ export function ContentWithAds({
       <AdSlot
         slotId={AD_SLOT_IDS.topBanner}
         format="leaderboard"
-        className="mb-10 w-full"
+        className="mb-8 w-full"
       />
 
       <div
@@ -39,7 +39,7 @@ export function ContentWithAds({
       <AdSlot
         slotId={AD_SLOT_IDS.bottomBanner}
         format="leaderboard"
-        className="mt-14 w-full"
+        className="mt-12 w-full"
       />
     </div>
   );
@@ -50,7 +50,7 @@ export function InContentAd({ className = "" }: { className?: string }) {
     <AdSlot
       slotId={AD_SLOT_IDS.inContent}
       format="rectangle"
-      className={`my-10 w-full max-w-md ${className}`}
+      className={`my-8 w-full ${className}`}
     />
   );
 }

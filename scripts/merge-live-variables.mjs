@@ -6,7 +6,6 @@ import {
   writeFileSync,
   readFileSync,
   mkdirSync,
-  existsSync,
 } from "node:fs";
 import { datasets } from "../src/data/datasets.ts";
 // Import ENRICHED path via a tiny helper that does not depend on LIVE_VARIABLES.

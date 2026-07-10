@@ -3,7 +3,7 @@
  * content/scraped_variables.json + scratch evidence.
  * Run: npx tsx scripts/bulk-live-scrape.mjs
  */
-import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
+import { writeFileSync, mkdirSync } from "node:fs";
 import { datasets } from "../src/data/datasets.ts";
 import { GUIDES_BY_SLUG } from "../src/data/datasetGuides.ts";
 import { resolveVariables } from "../src/lib/variables.ts";
@@ -252,10 +252,6 @@ async function scrapeOne(d) {
       const files =
         j?.data?.latestVersion?.files?.map((f) => f?.dataFile?.filename) ||
         [];
-      const desc =
-        j?.data?.latestVersion?.metadataBlocks?.citation?.fields?.find(
-          (f) => f.typeName === "dsDescription",
-        );
       if (files.length) {
         entries.push(
           ...files.slice(0, 12).map((fn) => ({

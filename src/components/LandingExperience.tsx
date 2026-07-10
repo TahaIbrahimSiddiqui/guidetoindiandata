@@ -11,18 +11,10 @@ import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
 export function LandingExperience() {
   const [entered, setEntered] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const fn = () => setReduced(mq.matches);
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
-  }, []);
 
   const enter = useCallback(() => {
     if (entered || exiting) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setEntered(true);
       return;
@@ -32,7 +24,7 @@ export function LandingExperience() {
       setEntered(true);
       setExiting(false);
     }, 800);
-  }, [entered, exiting, reduced]);
+  }, [entered, exiting]);
 
   useEffect(() => {
     if (entered) return;
@@ -61,7 +53,6 @@ export function LandingExperience() {
             transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          {/* Top bar — Locomotive minimal */}
           <header className="flex items-center justify-between px-6 py-6 sm:px-10 lg:px-14">
             <div className="flex items-center gap-2">
               <span
@@ -100,51 +91,31 @@ export function LandingExperience() {
             </nav>
           </header>
 
-          {/* Hero */}
-          <div className="flex flex-1 flex-col justify-center px-6 sm:px-10 lg:px-14">
-            <p className={`eyebrow mb-8 ${reduced ? "" : "loco-fade"}`}>
+          <div className="grid flex-1 items-center gap-12 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,32rem)] lg:px-14">
+            <section>
+            <p className="eyebrow loco-fade mb-8">
               India · Data · Discovery
             </p>
 
             <h1 className="font-display max-w-5xl text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[1.05] text-[#F3E4C9]">
-              {reduced ? (
-                <>
-                  National data,
-                  <br />
-                  mapped for
-                  <br />
-                  research.
-                </>
-              ) : (
-                <>
-                  <span className="loco-line">
-                    <span>National data,</span>
-                  </span>
-                  <span className="loco-line">
-                    <span>mapped for</span>
-                  </span>
-                  <span className="loco-line">
-                    <span>research.</span>
-                  </span>
-                </>
-              )}
+              <span className="loco-line">
+                <span>National data,</span>
+              </span>
+              <span className="loco-line">
+                <span>mapped for</span>
+              </span>
+              <span className="loco-line">
+                <span>research.</span>
+              </span>
             </h1>
 
-            <p
-              className={`mt-8 max-w-lg text-base leading-relaxed text-[#D3D4C0] sm:text-lg ${
-                reduced ? "" : "loco-fade"
-              }`}
-            >
+            <p className="loco-fade mt-8 max-w-lg text-base leading-relaxed text-[#D3D4C0] sm:text-lg">
               Government surveys, academic archives, and community GitHub
-              sources—linked as a living graph. Enter to explore themes and
-              sources.
+              sources, arranged as a curated knowledge map with honest access
+              friction and practical starting points.
             </p>
 
-            <div
-              className={`mt-12 flex flex-wrap items-center gap-6 ${
-                reduced ? "" : "loco-fade"
-              }`}
-            >
+            <div className="loco-fade mt-12 flex flex-wrap items-center gap-6">
               <button
                 type="button"
                 onClick={enter}
@@ -165,14 +136,63 @@ export function LandingExperience() {
                 Skip to catalog
               </Link>
             </div>
+            </section>
+
+            <aside
+              className="loco-fade hidden rounded-md border border-[#D3D4C0]/18 bg-[#071F36]/55 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] lg:block"
+              aria-label="Knowledge map preview"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
+                  Map preview
+                </p>
+                <span className="font-mono text-xs text-[#D3D4C0]/60">
+                  22 lenses
+                </span>
+              </div>
+              <div
+                className="relative mt-5 aspect-[1.08] overflow-hidden rounded-md border border-[#D3D4C0]/12 bg-[#0A2947]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(211,212,192,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.04) 1px, transparent 1px)",
+                  backgroundSize: "34px 34px",
+                }}
+              >
+                {[
+                  ["Population", "left-[48%] top-[13%]", "#F3E4C9"],
+                  ["Health", "left-[72%] top-[35%]", "#E8D4B0"],
+                  ["Education", "left-[66%] top-[67%]", "#B8B9A4"],
+                  ["GitHub", "left-[22%] top-[32%]", "#8B9A8C"],
+                  ["Climate", "left-[34%] top-[72%]", "#9BA88E"],
+                ].map(([label, position, color]) => (
+                  <div
+                    key={label}
+                    className={`absolute ${position} -translate-x-1/2 -translate-y-1/2`}
+                  >
+                    <span
+                      className="mx-auto block size-4 rounded-full border border-[#F3E4C9]/35"
+                      style={{ backgroundColor: color }}
+                      aria-hidden
+                    />
+                    <span className="mt-2 block whitespace-nowrap text-center text-xs font-semibold text-[#F3E4C9]">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+                <div className="absolute left-1/2 top-1/2 w-44 -translate-x-1/2 -translate-y-1/2 rounded-md border border-[#C4A574]/42 bg-[#071F36]/95 p-4 text-center">
+                  <p className="font-display text-2xl font-semibold">
+                    Start with a lens
+                  </p>
+                  <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/70">
+                    Themes, sources, and series stay readable instead of
+                    drifting around a canvas.
+                  </p>
+                </div>
+              </div>
+            </aside>
           </div>
 
-          {/* Bottom meta */}
-          <footer
-            className={`flex flex-wrap items-end justify-between gap-4 px-6 py-6 sm:px-10 lg:px-14 ${
-              reduced ? "" : "loco-fade"
-            }`}
-          >
+          <footer className="loco-fade flex flex-wrap items-end justify-between gap-4 px-6 py-6 sm:px-10 lg:px-14">
             <p className="max-w-xs text-xs leading-relaxed text-[#D3D4C0]/70">
               Design and data are tools of expression. What sets this guide
               apart is honest access friction and interlinked sources.

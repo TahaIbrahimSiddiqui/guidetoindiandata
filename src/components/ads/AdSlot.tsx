@@ -14,6 +14,13 @@ type AdSlotProps = {
   className?: string;
 };
 
+const DISABLED_AD_HEIGHTS: Record<AdFormat, string> = {
+  leaderboard: "64px",
+  rectangle: "120px",
+  skyscraper: "320px",
+  fluid: "72px",
+};
+
 export function AdSlot({
   slotId,
   format = "leaderboard",
@@ -22,6 +29,9 @@ export function AdSlot({
   const ref = useRef<HTMLModElement>(null);
   const { minHeight, label } = AD_FORMAT_STYLES[format];
   const canRenderNetwork = ADS_ENABLED && Boolean(ADSENSE_CLIENT);
+  const displayMinHeight = canRenderNetwork
+    ? minHeight
+    : DISABLED_AD_HEIGHTS[format];
 
   useEffect(() => {
     if (!canRenderNetwork || !ref.current) return;
@@ -37,7 +47,7 @@ export function AdSlot({
     return (
       <div
         className={`ad-slot overflow-hidden rounded-xl border border-obsidian-border bg-obsidian-panel/50 ${className}`}
-        style={{ minHeight }}
+        style={{ minHeight: displayMinHeight }}
         data-ad-slot={slotId}
       >
         <ins
@@ -55,15 +65,15 @@ export function AdSlot({
 
   return (
     <div
-      className={`ad-slot flex flex-col items-center justify-center rounded-xl border border-dashed border-obsidian-border bg-obsidian-panel/30 ${className}`}
-      style={{ minHeight }}
+      className={`ad-slot flex flex-col items-center justify-center rounded-md border border-dashed border-obsidian-border/70 bg-obsidian-panel/12 opacity-75 ${className}`}
+      style={{ minHeight: displayMinHeight }}
       data-ad-slot={slotId}
       aria-label="Advertisement placeholder"
     >
-      <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D3D4C0]/45">
+      <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#D3D4C0]/35">
         Advertisement
       </span>
-      <span className="mt-1 text-xs text-[#D3D4C0]/35">
+      <span className="mt-1 text-[11px] text-[#D3D4C0]/25">
         {label} · slot `{slotId}`
       </span>
     </div>

@@ -8,7 +8,7 @@ Public website cataloging **70+ Indian datasets** across health, education, labo
 
 ## Features
 
-- **Landing page** with an interactive neural-network map of data clusters (no ads)
+- **Landing page** with an interactive curated knowledge map of data clusters (no ads)
 - **Explore** search and filters (category, access, geography, cluster, institution)
 - **Dataset records** with access badges, best-for / limitations, variables, related datasets
 - **Clusters** view of the six ecosystem groups
@@ -42,7 +42,7 @@ Copy `.env.example` to `.env.local` and set:
 | `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` |
 | `NEXT_PUBLIC_ADS_SLOT_*` | Optional slot IDs |
 
-With ads disabled, labeled placeholders keep layout stable.
+With ads disabled, subtle placeholders keep layout stable without dominating the catalog.
 
 ## Stack
 
@@ -54,7 +54,7 @@ With ads disabled, labeled placeholders keep layout stable.
 
 - `src/data/datasets.ts` — catalog source of truth
 - `src/data/clusters.ts` — six clusters
-- `src/components/NeuralNetworkHero.tsx` — landing network canvas
+- `src/components/ObsidianGraphFull.tsx` — landing knowledge map
 - `src/components/ads/*` — monetization chrome
 - `content/guide_research.md` — research source
 

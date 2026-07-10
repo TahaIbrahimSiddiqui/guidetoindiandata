@@ -1,5 +1,4 @@
 import { writeFileSync, mkdirSync } from "node:fs";
-import { createRequire } from "node:module";
 
 // Use dynamic import of compiled path via tsx when run with tsx
 const scratch =

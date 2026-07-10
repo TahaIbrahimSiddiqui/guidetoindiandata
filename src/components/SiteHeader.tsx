@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-/** Two primary destinations: landing + solar map. Dataset pages keep this chrome. */
+/** Primary destinations + about profile. Dataset pages keep this chrome. */
 const nav = [
   { href: "/", label: "Landing" },
   { href: "/map", label: "Map" },
+  { href: "/about", label: "About" },
 ];
 
 export function SiteHeader() {
@@ -35,7 +36,7 @@ export function SiteHeader() {
             aria-hidden
           />
           <span className="font-display text-sm font-semibold tracking-tight">
-            Indian Data Guide
+            Guide to Indian Data
             <span className="align-super text-[0.65em] text-brand-gold/80">
               ®
             </span>

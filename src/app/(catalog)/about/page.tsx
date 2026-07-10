@@ -26,15 +26,32 @@ export default function AboutPage() {
         </p>
       </header>
 
-      <section className="surface mb-10 p-6 sm:p-8">
-        <h2 className="section-title">Maintainer</h2>
+      <section className="surface mb-10 p-6 sm:p-8" id="profile">
+        <h2 className="section-title">Maintainer profile</h2>
+        <p className="mt-1 font-display text-xl font-semibold text-[#F3E4C9]">
+          Taha Ibrahim Siddiqui
+        </p>
         <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/95">
-          This guide is maintained by{" "}
+          This guide is maintained by Taha for the public good as an independent
+          research catalog of India&apos;s statistical and administrative data
+          ecosystem. It is{" "}
           <strong className="font-medium text-foreground">
-            Taha Ibrahim Siddiqui
+            not an official product
           </strong>{" "}
-          for the public good. It is an independent project—not an official
-          product of MoSPI, Census, or any ministry.
+          of MoSPI, Census, or any ministry. Honest access labels, usage guides,
+          and variable tables are editorial choices aimed at researchers and
+          builders.
+        </p>
+        <p className="mt-4 text-sm text-[#C8C9BC]/90">
+          Navigate the{" "}
+          <Link href="/map" className="text-[#C4A574] link-underline">
+            solar system map
+          </Link>{" "}
+          to explore datasets by theme, or return to the{" "}
+          <Link href="/" className="text-[#C4A574] link-underline">
+            landing page
+          </Link>
+          .
         </p>
       </section>
 

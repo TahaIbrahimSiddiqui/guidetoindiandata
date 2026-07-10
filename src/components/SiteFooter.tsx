@@ -6,13 +6,14 @@ const footerNav = [
     links: [
       { href: "/", label: "Landing" },
       { href: "/map", label: "Solar system map" },
+      { href: "/about", label: "About" },
     ],
   },
   {
     title: "Legal",
     links: [
       { href: "/privacy", label: "Privacy & ads" },
-      { href: "/about", label: "About the maintainer" },
+      { href: "/about", label: "Maintainer profile" },
     ],
   },
 ];
@@ -29,7 +30,7 @@ export function SiteFooter() {
                 aria-hidden
               />
               <p className="font-display text-lg font-semibold tracking-tight text-[#F3E4C9]">
-                Indian Data Guide
+                Guide to Indian Data
                 <span className="text-[0.65em] align-super text-brand-gold/80">
                   ®
                 </span>

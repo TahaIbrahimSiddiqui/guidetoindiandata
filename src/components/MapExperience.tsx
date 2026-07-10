@@ -54,21 +54,29 @@ export function MapExperience() {
               aria-hidden
             />
             <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-              Indian Data Guide
+              Guide to Indian Data
             </span>
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setGuideOpen((v) => !v)}
-          className="pointer-events-auto inline-flex min-h-11 items-center gap-2 rounded-full border border-[#C4A574]/30 bg-black/65 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3E4C9] backdrop-blur-md transition hover:bg-[#C4A574]/15"
-          aria-expanded={guideOpen}
-          aria-controls="map-guide"
-        >
-          <Sparkles className="size-3.5 text-[#C4A574]" aria-hidden />
-          {guideOpen ? "Hide guide" : "How to navigate"}
-        </button>
+        <div className="pointer-events-auto flex flex-wrap items-center gap-2">
+          <Link
+            href="/about"
+            className="inline-flex min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9]"
+          >
+            About
+          </Link>
+          <button
+            type="button"
+            onClick={() => setGuideOpen((v) => !v)}
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#C4A574]/30 bg-black/65 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3E4C9] backdrop-blur-md transition hover:bg-[#C4A574]/15"
+            aria-expanded={guideOpen}
+            aria-controls="map-guide"
+          >
+            <Sparkles className="size-3.5 text-[#C4A574]" aria-hidden />
+            {guideOpen ? "Hide guide" : "How to navigate"}
+          </button>
+        </div>
       </header>
 
       {/* Navigation guide */}

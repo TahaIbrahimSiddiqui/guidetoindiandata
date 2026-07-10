@@ -22,16 +22,21 @@ export function MapExperience() {
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduced(mq.matches);
-    // Entrance: map fades in after landing zoom-out
-    const t = window.setTimeout(() => setEntered(true), reduced ? 0 : 40);
+    // Entrance: settle from zoom-in handoff
+    const t = window.setTimeout(() => setEntered(true), reduced ? 0 : 30);
     return () => window.clearTimeout(t);
   }, [reduced]);
 
   return (
     <div
-      className={`relative h-dvh w-screen overflow-hidden bg-black transition-opacity duration-700 ease-out ${
-        entered ? "opacity-100" : "opacity-0"
+      className={`relative h-dvh w-screen overflow-hidden bg-black transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        entered
+          ? "scale-100 opacity-100"
+          : reduced
+            ? "scale-100 opacity-0"
+            : "scale-[1.08] opacity-0"
       }`}
+      style={{ transformOrigin: "50% 45%" }}
     >
       {/* Full-bleed solar system */}
       <div className="absolute inset-0">

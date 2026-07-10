@@ -153,12 +153,13 @@ export function LandingExperience({ stats }: Props) {
 
   return (
     <div
-      className={`min-h-dvh bg-black text-[#F3E4C9] transition-[filter,opacity] duration-700 ease-out ${
-        zooming ? "pointer-events-none scale-[0.96] opacity-0 blur-sm" : ""
+      className={`min-h-dvh bg-black text-[#F3E4C9] transition-[transform,filter,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        zooming
+          ? "pointer-events-none scale-[1.28] opacity-0 blur-[2px]"
+          : "scale-100 opacity-100"
       }`}
       style={{
-        transitionProperty: "opacity, filter, transform",
-        transformOrigin: "50% 40%",
+        transformOrigin: "50% 42%",
       }}
     >
       {/* ── Sticky chrome ─────────────────────────────── */}

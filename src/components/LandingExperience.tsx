@@ -29,8 +29,8 @@ type Props = {
 };
 
 /**
- * Useful, scrollable hero (not a splash gate).
- * Multiple paths into /map: button, click hero, cursor-up zone, wheel-up, keyboard.
+ * Hero with staggered text entrance + timer-style count-up stats
+ * pinned in the first viewport (no scroll required to see counters).
  */
 export function LandingExperience({ stats }: Props) {
   const router = useRouter();
@@ -41,6 +41,10 @@ export function LandingExperience({ stats }: Props) {
   const [phase, setPhase] = useState<"idle" | "zooming">("idle");
   const [actionIdx, setActionIdx] = useState(0);
   const [actionVisible, setActionVisible] = useState(true);
+  /** Staggered reveal of hero text blocks */
+  const [revealStep, setRevealStep] = useState(0);
+  /** Start count-up after text has begun */
+  const [countReady, setCountReady] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -49,6 +53,24 @@ export function LandingExperience({ stats }: Props) {
     mq.addEventListener("change", fn);
     return () => mq.removeEventListener("change", fn);
   }, []);
+
+  // Cascade text in, then kick off counters
+  useEffect(() => {
+    if (reduced) {
+      setRevealStep(6);
+      setCountReady(true);
+      return;
+    }
+    const delays = [80, 220, 420, 620, 820, 980];
+    const timers = delays.map((ms, i) =>
+      window.setTimeout(() => setRevealStep(i + 1), ms),
+    );
+    const countT = window.setTimeout(() => setCountReady(true), 1100);
+    return () => {
+      timers.forEach(clearTimeout);
+      window.clearTimeout(countT);
+    };
+  }, [reduced]);
 
   useEffect(() => {
     if (reduced) return;
@@ -68,7 +90,6 @@ export function LandingExperience({ stats }: Props) {
     return () => el.removeEventListener("loadeddata", tryPlay);
   }, [reduced]);
 
-  // Cycle CTA language so “click” is not the only verb
   useEffect(() => {
     if (reduced) return;
     const id = window.setInterval(() => {
@@ -95,7 +116,6 @@ export function LandingExperience({ stats }: Props) {
     window.setTimeout(() => router.push("/map"), 880);
   }, [phase, reduced, router]);
 
-  // Keyboard
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement | null)?.tagName;
@@ -109,7 +129,6 @@ export function LandingExperience({ stats }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [enterMap]);
 
-  // Cursor toward top of viewport → enter map (after short dwell)
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (phase === "zooming") return;
@@ -135,7 +154,6 @@ export function LandingExperience({ stats }: Props) {
     };
   }, [enterMap, phase, reduced]);
 
-  // Scroll / wheel up at top → solar map
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (phase === "zooming") return;
@@ -150,17 +168,16 @@ export function LandingExperience({ stats }: Props) {
 
   const zooming = phase === "zooming";
   const actionLine = ACTION_LINES[actionIdx];
+  const shown = (step: number) => revealStep >= step;
 
   return (
     <div
-      className={`min-h-dvh bg-black text-[#F3E4C9] transition-[transform,filter,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`bg-black text-[#F3E4C9] transition-[transform,filter,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         zooming
           ? "pointer-events-none scale-[1.28] opacity-0 blur-[2px]"
           : "scale-100 opacity-100"
       }`}
-      style={{
-        transformOrigin: "50% 42%",
-      }}
+      style={{ transformOrigin: "50% 42%" }}
     >
       {/* ── Sticky chrome ─────────────────────────────── */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-white/[0.06] bg-black/45 backdrop-blur-md">
@@ -190,18 +207,16 @@ export function LandingExperience({ stats }: Props) {
             </Button>
           </nav>
         </div>
-        {/* Top-edge hover zone hint strip */}
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#C4A574]/40 to-transparent opacity-60"
           aria-hidden
         />
       </header>
 
-      {/* ── Hero ──────────────────────────────────────── */}
+      {/* ── Hero: full first screen including stats ───── */}
       <section
-        className="relative flex min-h-dvh flex-col pt-14 sm:pt-16"
+        className="relative flex h-dvh flex-col pt-14 sm:pt-16"
         onClick={(e) => {
-          // Click hero (not links/buttons) → map
           const t = e.target as HTMLElement;
           if (t.closest("a, button")) return;
           enterMap();
@@ -209,7 +224,6 @@ export function LandingExperience({ stats }: Props) {
         role="region"
         aria-label="Hero"
       >
-        {/* Media background */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           {!reduced && (
             <div
@@ -242,7 +256,7 @@ export function LandingExperience({ stats }: Props) {
                   linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(12,12,12,0.72) 55%, #000 100%)
                 `
                 : `
-                  linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.72) 100%),
+                  linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.78) 100%),
                   linear-gradient(105deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.4) 100%)
                 `,
             }}
@@ -256,25 +270,54 @@ export function LandingExperience({ stats }: Props) {
           />
         </div>
 
-        <div className="relative z-10 flex flex-1 flex-col">
-          <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col justify-center px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
-            <p className="mb-5 font-mono text-[10px] uppercase tracking-[0.22em] text-[#C4A574] drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)] sm:text-[11px]">
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+          {/* Copy — tighter padding so stats fit without scroll */}
+          <div className="mx-auto flex w-full max-w-[1400px] min-h-0 flex-1 flex-col justify-center px-5 py-6 sm:px-8 sm:py-8 lg:px-12">
+            <p
+              className={revealClass(
+                shown(1),
+                reduced,
+                "mb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[#C4A574] drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)] sm:mb-5 sm:text-[11px]",
+              )}
+            >
               The Guide to Indian Data
             </p>
-            <h1 className="font-display max-w-4xl text-[clamp(2.25rem,6.5vw,4.75rem)] font-bold leading-[1.08] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)]">
-              Find the right data for research on India.
+            <h1
+              className={revealClass(
+                shown(2),
+                reduced,
+                "font-display max-w-4xl text-[clamp(1.85rem,5.5vw,4.25rem)] font-bold leading-[1.08] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)]",
+              )}
+            >
+              <AnimatedHeadline
+                text="Find the right data for research on India."
+                active={shown(2)}
+                reduced={reduced}
+              />
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#E4E2D4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] sm:text-lg">
+            <p
+              className={revealClass(
+                shown(3),
+                reduced,
+                "mt-4 max-w-2xl text-sm leading-relaxed text-[#E4E2D4] drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] sm:mt-5 sm:text-base lg:text-lg",
+              )}
+            >
               Explore surveys, administrative records, censuses, spatial data,
               replication packages, and open-source datasets—organized by topic,
               geography, time, and access conditions.
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <div
+              className={revealClass(
+                shown(4),
+                reduced,
+                "mt-7 flex flex-wrap items-center gap-3 sm:mt-8 sm:gap-4",
+              )}
+            >
               <Button
                 type="button"
                 size="lg"
-                className="h-12 bg-[#8B5E3C] px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white hover:bg-[#a06d45]"
+                className="h-11 bg-[#8B5E3C] px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white hover:bg-[#a06d45] sm:h-12 sm:px-6"
                 onClick={(e) => {
                   e.stopPropagation();
                   enterMap();
@@ -286,20 +329,23 @@ export function LandingExperience({ stats }: Props) {
               <Link
                 href="/about"
                 onClick={(e) => e.stopPropagation()}
-                className="inline-flex min-h-12 items-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
+                className="inline-flex min-h-11 items-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
               >
                 About the maintainer →
               </Link>
             </div>
 
-            {/* Dynamic action line */}
             <p
-              className={`mt-8 flex items-center gap-2 text-sm text-[#C8C9BC] transition-opacity duration-200 ${
-                actionVisible ? "opacity-100" : "opacity-0"
-              }`}
+              className={revealClass(
+                shown(5),
+                reduced,
+                `mt-6 flex items-center gap-2 text-sm text-[#C8C9BC] sm:mt-7 ${
+                  actionVisible ? "opacity-100" : "opacity-0"
+                }`,
+              )}
               aria-live="polite"
             >
-              <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[#C4A574]">
+              <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[#C4A574]">
                 {actionIdx === 0 ? (
                   <ArrowUp className="size-3.5" aria-hidden />
                 ) : (
@@ -316,32 +362,49 @@ export function LandingExperience({ stats }: Props) {
             </p>
           </div>
 
-          {/* Credibility / catalogue stats */}
-          <div className="relative z-10 border-t border-white/[0.08] bg-black/50 backdrop-blur-md">
+          {/* Credibility stats — always in first viewport, count-up like a timer */}
+          <div
+            className={revealClass(
+              shown(6),
+              reduced,
+              "relative z-10 shrink-0 border-t border-white/[0.08] bg-black/55 backdrop-blur-md",
+            )}
+          >
             <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-px sm:grid-cols-4">
-              <Stat
-                value={formatCount(stats.datasetCount)}
+              <CountUpStat
+                target={stats.datasetCount}
                 label="datasets"
+                ready={countReady}
+                reduced={reduced}
+                delayMs={0}
               />
-              <Stat
-                value={formatCount(stats.thematicAreaCount)}
+              <CountUpStat
+                target={stats.thematicAreaCount}
                 label="thematic areas"
+                ready={countReady}
+                reduced={reduced}
+                delayMs={120}
               />
-              <Stat
-                value={formatCount(stats.providerCount)}
+              <CountUpStat
+                target={stats.providerCount}
                 label="data providers"
+                ready={countReady}
+                reduced={reduced}
+                delayMs={240}
               />
-              <Stat
+              <StatStatic
                 value={stats.lastUpdatedLabel}
                 label="last updated"
-                valueClass="text-lg sm:text-xl"
+                ready={countReady}
+                reduced={reduced}
+                delayMs={360}
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Scroll continuation ───────────────────────── */}
+      {/* ── Below the fold ────────────────────────────── */}
       <section className="border-t border-white/[0.06] bg-[#050505] px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
         <div className="mx-auto max-w-[1400px]">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
@@ -423,26 +486,158 @@ export function LandingExperience({ stats }: Props) {
   );
 }
 
-function formatCount(n: number): string {
-  return n.toLocaleString("en-US");
+function revealClass(shown: boolean, reduced: boolean, extra: string) {
+  if (reduced) return extra;
+  return [
+    extra,
+    "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+    shown
+      ? "translate-y-0 opacity-100"
+      : "translate-y-5 opacity-0 blur-[2px]",
+  ].join(" ");
 }
 
-function Stat({
+/** Word-by-word headline cascade */
+function AnimatedHeadline({
+  text,
+  active,
+  reduced,
+}: {
+  text: string;
+  active: boolean;
+  reduced: boolean;
+}) {
+  if (reduced || !active) {
+    return (
+      <span className={active || reduced ? "opacity-100" : "opacity-0"}>
+        {text}
+      </span>
+    );
+  }
+  const words = text.split(" ");
+  return (
+    <span className="inline">
+      {words.map((w, i) => (
+        <span
+          key={`${w}-${i}`}
+          className="inline-block transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          style={{
+            transitionDelay: `${i * 55}ms`,
+            opacity: active ? 1 : 0,
+            transform: active ? "translateY(0)" : "translateY(0.55em)",
+          }}
+        >
+          {w}
+          {i < words.length - 1 ? "\u00A0" : ""}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** Ease-out cubic for timer feel */
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function CountUpStat({
+  target,
+  label,
+  ready,
+  reduced,
+  delayMs,
+}: {
+  target: number;
+  label: string;
+  ready: boolean;
+  reduced: boolean;
+  delayMs: number;
+}) {
+  const [value, setValue] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    if (!ready) return;
+    if (reduced) {
+      setValue(target);
+      setStarted(true);
+      return;
+    }
+    let cancelled = false;
+    let raf = 0;
+    const startDelay = window.setTimeout(() => {
+      setStarted(true);
+      const duration = 1400 + Math.min(800, target * 4);
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        if (cancelled) return;
+        const p = Math.min(1, (now - t0) / duration);
+        setValue(Math.round(easeOutCubic(p) * target));
+        if (p < 1) raf = requestAnimationFrame(tick);
+        else setValue(target);
+      };
+      raf = requestAnimationFrame(tick);
+    }, delayMs);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(startDelay);
+      cancelAnimationFrame(raf);
+    };
+  }, [ready, reduced, target, delayMs]);
+
+  return (
+    <div
+      className={`px-4 py-4 sm:px-8 sm:py-6 transition-all duration-500 ${
+        started || reduced
+          ? "translate-y-0 opacity-100"
+          : "translate-y-3 opacity-0"
+      }`}
+    >
+      <p
+        className="font-display text-2xl font-semibold tabular-nums text-[#F3E4C9] sm:text-3xl"
+        aria-label={`${target} ${label}`}
+      >
+        {value.toLocaleString("en-US")}
+      </p>
+      <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[#C8C9BC]/85">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function StatStatic({
   value,
   label,
-  valueClass,
+  ready,
+  reduced,
+  delayMs,
 }: {
   value: string;
   label: string;
-  valueClass?: string;
+  ready: boolean;
+  reduced: boolean;
+  delayMs: number;
 }) {
+  const [show, setShow] = useState(reduced);
+
+  useEffect(() => {
+    if (!ready) return;
+    if (reduced) {
+      setShow(true);
+      return;
+    }
+    const t = window.setTimeout(() => setShow(true), delayMs);
+    return () => window.clearTimeout(t);
+  }, [ready, reduced, delayMs]);
+
   return (
-    <div className="px-5 py-6 sm:px-8 sm:py-7">
-      <p
-        className={`font-display font-semibold tabular-nums text-[#F3E4C9] ${
-          valueClass ?? "text-2xl sm:text-3xl"
-        }`}
-      >
+    <div
+      className={`px-4 py-4 sm:px-8 sm:py-6 transition-all duration-500 ${
+        show ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
+      }`}
+    >
+      <p className="font-display text-lg font-semibold text-[#F3E4C9] sm:text-xl">
         {value}
       </p>
       <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[#C8C9BC]/85">

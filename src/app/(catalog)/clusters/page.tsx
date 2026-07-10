@@ -30,7 +30,7 @@ export default function ClustersPage() {
           return (
             <section
               key={cluster.id}
-              className="group bg-obsidian-panel p-6 transition-colors duration-300 hover:bg-[#0f3558] sm:p-8"
+              className="group bg-obsidian-panel p-6 transition-colors duration-300 hover:bg-[#1a1a1a] sm:p-8"
             >
               {index === 3 && (
                 <div className="mb-6 sm:col-span-2">

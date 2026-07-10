@@ -51,7 +51,7 @@ export default function RootLayout({
         mono.variable,
       )}
     >
-      <body className="min-h-dvh bg-background font-sans text-foreground">
+      <body className="min-h-dvh bg-black font-sans text-foreground">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>

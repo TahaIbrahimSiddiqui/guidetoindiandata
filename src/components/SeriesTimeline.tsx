@@ -75,7 +75,7 @@ export function SeriesTimeline({ series }: { series: DataSeries }) {
                   }`}
                   aria-hidden
                 />
-                <div className="rounded-xl border border-obsidian-border bg-obsidian-panel/80 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C4A574]/40 hover:bg-[#0f3558]">
+                <div className="rounded-xl border border-obsidian-border bg-obsidian-panel/80 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C4A574]/40 hover:bg-[#1a1a1a]">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
                       <p className="font-mono text-sm font-semibold text-obsidian-purple-bright">

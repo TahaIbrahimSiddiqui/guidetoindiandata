@@ -23,7 +23,7 @@ const footerNav = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-obsidian-border bg-[#071f36]">
+    <footer className="mt-auto border-t border-obsidian-border bg-black">
       <div className="mx-auto max-w-[1400px] px-5 py-14 sm:px-8 lg:px-12">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div className="max-w-md">

@@ -1,246 +1,330 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { ArrowDown, Database, Network, BookOpen } from "lucide-react";
 import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
+import { Button } from "@/components/ui/button";
+import { clusters } from "@/data/clusters";
+
+/** Stock cinematic India footage (YouTube embed — not rehosted). */
+const YT_ID = "tcxDfvMRjZI";
+const YT_EMBED = `https://www.youtube.com/embed/${YT_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${YT_ID}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0`;
+
+const NAV = [
+  { href: "/explore", label: "Explore" },
+  { href: "/series", label: "Series" },
+  { href: "/academic", label: "Academic" },
+  { href: "/about", label: "About" },
+];
 
 /**
- * Locomotive-inspired intro: bold staggered type, minimal chrome,
- * then full-screen graph on enter.
+ * Scroll-first landing (boilerlab-style):
+ * hero video → floating universe → catalog CTAs.
+ * No click-to-enter gate.
  */
 export function LandingExperience() {
-  const [entered, setEntered] = useState(false);
-  const [exiting, setExiting] = useState(false);
-
-  const enter = useCallback(() => {
-    if (entered || exiting) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setEntered(true);
-      return;
-    }
-    setExiting(true);
-    window.setTimeout(() => {
-      setEntered(true);
-      setExiting(false);
-    }, 800);
-  }, [entered, exiting]);
+  const [reduced, setReduced] = useState(false);
+  const [ytReady, setYtReady] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    if (entered) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        enter();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [enter, entered]);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const fn = () => setReduced(mq.matches);
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+
+  useEffect(() => {
+    if (reduced) return;
+    const t = window.setTimeout(() => setYtReady(true), 700);
+    return () => window.clearTimeout(t);
+  }, [reduced]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 48);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <div className="fixed inset-0 bg-[#0A2947]">
-      {(entered || exiting) && <ObsidianGraphFull />}
-
-      {!entered && (
-        <div
-          className={`absolute inset-0 z-20 flex flex-col bg-[#0A2947] transition-all duration-[800ms] ${
-            exiting
-              ? "-translate-y-full opacity-0"
-              : "translate-y-0 opacity-100"
-          }`}
-          style={{
-            transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-        >
-          <header className="flex items-center justify-between px-6 py-6 sm:px-10 lg:px-14">
-            <div className="flex items-center gap-2">
-              <span
-                className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]"
-                aria-hidden
-              />
-              <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-                Indian Data Guide
-                <span className="align-super text-[0.65em] text-[#C4A574]/80">
-                  ®
-                </span>
+    <div className="min-h-dvh bg-black text-[#F3E4C9]">
+      {/* Sticky chrome */}
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-white/[0.07] bg-black/80 backdrop-blur-xl"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span
+              className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]"
+              aria-hidden
+            />
+            <span className="font-display text-sm font-semibold tracking-tight">
+              Indian Data Guide
+              <span className="align-super text-[0.65em] text-[#C4A574]/85">
+                ®
               </span>
-            </div>
-            <nav
-              className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-[#E0E1D4] sm:gap-4"
-              aria-label="Landing"
+            </span>
+          </Link>
+          <nav
+            className="hidden items-center gap-1 md:flex"
+            aria-label="Main"
+          >
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="inline-flex min-h-11 items-center rounded-md px-3 text-[11px] font-medium uppercase tracking-[0.16em] text-[#C8C9BC] transition hover:text-[#F3E4C9]"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Button
+              asChild
+              size="sm"
+              className="ml-3 h-10 bg-[#8B5E3C] text-white hover:bg-[#a06d45]"
             >
-              <Link
-                href="/explore"
-                className="inline-flex min-h-11 items-center px-2 link-underline hover:text-[#F3E4C9]"
-              >
-                Explore
-              </Link>
-              <Link
-                href="/academic"
-                className="inline-flex min-h-11 items-center px-2 link-underline hover:text-[#F3E4C9]"
-              >
-                Academic
-              </Link>
-              <Link
-                href="/series"
-                className="inline-flex min-h-11 items-center px-2 link-underline hover:text-[#F3E4C9]"
-              >
-                Series
-              </Link>
-            </nav>
-          </header>
+              <Link href="/explore">Open catalog</Link>
+            </Button>
+          </nav>
+          <Link
+            href="/explore"
+            className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C4A574] md:hidden"
+          >
+            Catalog →
+          </Link>
+        </div>
+      </header>
 
-          <div className="grid flex-1 items-center gap-12 px-6 py-8 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,32rem)] lg:px-14">
-            <section>
-            <p className="eyebrow loco-fade mb-8">
+      {/* ── 1. Hero (full viewport) ───────────────────────── */}
+      <section className="relative flex min-h-dvh flex-col overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden
+        >
+          {!reduced && (
+            <div
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                ytReady ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <iframe
+                title="India cinematic stock footage"
+                src={YT_EMBED}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-0"
+                style={{
+                  width: "max(100vw, 177.78vh)",
+                  height: "max(100vh, 56.25vw)",
+                  pointerEvents: "none",
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen={false}
+                loading="eager"
+              />
+            </div>
+          )}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: reduced
+                ? `
+                  radial-gradient(ellipse 80% 55% at 55% 35%, rgba(139,94,60,0.22), transparent 58%),
+                  radial-gradient(ellipse 50% 40% at 15% 85%, rgba(196,165,116,0.1), transparent 50%),
+                  linear-gradient(180deg, #000 0%, #0c0c0c 55%, #000 100%)
+                `
+                : `
+                  linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.42) 40%, rgba(0,0,0,0.88) 100%),
+                  linear-gradient(105deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 100%)
+                `,
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, transparent 32%, rgba(0,0,0,0.72) 100%)",
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 flex flex-1 flex-col justify-center px-5 pb-24 pt-28 sm:px-8 lg:px-12">
+          <div className="mx-auto w-full max-w-[1400px]">
+            <p className="eyebrow mb-6 text-[#C8C9BC] drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
               India · Data · Discovery
             </p>
-
-            <h1 className="font-display max-w-5xl text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[1.05] text-[#F3E4C9]">
-              <span className="loco-line">
-                <span>National data,</span>
-              </span>
-              <span className="loco-line">
-                <span>mapped for</span>
-              </span>
-              <span className="loco-line">
-                <span>research.</span>
-              </span>
+            <h1 className="font-display max-w-4xl text-[clamp(2.75rem,8vw,6rem)] font-bold leading-[1.06] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_32px_rgba(0,0,0,0.9)]">
+              National data,
+              <br />
+              mapped for
+              <br />
+              research.
             </h1>
-
-            <p className="loco-fade mt-8 max-w-lg text-base leading-relaxed text-[#D3D4C0] sm:text-lg">
-              Government surveys, academic archives, and community GitHub
-              sources, wired as a neural network with honest access friction
-              and practical starting points.
+            <p className="mt-7 max-w-xl text-base leading-relaxed text-[#E4E2D4]/95 drop-shadow-[0_2px_14px_rgba(0,0,0,0.9)] sm:text-lg">
+              Honest access labels, usage guides, and variable tables—across
+              government surveys, academic archives, and community sources.
             </p>
-
-            <div className="loco-fade mt-12 flex flex-wrap items-center gap-6">
-              <button
-                type="button"
-                onClick={enter}
-                className="group inline-flex min-h-12 items-center gap-3 border border-[#F3E4C9]/30 bg-transparent px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F3E4C9] transition-all duration-500 hover:border-[#F3E4C9] hover:bg-[#F3E4C9] hover:text-[#0A2947] focus-visible:outline-offset-4"
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="h-12 bg-[#8B5E3C] px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white hover:bg-[#a06d45]"
               >
-                Enter the graph
-                <span
-                  className="inline-block transition-transform duration-500 group-hover:translate-x-1"
-                  aria-hidden
-                >
-                  →
-                </span>
-              </button>
-              <Link
-                href="/explore"
-                className="inline-flex min-h-11 items-center text-[11px] font-medium uppercase tracking-[0.18em] text-[#D3D4C0] link-underline hover:text-[#F3E4C9]"
+                <Link href="/explore">Browse catalog</Link>
+              </Button>
+              <a
+                href="#universe"
+                className="inline-flex min-h-12 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] transition hover:text-[#F3E4C9]"
               >
-                Skip to catalog
-              </Link>
+                Scroll to universe
+                <ArrowDown className="size-4 animate-bounce" aria-hidden />
+              </a>
             </div>
-            </section>
+          </div>
+        </div>
 
-            <aside
-              className="loco-fade hidden rounded-md border border-[#D3D4C0]/18 bg-[#071F36]/55 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] lg:block"
-              aria-label="Neural network preview"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
-                  Neural preview
-                </p>
-                <span className="font-mono text-xs text-[#D3D4C0]/60">
-                  22 lenses · 97 nodes
-                </span>
-              </div>
+        <a
+          href="#universe"
+          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/45 transition hover:text-white/70"
+        >
+          Scroll down to explore
+          <ArrowDown className="size-4" aria-hidden />
+        </a>
+      </section>
+
+      {/* ── 2. Floating universe (full viewport) ──────────── */}
+      <section
+        id="universe"
+        className="relative h-[100dvh] w-full border-t border-white/[0.06] bg-black"
+      >
+        <div className="absolute left-5 top-5 z-20 sm:left-8 sm:top-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
+            02 · Universe
+          </p>
+          <h2 className="font-display mt-1 text-2xl font-semibold text-[#F3E4C9] sm:text-3xl">
+            Floating data map
+          </h2>
+        </div>
+        <ObsidianGraphFull embedded />
+      </section>
+
+      {/* ── 3. Proof / catalog bridge ─────────────────────── */}
+      <section className="relative border-t border-white/[0.06] bg-[#050505] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto max-w-[1400px]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
+            03 · Catalog
+          </p>
+          <h2 className="font-display mt-3 max-w-2xl text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-tight text-[#F3E4C9]">
+            Built for researchers who need truth about access friction.
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-[#C8C9BC]/90">
+            Every record includes best-for guidance, limitations, usage guides,
+            and representative variables—not just a dump of portal links.
+          </p>
+
+          <div className="mt-14 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                icon: Database,
+                label: "111+",
+                blurb: "Dataset records across gov, academic & GitHub layers",
+              },
+              {
+                icon: Network,
+                label: String(clusters.length),
+                blurb: "Domain themes linking surveys and admin systems",
+              },
+              {
+                icon: BookOpen,
+                label: "Guides",
+                blurb: "Codebooks, portals, and tutorials on every page",
+              },
+            ].map((item) => (
               <div
-                className="relative mt-5 aspect-[1.08] overflow-hidden rounded-md border border-[#D3D4C0]/12 bg-[#0A2947]"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 50% 48%, rgba(196,165,116,0.18), transparent 26%), linear-gradient(rgba(211,212,192,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.04) 1px, transparent 1px)",
-                  backgroundSize: "100% 100%, 34px 34px, 34px 34px",
-                }}
+                key={item.label}
+                className="rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent p-6"
               >
-                <svg
-                  className="absolute inset-0 size-full"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
+                <item.icon
+                  className="size-5 text-[#C4A574]"
                   aria-hidden
-                >
-                  {[
-                    [48, 13, 50, 50],
-                    [72, 35, 50, 50],
-                    [66, 67, 50, 50],
-                    [22, 32, 50, 50],
-                    [34, 72, 50, 50],
-                    [22, 32, 34, 72],
-                    [72, 35, 66, 67],
-                    [48, 13, 72, 35],
-                  ].map(([x1, y1, x2, y2], index) => (
-                    <line
-                      key={index}
-                      x1={x1}
-                      y1={y1}
-                      x2={x2}
-                      y2={y2}
-                      stroke={
-                        index < 5
-                          ? "rgba(196,165,116,0.34)"
-                          : "rgba(211,212,192,0.16)"
-                      }
-                      strokeWidth={index < 5 ? 0.35 : 0.18}
-                    />
-                  ))}
-                </svg>
-                {[
-                  ["Population", "left-[48%] top-[13%]", "#F3E4C9"],
-                  ["Health", "left-[72%] top-[35%]", "#E8D4B0"],
-                  ["Education", "left-[66%] top-[67%]", "#B8B9A4"],
-                  ["GitHub", "left-[22%] top-[32%]", "#8B9A8C"],
-                  ["Climate", "left-[34%] top-[72%]", "#9BA88E"],
-                ].map(([label, position, color]) => (
-                  <div
-                    key={label}
-                    className={`absolute ${position} -translate-x-1/2 -translate-y-1/2`}
-                  >
-                    <span
-                      className="mx-auto block size-4 rounded-full border border-[#F3E4C9]/35 shadow-[0_0_18px_rgba(243,228,201,0.18)]"
-                      style={{ backgroundColor: color }}
-                      aria-hidden
-                    />
-                    <span className="mt-2 block whitespace-nowrap text-center text-xs font-semibold text-[#F3E4C9]">
-                      {label}
-                    </span>
-                  </div>
-                ))}
-                <div className="absolute left-1/2 top-1/2 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C4A574]/42 bg-[#071F36]/95 p-5 text-center shadow-[0_0_42px_rgba(196,165,116,0.12)]">
-                  <p className="font-display text-2xl font-semibold">
-                    Neural atlas
-                  </p>
-                  <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/70">
-                    Lenses fire connected sources across official, academic,
-                    and community data.
-                  </p>
-                </div>
+                />
+                <p className="font-display mt-4 text-3xl font-semibold text-[#F3E4C9]">
+                  {item.label}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[#C8C9BC]/85">
+                  {item.blurb}
+                </p>
               </div>
-            </aside>
+            ))}
           </div>
 
-          <footer className="loco-fade flex flex-wrap items-end justify-between gap-4 px-6 py-6 sm:px-10 lg:px-14">
-            <p className="max-w-xs text-xs leading-relaxed text-[#D3D4C0]/70">
-              Design and data are tools of expression. What sets this guide
-              apart is honest access friction and interlinked sources.
-            </p>
-            <div className="flex items-center gap-6 text-[10px] uppercase tracking-[0.16em] text-[#D3D4C0]/60">
-              <span>©{new Date().getFullYear()}</span>
-              <button
-                type="button"
-                onClick={enter}
-                className="text-[#C4A574] hover:text-[#F3E4C9]"
-              >
-                Press Enter
-              </button>
-            </div>
-          </footer>
+          <div className="mt-14 flex flex-wrap gap-3">
+            <Button
+              asChild
+              size="lg"
+              className="h-12 bg-[#8B5E3C] px-6 uppercase tracking-[0.14em] text-white hover:bg-[#a06d45]"
+            >
+              <Link href="/explore">Explore datasets</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-12 border-white/15 bg-transparent uppercase tracking-[0.14em] text-[#F3E4C9] hover:bg-white/5"
+            >
+              <Link href="/series">Browse series</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-12 border-white/15 bg-transparent uppercase tracking-[0.14em] text-[#F3E4C9] hover:bg-white/5"
+            >
+              <Link href="/academic">Academic & GitHub</Link>
+            </Button>
+          </div>
         </div>
-      )}
+      </section>
+
+      {/* ── 4. Footer ─────────────────────────────────────── */}
+      <footer className="border-t border-white/[0.06] bg-black px-5 py-12 sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-[1400px] flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]" />
+              <p className="font-display text-lg font-semibold text-[#F3E4C9]">
+                Indian Data Guide®
+              </p>
+            </div>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/45">
+              Not an official government portal. Always verify current access
+              rules on the host site.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.14em] text-white/40">
+            {NAV.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="hover:text-[#F3E4C9]"
+              >
+                {l.label}
+              </Link>
+            ))}
+            <Link href="/privacy" className="hover:text-[#F3E4C9]">
+              Privacy
+            </Link>
+          </div>
+        </div>
+        <p className="mx-auto mt-10 max-w-[1400px] text-[10px] uppercase tracking-[0.14em] text-white/25">
+          © {new Date().getFullYear()} · Stock video via YouTube embed
+        </p>
+      </footer>
     </div>
   );
 }

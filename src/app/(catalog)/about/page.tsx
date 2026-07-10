@@ -31,6 +31,16 @@ export default function AboutPage() {
         <p className="mt-1 font-display text-xl font-semibold text-[#F3E4C9]">
           Taha Ibrahim Siddiqui
         </p>
+        <p className="mt-2">
+          <a
+            href="https://tahaibrahimsiddiqui.github.io/personal_website/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-[#C4A574] link-underline transition hover:text-[#F3E4C9]"
+          >
+            tahaibrahimsiddiqui.github.io/personal_website
+          </a>
+        </p>
         <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/95">
           This guide is maintained by Taha for the public good as an independent
           research catalog of India&apos;s statistical and administrative data
@@ -43,7 +53,16 @@ export default function AboutPage() {
           builders.
         </p>
         <p className="mt-4 text-sm text-[#C8C9BC]/90">
-          Navigate the{" "}
+          More on the maintainer:{" "}
+          <a
+            href="https://tahaibrahimsiddiqui.github.io/personal_website/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#C4A574] link-underline"
+          >
+            personal website
+          </a>
+          . Navigate the{" "}
           <Link href="/map" className="text-[#C4A574] link-underline">
             solar system map
           </Link>{" "}

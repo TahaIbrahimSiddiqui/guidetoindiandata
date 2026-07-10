@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  ArrowUp,
+  ArrowDown,
   MousePointer2,
   Orbit,
 } from "lucide-react";
@@ -17,11 +17,11 @@ const LANDING_VIDEO = `${BASE}/videos/indian-street-market-background-web-1080p-
 
 /** Rotating affordance lines — any of these enters the solar map. */
 const ACTION_LINES = [
-  "Move your cursor upward",
+  "Scroll down",
+  "Move your cursor toward the bottom",
   "Click anywhere on the hero",
   "Press Enter or Space",
   "Use the button below",
-  "Scroll up at the top of the page",
 ];
 
 type Props = {
@@ -347,7 +347,7 @@ export function LandingExperience({ stats }: Props) {
             >
               <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[#C4A574]">
                 {actionIdx === 0 ? (
-                  <ArrowUp className="size-3.5" aria-hidden />
+                  <ArrowDown className="size-3.5" aria-hidden />
                 ) : (
                   <MousePointer2 className="size-3.5" aria-hidden />
                 )}
@@ -418,7 +418,7 @@ export function LandingExperience({ stats }: Props) {
               {
                 n: "01",
                 t: "Open the solar map",
-                d: "Enter via the button, a click on the hero, cursor toward the top, or keyboard.",
+                d: "Enter via the button, scroll down, a click on the hero, cursor toward the bottom, or keyboard.",
               },
               {
                 n: "02",

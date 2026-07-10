@@ -33,6 +33,27 @@ const SOURCE_NODE_POSITIONS = [
   { x: 12, y: 18 },
 ];
 
+const SYNAPSE_LINKS = [
+  [0, 1],
+  [0, 9],
+  [1, 2],
+  [2, 3],
+  [3, 4],
+  [4, 11],
+  [5, 6],
+  [6, 7],
+  [7, 8],
+  [8, 13],
+  [9, 10],
+  [10, 11],
+  [11, 12],
+  [12, 13],
+  [14, 4],
+  [15, 7],
+  [16, 1],
+  [17, 8],
+];
+
 function sourceLabel(node: GraphNodeDef) {
   return node.label.length > 42 ? `${node.label.slice(0, 39)}...` : node.label;
 }
@@ -115,8 +136,8 @@ export function ObsidianGraphFull() {
   const plottedSources = activeSources.slice(0, SOURCE_NODE_POSITIONS.length);
   const sourceCount = activeSources.length;
   const mapSummary = selectedTheme
-    ? `${selectedTheme.label}: ${sourceCount} linked sources`
-    : "Choose a theme to inspect linked sources";
+    ? `${selectedTheme.label}: ${sourceCount} active neurons`
+    : "Choose a theme to activate its neural network";
 
   return (
     <div className="fixed inset-0 z-0 h-[100dvh] w-screen overflow-y-auto bg-[#0A2947] text-[#F3E4C9]">
@@ -144,14 +165,14 @@ export function ObsidianGraphFull() {
             </p>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/80">
-            {mapSummary}. Select a lens, then open the best source for your
-            research question.
+            {mapSummary}. Select a lens, then follow the strongest synapses to
+            the right source.
           </p>
         </div>
 
         <nav
           className="flex flex-wrap justify-end gap-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#D3D4C0]"
-          aria-label="Knowledge map navigation"
+          aria-label="Neural network navigation"
         >
           {[
             { href: "/academic", label: "Academic" },
@@ -175,7 +196,7 @@ export function ObsidianGraphFull() {
           <div className="flex items-center gap-2 text-[#C4A574]">
             <Layers3 className="size-4" aria-hidden />
             <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em]">
-              Data lenses
+              Neural lenses
             </h2>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-1">
@@ -220,12 +241,12 @@ export function ObsidianGraphFull() {
           <div className="surface-elevated relative overflow-hidden p-4 sm:p-5 lg:min-h-[calc(100dvh-8rem)]">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="page-kicker mb-3">Curated Knowledge Map</p>
+                <p className="page-kicker mb-3">Neural Data Network</p>
                 <h1
                   id="map-title"
                   className="font-display max-w-2xl text-[clamp(2.2rem,5vw,4.5rem)] font-bold leading-[1.02] text-[#F3E4C9]"
                 >
-                  {selectedTheme?.label ?? "Indian data"} sources, mapped by
+                  {selectedTheme?.label ?? "Indian data"} sources, wired by
                   use.
                 </h1>
               </div>
@@ -233,7 +254,7 @@ export function ObsidianGraphFull() {
                 {[
                   { label: "Themes", value: themes.length },
                   { label: "Sources", value: sources.length },
-                  { label: "Linked", value: sourceCount },
+                  { label: "Active", value: sourceCount },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -258,8 +279,8 @@ export function ObsidianGraphFull() {
                 className="absolute inset-0"
                 style={{
                   backgroundImage:
-                    "linear-gradient(rgba(211,212,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.035) 1px, transparent 1px)",
-                  backgroundSize: "44px 44px",
+                    "radial-gradient(circle at 50% 48%, rgba(196,165,116,0.16), transparent 24%), radial-gradient(circle at 20% 20%, rgba(243,228,201,0.08), transparent 20%), linear-gradient(rgba(211,212,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.035) 1px, transparent 1px)",
+                  backgroundSize: "100% 100%, 100% 100%, 44px 44px, 44px 44px",
                 }}
                 aria-hidden
               />
@@ -269,6 +290,48 @@ export function ObsidianGraphFull() {
                 preserveAspectRatio="none"
                 aria-hidden
               >
+                <defs>
+                  <radialGradient id="synapse-node" cx="50%" cy="45%" r="65%">
+                    <stop offset="0%" stopColor="rgba(243,228,201,0.95)" />
+                    <stop offset="70%" stopColor="rgba(196,165,116,0.75)" />
+                    <stop offset="100%" stopColor="rgba(139,94,60,0.2)" />
+                  </radialGradient>
+                  <filter id="synapse-glow">
+                    <feGaussianBlur stdDeviation="0.75" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                {SYNAPSE_LINKS.map(([from, to]) => {
+                  const a = SOURCE_NODE_POSITIONS[from];
+                  const b = SOURCE_NODE_POSITIONS[to];
+                  if (!a || !b || !plottedSources[from] || !plottedSources[to]) {
+                    return null;
+                  }
+                  const active =
+                    plottedSources[from].id === selectedSource?.id ||
+                    plottedSources[to].id === selectedSource?.id;
+                  const mx = (a.x + b.x) / 2;
+                  const my = (a.y + b.y) / 2;
+                  const bow = from % 2 === 0 ? -6 : 6;
+
+                  return (
+                    <path
+                      key={`${from}-${to}`}
+                      d={`M ${a.x} ${a.y} Q ${mx + bow} ${my - bow} ${b.x} ${b.y}`}
+                      fill="none"
+                      stroke={
+                        active
+                          ? "rgba(196,165,116,0.55)"
+                          : "rgba(211,212,192,0.12)"
+                      }
+                      strokeWidth={active ? 0.32 : 0.15}
+                      filter={active ? "url(#synapse-glow)" : undefined}
+                    />
+                  );
+                })}
                 {plottedSources.map((source, index) => {
                   const position = SOURCE_NODE_POSITIONS[index];
                   const selected = source.id === selectedSource?.id;
@@ -282,18 +345,35 @@ export function ObsidianGraphFull() {
                       y2={position.y}
                       stroke={
                         selected
-                          ? "rgba(196,165,116,0.72)"
-                          : "rgba(211,212,192,0.16)"
+                          ? "rgba(243,228,201,0.76)"
+                          : "rgba(196,165,116,0.18)"
                       }
                       strokeWidth={selected ? 0.38 : 0.18}
+                      filter={selected ? "url(#synapse-glow)" : undefined}
                     />
                   );
                 })}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="12.5"
+                  fill="none"
+                  stroke="rgba(196,165,116,0.22)"
+                  strokeWidth="0.35"
+                />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="18"
+                  fill="none"
+                  stroke="rgba(243,228,201,0.08)"
+                  strokeWidth="0.2"
+                />
               </svg>
 
-              <div className="absolute left-1/2 top-1/2 z-10 w-56 -translate-x-1/2 -translate-y-1/2 rounded-md border border-[#C4A574]/45 bg-[#0A2947]/95 p-5 text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+              <div className="absolute left-1/2 top-1/2 z-10 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C4A574]/45 bg-[#0A2947]/95 p-6 text-center shadow-[0_18px_70px_rgba(0,0,0,0.4),0_0_44px_rgba(196,165,116,0.12)]">
                 <span
-                  className="mx-auto block size-3 rotate-45"
+                  className="mx-auto block size-3 rounded-full shadow-[0_0_20px_currentColor]"
                   style={{ backgroundColor: selectedTheme?.color }}
                   aria-hidden
                 />
@@ -301,7 +381,7 @@ export function ObsidianGraphFull() {
                   {selectedTheme?.label}
                 </p>
                 <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/80">
-                  {sourceCount} linked sources with guide pages, access notes,
+                  {sourceCount} active neurons with guide pages, access notes,
                   and variable clues.
                 </p>
               </div>
@@ -317,14 +397,16 @@ export function ObsidianGraphFull() {
                     onClick={() => setSelectedSourceId(source.id)}
                     className={`absolute z-20 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border text-[10px] font-semibold tabular-nums transition-all duration-200 hover:scale-110 focus-visible:scale-110 ${
                       selected
-                        ? "border-[#F3E4C9] bg-[#C4A574] text-[#071F36] shadow-[0_0_0_6px_rgba(196,165,116,0.16)]"
-                        : "border-[#D3D4C0]/30 bg-[#D3D4C0] text-[#071F36] hover:border-[#F3E4C9]"
+                        ? "border-[#F3E4C9] bg-[#C4A574] text-[#071F36] shadow-[0_0_0_7px_rgba(196,165,116,0.15),0_0_28px_rgba(196,165,116,0.45)]"
+                        : "border-[#F3E4C9]/35 bg-[#D3D4C0] text-[#071F36] shadow-[0_0_18px_rgba(243,228,201,0.12)] hover:border-[#F3E4C9] hover:shadow-[0_0_26px_rgba(243,228,201,0.28)]"
                     }`}
                     style={{ left: `${position.x}%`, top: `${position.y}%` }}
                     title={source.label}
                     aria-label={`Inspect ${source.label}`}
                   >
-                    {index + 1}
+                    <span className={selected ? "" : "opacity-85"}>
+                      {index + 1}
+                    </span>
                   </button>
                 );
               })}
@@ -335,12 +417,12 @@ export function ObsidianGraphFull() {
                 <div className="flex items-center gap-2 text-[#C4A574]">
                   <Network className="size-4" aria-hidden />
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">
-                    Mobile map
+                    Mobile neural map
                   </p>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/82">
-                  {selectedTheme?.label} is open. The sources below are the
-                  readable mobile version of the graph.
+                  {selectedTheme?.label} is active. The sources below are the
+                  readable mobile version of the neural graph.
                 </p>
               </div>
               {activeSources.slice(0, 8).map((source, index) => (
@@ -375,7 +457,7 @@ export function ObsidianGraphFull() {
                 className="btn-primary"
               >
                 <Search className="size-4" aria-hidden />
-                Search this lens
+                Search this neural lens
               </Link>
               <Link href="/explore" className="btn-secondary">
                 Open full catalog
@@ -413,7 +495,7 @@ export function ObsidianGraphFull() {
           <div className="mt-6">
             <div className="flex items-center justify-between gap-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
-                Linked sources
+                Active neurons
               </p>
               <span className="font-mono text-xs text-[#D3D4C0]/55">
                 {sourceCount}
@@ -447,7 +529,7 @@ export function ObsidianGraphFull() {
       </main>
 
       <p className="relative z-10 pb-5 text-center text-[10px] uppercase tracking-[0.18em] text-[#D3D4C0]/45">
-        Esc resets · numbered nodes preview sources · catalog pages hold the
+        Esc resets · numbered neurons preview sources · catalog pages hold the
         full records
       </p>
     </div>

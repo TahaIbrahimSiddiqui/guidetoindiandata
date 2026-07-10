@@ -8,7 +8,7 @@ Public website cataloging **70+ Indian datasets** across health, education, labo
 
 ## Features
 
-- **Landing page** with an interactive curated knowledge map of data clusters (no ads)
+- **Landing page** with an interactive neural network of data clusters (no ads)
 - **Explore** search and filters (category, access, geography, cluster, institution)
 - **Dataset records** with access badges, best-for / limitations, variables, related datasets
 - **Clusters** view of the six ecosystem groups
@@ -54,7 +54,7 @@ With ads disabled, subtle placeholders keep layout stable without dominating the
 
 - `src/data/datasets.ts` — catalog source of truth
 - `src/data/clusters.ts` — six clusters
-- `src/components/ObsidianGraphFull.tsx` — landing knowledge map
+- `src/components/ObsidianGraphFull.tsx` — landing neural network
 - `src/components/ads/*` — monetization chrome
 - `content/guide_research.md` — research source
 

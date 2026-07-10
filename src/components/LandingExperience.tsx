@@ -111,8 +111,8 @@ export function LandingExperience() {
 
             <p className="loco-fade mt-8 max-w-lg text-base leading-relaxed text-[#D3D4C0] sm:text-lg">
               Government surveys, academic archives, and community GitHub
-              sources, arranged as a curated knowledge map with honest access
-              friction and practical starting points.
+              sources, wired as a neural network with honest access friction
+              and practical starting points.
             </p>
 
             <div className="loco-fade mt-12 flex flex-wrap items-center gap-6">
@@ -140,24 +140,55 @@ export function LandingExperience() {
 
             <aside
               className="loco-fade hidden rounded-md border border-[#D3D4C0]/18 bg-[#071F36]/55 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.22)] lg:block"
-              aria-label="Knowledge map preview"
+              aria-label="Neural network preview"
             >
               <div className="flex items-center justify-between gap-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C4A574]">
-                  Map preview
+                  Neural preview
                 </p>
                 <span className="font-mono text-xs text-[#D3D4C0]/60">
-                  22 lenses
+                  22 lenses · 97 nodes
                 </span>
               </div>
               <div
                 className="relative mt-5 aspect-[1.08] overflow-hidden rounded-md border border-[#D3D4C0]/12 bg-[#0A2947]"
                 style={{
                   backgroundImage:
-                    "linear-gradient(rgba(211,212,192,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.04) 1px, transparent 1px)",
-                  backgroundSize: "34px 34px",
+                    "radial-gradient(circle at 50% 48%, rgba(196,165,116,0.18), transparent 26%), linear-gradient(rgba(211,212,192,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(211,212,192,0.04) 1px, transparent 1px)",
+                  backgroundSize: "100% 100%, 34px 34px, 34px 34px",
                 }}
               >
+                <svg
+                  className="absolute inset-0 size-full"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  aria-hidden
+                >
+                  {[
+                    [48, 13, 50, 50],
+                    [72, 35, 50, 50],
+                    [66, 67, 50, 50],
+                    [22, 32, 50, 50],
+                    [34, 72, 50, 50],
+                    [22, 32, 34, 72],
+                    [72, 35, 66, 67],
+                    [48, 13, 72, 35],
+                  ].map(([x1, y1, x2, y2], index) => (
+                    <line
+                      key={index}
+                      x1={x1}
+                      y1={y1}
+                      x2={x2}
+                      y2={y2}
+                      stroke={
+                        index < 5
+                          ? "rgba(196,165,116,0.34)"
+                          : "rgba(211,212,192,0.16)"
+                      }
+                      strokeWidth={index < 5 ? 0.35 : 0.18}
+                    />
+                  ))}
+                </svg>
                 {[
                   ["Population", "left-[48%] top-[13%]", "#F3E4C9"],
                   ["Health", "left-[72%] top-[35%]", "#E8D4B0"],
@@ -170,7 +201,7 @@ export function LandingExperience() {
                     className={`absolute ${position} -translate-x-1/2 -translate-y-1/2`}
                   >
                     <span
-                      className="mx-auto block size-4 rounded-full border border-[#F3E4C9]/35"
+                      className="mx-auto block size-4 rounded-full border border-[#F3E4C9]/35 shadow-[0_0_18px_rgba(243,228,201,0.18)]"
                       style={{ backgroundColor: color }}
                       aria-hidden
                     />
@@ -179,13 +210,13 @@ export function LandingExperience() {
                     </span>
                   </div>
                 ))}
-                <div className="absolute left-1/2 top-1/2 w-44 -translate-x-1/2 -translate-y-1/2 rounded-md border border-[#C4A574]/42 bg-[#071F36]/95 p-4 text-center">
+                <div className="absolute left-1/2 top-1/2 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#C4A574]/42 bg-[#071F36]/95 p-5 text-center shadow-[0_0_42px_rgba(196,165,116,0.12)]">
                   <p className="font-display text-2xl font-semibold">
-                    Start with a lens
+                    Neural atlas
                   </p>
                   <p className="mt-2 text-xs leading-relaxed text-[#D3D4C0]/70">
-                    Themes, sources, and series stay readable instead of
-                    drifting around a canvas.
+                    Lenses fire connected sources across official, academic,
+                    and community data.
                   </p>
                 </div>
               </div>

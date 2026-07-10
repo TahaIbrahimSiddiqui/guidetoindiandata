@@ -1766,7 +1766,7 @@ const governmentDatasets: Dataset[] = [
     pairsWith: ["wits-india", "cepii-baci", "dgcis-ftddp", "commerce-tradestat", "unctadstat"],
     exampleUses: "India’s product–partner export baskets, China–India trade balances, HS-level gravity work",
     flags: ["good-starting"],
-    cluster: "international-india",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
   {
@@ -1802,7 +1802,7 @@ const governmentDatasets: Dataset[] = [
     pairsWith: ["un-comtrade", "unctadstat", "wto-stats", "dgcis-ftddp"],
     exampleUses: "Tariff incidence on Indian imports; partner concentration; trade openness series",
     flags: ["good-starting"],
-    cluster: "international-india",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
   {
@@ -1837,7 +1837,7 @@ const governmentDatasets: Dataset[] = [
       "UNCTADstat consolidates 150+ indicators for nearly all economies. For India research, use country profiles and the data centre for trade in goods/services, FDI, and commodity dependence—then drill to Comtrade/WITS for product-level detail.",
     pairsWith: ["un-comtrade", "wits-india", "wto-stats", "world-bank-wdi-india"],
     exampleUses: "India FDI inflows vs peers; services export growth; commodity price shocks",
-    cluster: "international-india",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
   {
@@ -1869,7 +1869,7 @@ const governmentDatasets: Dataset[] = [
       "More aggregated than Comtrade HS-6; services definitions follow BPM/EBOPS conventions",
     pairsWith: ["un-comtrade", "wits-india", "unctadstat"],
     exampleUses: "India tariff bindings vs applied rates; services trade balances",
-    cluster: "international-india",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
   {
@@ -1903,7 +1903,7 @@ const governmentDatasets: Dataset[] = [
       "BACI builds on UN Comtrade by reconciling exporter and importer declarations so each bilateral flow appears once. Widely used in academic trade research when raw Comtrade mirror discrepancies matter. Pair with Comtrade for latest years and DGCIS for India-official totals.",
     pairsWith: ["un-comtrade", "wits-india", "asi-2023-24"],
     exampleUses: "India product-space / export sophistication; bilateral trade networks",
-    cluster: "international-india",
+    cluster: "trade-commerce",
     sourceKind: "academic-reference",
     academicBadges: ["core-reference"],
   },
@@ -1940,7 +1940,7 @@ const governmentDatasets: Dataset[] = [
     pairsWith: ["commerce-tradestat", "un-comtrade", "wits-india", "wpi"],
     exampleUses: "Official monthly Indian export/import tracking; commodity-wise EXIM",
     flags: ["good-starting"],
-    cluster: "firms-industry",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
   {
@@ -1972,7 +1972,7 @@ const governmentDatasets: Dataset[] = [
       "Dashboard/query tool—not full research microdata; definitions follow Commerce presentation",
     pairsWith: ["dgcis-ftddp", "un-comtrade", "wits-india"],
     exampleUses: "Country-wise export shares; commodity group EXIM for briefings",
-    cluster: "firms-industry",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
   {
@@ -2038,7 +2038,7 @@ const governmentDatasets: Dataset[] = [
       "Not HS product-level; methodology differs from Comtrade/DGCIS; portal access rules apply",
     pairsWith: ["un-comtrade", "wits-india", "world-bank-wdi-india"],
     exampleUses: "India bilateral trade balances with major partners over decades",
-    cluster: "international-india",
+    cluster: "trade-commerce",
     sourceKind: "government",
   },
 

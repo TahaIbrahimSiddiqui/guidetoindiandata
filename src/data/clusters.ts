@@ -34,6 +34,14 @@ export const clusters: Cluster[] = [
     color: "#C4A574",
   },
   {
+    id: "trade-commerce",
+    name: "Trade & Commerce",
+    shortName: "Trade",
+    description:
+      "Merchandise and services trade, tariffs, customs, EXIM partners, and trade policy data.",
+    color: "#D4A574",
+  },
+  {
     id: "agriculture-rural",
     name: "Agriculture & Rural Economy",
     shortName: "Agriculture",

@@ -33,6 +33,7 @@ export type ClusterId =
   | "households-living"
   | "labour-employment"
   | "firms-industry"
+  | "trade-commerce"
   | "agriculture-rural"
   | "health-nutrition"
   | "education"

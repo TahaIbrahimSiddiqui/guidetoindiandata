@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { InContentAd } from "@/components/ads/ContentWithAds";
-import { clusters, normalizeClusterId } from "@/data/clusters";
+import { normalizeClusterId } from "@/data/clusters";
 import { datasets } from "@/data/datasets";
+import { domainClusters } from "@/lib/graphData";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Themes",
   description:
-    "Domain themes that organize India's survey, administrative, academic, and community data systems.",
+    "Domain themes that organize India's survey and administrative data systems. GitHub, replications, and catalogs are source layers—not themes.",
 };
 
 export default function ClustersPage() {
@@ -17,13 +18,14 @@ export default function ClustersPage() {
         <p className="page-kicker">Taxonomy</p>
         <h1 className="page-title">Themes</h1>
         <p className="page-lede">
-          Twenty-two domain lenses—from population to GitHub community data.
-          Open a theme to browse related catalog records.
+          Domain lenses—from population and labour to geospatial and
+          climate. GitHub, replication packages, and catalogs are source layers
+          (filter them in Explore), not theme circles.
         </p>
       </header>
 
       <div className="grid-hairline sm:grid-cols-2">
-        {clusters.map((cluster, index) => {
+        {domainClusters.map((cluster, index) => {
           const members = datasets.filter(
             (d) => normalizeClusterId(d.cluster) === cluster.id,
           );

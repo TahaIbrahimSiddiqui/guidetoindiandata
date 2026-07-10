@@ -26,6 +26,18 @@ export default function AboutPage() {
         </p>
       </header>
 
+      <section className="surface mb-10 p-6 sm:p-8">
+        <h2 className="section-title">Maintainer</h2>
+        <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/95">
+          This guide is maintained by{" "}
+          <strong className="font-medium text-foreground">
+            Taha Ibrahim Siddiqui
+          </strong>{" "}
+          for the public good. It is an independent project—not an official
+          product of MoSPI, Census, or any ministry.
+        </p>
+      </section>
+
       <section className="surface p-6 sm:p-8">
         <h2 className="section-title">What each record includes</h2>
         <ul className="mt-5 space-y-3 text-sm leading-relaxed text-[#D3D4C0]/95">
@@ -111,7 +123,7 @@ export default function AboutPage() {
           <code className="rounded-md border border-obsidian-border bg-obsidian-panel px-1.5 py-0.5 font-mono text-xs text-[#C4A574]">
             content/guide_research.md
           </code>
-          ). It is not an official product of MoSPI, Census, or any ministry.
+          ) and ongoing public documentation on host portals.
         </p>
       </section>
 

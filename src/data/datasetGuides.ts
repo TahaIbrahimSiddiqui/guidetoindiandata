@@ -505,4 +505,66 @@ export const GUIDES_BY_SLUG: Record<string, GuideLink[]> = {
   "gh-village-boundaries": [
     g("Repository README", "https://github.com/datameet/indian_village_boundaries", "user-guide"),
   ],
+
+  // Trade / UN
+  "un-comtrade": [
+    g("Comtrade Plus portal", "https://comtradeplus.un.org/", "portal"),
+    g("UN Comtrade documentation", "https://uncomtrade.org/docs/home-page/", "user-guide"),
+    g("Data availability tool", "https://comtradeplus.un.org/DataAvailability", "official"),
+  ],
+  "wits-india": [
+    g("WITS India country profile", "https://wits.worldbank.org/CountryProfile/en/IND", "portal"),
+    g("WITS home / tutorials", "https://wits.worldbank.org/", "user-guide"),
+  ],
+  unctadstat: [
+    g("UNCTADstat Data Hub", "https://unctadstat.unctad.org/", "portal"),
+    g("UNCTAD statistics overview", "https://unctad.org/statistics", "official"),
+  ],
+  "wto-stats": [
+    g("WTO Stats portal", "https://stats.wto.org/", "portal"),
+    g("WTO statistics gateway", "https://www.wto.org/english/res_e/statis_e/statis_e.htm", "official"),
+  ],
+  "cepii-baci": [
+    g("CEPII BACI database page", "https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37", "official"),
+  ],
+  "dgcis-ftddp": [
+    g("DGCIS FTDDP portal", "https://ftddp.dgciskol.gov.in/dgcis/", "portal"),
+    g("DGCI&S home", "https://www.dgciskol.gov.in/", "official"),
+  ],
+  "commerce-tradestat": [
+    g("Commerce TRADESTAT / EIDB", "https://tradestat.commerce.gov.in/", "portal"),
+  ],
+  "world-bank-wdi-india": [
+    g("World Bank India data", "https://data.worldbank.org/country/india", "portal"),
+    g("WDI DataBank", "https://databank.worldbank.org/source/world-development-indicators", "codebook"),
+  ],
+  "imf-dots": [
+    g("IMF data portal", "https://data.imf.org/", "portal"),
+  ],
+
+  // Events / conflict
+  "acled-india": [
+    g("ACLED India country page", "https://acleddata.com/country/india", "portal"),
+    g("ACLED conflict data & guides", "https://acleddata.com/conflict-data", "user-guide"),
+    g("HDX India ACLED aggregates", "https://data.humdata.org/dataset/india-acled-conflict-data", "portal"),
+  ],
+  gdelt: [
+    g("GDELT Project home", "https://www.gdeltproject.org/", "portal"),
+    g("GDELT blog / docs", "https://blog.gdeltproject.org/", "user-guide"),
+  ],
+  "ucdp-ged": [
+    g("UCDP download center", "https://ucdp.uu.se/downloads/", "portal"),
+    g("UCDP main site", "https://ucdp.uu.se/", "official"),
+  ],
+  "gtd-terrorism": [
+    g("Global Terrorism Database (START)", "https://www.start.umd.edu/gtd/", "portal"),
+  ],
+  "em-dat-india": [
+    g("EM-DAT portal", "https://www.emdat.be/", "portal"),
+  ],
+  "varshney-wilkinson-riots": [
+    g("ICPSR study 4342", "https://www.icpsr.umich.edu/web/ICPSR/studies/4342", "codebook"),
+    g("Varshney datasets page", "https://www.ashutoshvarshney.net/datasets", "official"),
+    g("DOI 10.3886/ICPSR04342", "https://doi.org/10.3886/ICPSR04342.v1", "official"),
+  ],
 };

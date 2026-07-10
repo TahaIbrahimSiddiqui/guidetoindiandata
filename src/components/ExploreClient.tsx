@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { clusters } from "@/data/clusters";
+import { domainClusters } from "@/lib/graphData";
 import { datasets } from "@/data/datasets";
 import {
   filterDatasets,
@@ -23,7 +23,7 @@ import {
 } from "@/lib/search";
 import type { AccessType } from "@/types/dataset";
 
-const QUICK_THEMES = clusters.slice(0, 8);
+const QUICK_THEMES = domainClusters.slice(0, 8);
 
 export function ExploreClient() {
   const params = useSearchParams();

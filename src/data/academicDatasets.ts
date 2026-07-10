@@ -847,4 +847,60 @@ export const academicDatasets: Dataset[] = [
     publicationYear: 2014,
     repository: "Harvard Dataverse",
   },
+
+  // ── Conflict / communal violence (classic academic) ────────────
+  {
+    slug: "varshney-wilkinson-riots",
+    title:
+      "Varshney–Wilkinson Dataset on Hindu–Muslim Violence in India, 1950–1995 (v2)",
+    shortTitle: "Varshney–Wilkinson Riots",
+    abbreviations: ["Varshney–Wilkinson", "VW riots", "ICPSR 4342"],
+    categories: ["riots", "conflict", "governance", "crime"],
+    technicalTags: ["event data", "newspaper-coded", "district/town"],
+    host: "ICPSR",
+    institution: "Ashutosh Varshney (Michigan) & Steven Wilkinson (Duke)",
+    accessUrl: "https://www.icpsr.umich.edu/web/ICPSR/studies/4342",
+    docsUrl: "https://www.ashutoshvarshney.net/datasets",
+    accessType: "registration",
+    sizeTier: "Medium",
+    formats: ["ICPSR data files", "codebook"],
+    updateFrequency: "Historical deposit (v2); extensions by later authors",
+    geographyLevel: ["India", "state", "district", "town/village"],
+    timeCoverage: "January 1950 – December 1995",
+    keyVariables: [
+      "riot date and duration",
+      "location (town/village, district, state)",
+      "killed / injured / arrested",
+      "reported proximate cause",
+      "official involvement / policing notes",
+    ],
+    bestFor:
+      "Canonical long-run Hindu–Muslim riot panel for Indian political economy and ethnic conflict research",
+    limitations:
+      "Times of India (Bombay edition) source base; ends 1995 in original ICPSR v2; later papers extend coding (e.g. to 2000/2006/2010) but those extensions are separate deposits—not the ICPSR file itself",
+    background:
+      "Ashutosh Varshney and Steven Wilkinson coded all Hindu–Muslim riots reported in The Times of India (Bombay edition) from 1950 through 1995—the first systematic all-India riot dataset of its kind (ICPSR 4342, DOI 10.3886/ICPSR04342). Fields include place, duration, casualties, arrests, and reported causes. Foundational for Ethnic Conflict and Civic Life (Varshney) and Votes and Violence (Wilkinson). Researchers often append post-1995 extensions (e.g. Mitra–Ray to 2000; Iyer–Shrivastava and others toward mid-2000s). For contemporary political violence/protests use ACLED; for organized lethal violence use UCDP GED; for terrorism incidents use GTD—none replace this historical communal-riot series.",
+    pairsWith: [
+      "acled-india",
+      "ucdp-ged",
+      "gtd-terrorism",
+      "gdelt",
+      "crime-in-india",
+      "lok-dhaba",
+      "eci-general-election-reports",
+    ],
+    exampleUses:
+      "District riot onset/intensity; elections and ethnic violence; civic life vs riot propensity",
+    flags: ["good-starting"],
+    cluster: "crime-justice",
+    sourceKind: "academic-reference",
+    academicBadges: ["core-reference", "survey-microdata"],
+    dataDoi: "10.3886/ICPSR04342.v1",
+    authors: "Ashutosh Varshney; Steven I. Wilkinson",
+    publicationYear: 2006,
+    repository: "ICPSR",
+    paperDoi: undefined,
+    recommendedCitation:
+      "Varshney, Ashutosh, and Steven Wilkinson. 2006. Varshney-Wilkinson Dataset on Hindu-Muslim Violence in India, 1950-1995, Version 2. ICPSR 4342. https://doi.org/10.3886/ICPSR04342.v1",
+  },
 ];

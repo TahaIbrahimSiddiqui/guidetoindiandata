@@ -5,6 +5,7 @@ import {
   Building2,
   Calendar,
   ExternalLink,
+  GitBranch,
   ListTree,
   MapPin,
   RefreshCw,
@@ -194,6 +195,14 @@ export default async function DatasetPage({ params }: Props) {
               Variables ({variableInfo.entries.length})
             </a>
           </Button>
+          {dataset.background && (
+            <Button asChild variant="outline" size="sm" className="h-9">
+              <a href="#background">
+                <GitBranch className="size-3.5" aria-hidden />
+                Background
+              </a>
+            </Button>
+          )}
           {(dataset.accessUrl || dataset.docsUrl) && (
             <Button asChild variant="outline" size="sm" className="h-9">
               <a href="#access">
@@ -248,6 +257,32 @@ export default async function DatasetPage({ params }: Props) {
           </p>
         </div>
       </section>
+
+      {/* Survey family background / previous rounds */}
+      {dataset.background && (
+        <section id="background" className="mt-10 scroll-mt-24">
+          <div className="rounded-2xl border border-[#C4A574]/25 bg-gradient-to-br from-[#C4A574]/[0.08] to-transparent p-5 sm:p-6">
+            <h2 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C4A574]">
+              <GitBranch className="size-3.5" aria-hidden />
+              Background & previous rounds
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-100">
+              {dataset.background}
+            </p>
+            {seriesMeta && (
+              <p className="mt-4 text-sm text-obsidian-muted">
+                Full design timeline:{" "}
+                <Link
+                  href={`/series/${seriesMeta.series.slug}`}
+                  className="text-obsidian-purple-bright link-underline"
+                >
+                  {seriesMeta.series.shortTitle} series page
+                </Link>
+              </p>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Guides */}
       {guides.length > 0 && (

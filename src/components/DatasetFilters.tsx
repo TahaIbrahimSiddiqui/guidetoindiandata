@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { clusters } from "@/data/clusters";
+import { domainClusters } from "@/lib/graphData";
 import { datasets } from "@/data/datasets";
 import { ACCESS_LABELS } from "@/lib/access";
 import { uniqueSorted } from "@/lib/search";
@@ -221,7 +221,7 @@ export function DatasetFilters() {
               onChange={(e) => setParam("cluster", e.target.value)}
             >
               <option value="">All</option>
-              {clusters.map((c) => (
+              {domainClusters.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
                 </option>

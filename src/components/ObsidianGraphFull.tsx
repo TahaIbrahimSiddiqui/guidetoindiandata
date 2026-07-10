@@ -15,9 +15,14 @@ type SimNode = GraphNodeDef & {
   vx: number;
   vy: number;
   r: number;
-  /** Unique phase for ambient floating drift */
   phase: number;
   floatAmp: number;
+  /** Home-theme orbital radius (sources only). */
+  orbitR: number;
+  /** Current angle around home theme. */
+  orbitAngle: number;
+  /** Angular speed (rad/s). */
+  orbitSpeed: number;
 };
 
 type SimEdge = { a: string; b: string; kind: string };
@@ -88,8 +93,7 @@ function seedNebulae(w: number, h: number): Nebula[] {
     "rgba(243, 228, 201, 0.06)",
   ];
   const list: Nebula[] = [];
-  const n = 7;
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < 7; i++) {
     list.push({
       x: rand() * w,
       y: rand() * h,
@@ -112,14 +116,17 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
+function homeId(n: GraphNodeDef): string | undefined {
+  return n.homeThemeId ?? n.themeIds[0];
+}
+
 /**
- * Full-viewport Obsidian force graph with universe graphics:
- * deep space, starfield, nebulae, constellation edges, stellar nodes.
+ * Universe graph: each domain theme is a sun; datasets revolve around their
+ * home theme. Multi-theme membership still highlights on click.
  */
 export function ObsidianGraphFull({
   embedded = false,
 }: {
-  /** When true, fills parent section (scroll page) instead of fixed fullscreen. */
   embedded?: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -150,6 +157,7 @@ export function ObsidianGraphFull({
     w: number;
     h: number;
     raf: number;
+    lastT: number;
   } | null>(null);
 
   const focusSet = useMemo(
@@ -171,78 +179,97 @@ export function ObsidianGraphFull({
     (w: number, h: number) => {
       const cx = w / 2;
       const cy = h / 2;
-      // Wider theme ring so source clouds have room
-      const themeRing = Math.min(w, h) * 0.42;
+      const minSide = Math.min(w, h);
+      // Theme suns on a wide outer ring
+      const themeRing = minSide * 0.38;
 
       const themes = graph.nodes.filter((n) => n.kind === "theme");
       const sources = graph.nodes.filter((n) => n.kind === "source");
+      const rand = mulberry32(0xc0ffee ^ (w * 31) ^ (h * 17));
 
       const nodes: SimNode[] = [];
       const themePos = new Map<
         string,
-        { x: number; y: number; angle: number }
+        { x: number; y: number; angle: number; color: string }
       >();
 
       themes.forEach((n, i) => {
         const angle = (i / themes.length) * Math.PI * 2 - Math.PI / 2;
         const x = cx + Math.cos(angle) * themeRing;
         const y = cy + Math.sin(angle) * themeRing;
-        themePos.set(n.id, { x, y, angle });
+        themePos.set(n.id, { x, y, angle, color: n.color });
         nodes.push({
           ...n,
           x,
           y,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          r: 13,
-          phase: Math.random() * Math.PI * 2,
-          floatAmp: 0.55 + Math.random() * 0.45,
+          vx: 0,
+          vy: 0,
+          r: 14,
+          phase: rand() * Math.PI * 2,
+          floatAmp: 0.4 + rand() * 0.3,
+          orbitR: 0,
+          orbitAngle: angle,
+          orbitSpeed: 0.008 + rand() * 0.004,
         });
       });
 
-      const byPrimary = new Map<string, GraphNodeDef[]>();
+      // Group sources by home theme for orbital shells
+      const byHome = new Map<string, GraphNodeDef[]>();
       sources.forEach((n) => {
-        const primary = n.themeIds[0] ?? "data-catalogs";
-        const key = `t:${primary}`;
-        const list = byPrimary.get(key) ?? [];
+        const home = homeId(n) ?? "international-india";
+        const key = `t:${home}`;
+        const list = byHome.get(key) ?? [];
         list.push(n);
-        byPrimary.set(key, list);
+        byHome.set(key, list);
       });
 
-      // Spread datasets in wide arcs around each theme (not tight clusters)
-      byPrimary.forEach((list, themeKey) => {
+      const maxOrbitBudget = minSide * 0.16;
+
+      byHome.forEach((list, themeKey) => {
         const anchor = themePos.get(themeKey);
-        const baseAngle = anchor?.angle ?? 0;
         const ax = anchor?.x ?? cx;
         const ay = anchor?.y ?? cy;
+        const count = list.length;
+        // Multiple shells so large constellations stay readable
+        const shellSize = Math.max(4, Math.ceil(Math.sqrt(count * 1.6)));
+        const shells = Math.max(1, Math.ceil(count / shellSize));
 
         list.forEach((n, j) => {
-          const count = list.length;
-          // Fan across a wide angle on the inward + tangential sides
-          const fan =
-            count === 1
-              ? 0
-              : (j / (count - 1) - 0.5) * Math.min(2.4, 0.35 + count * 0.14);
-          // Radial distance grows with index — spiral so nodes don't stack
-          const ring = Math.floor(j / 5);
-          const dist =
-            110 +
-            ring * 48 +
-            (j % 5) * 22 +
-            Math.random() * 18;
-          // Prefer outward from center so themes and sources use full viewport
-          const a = baseAngle + fan * 0.85;
-          const x = ax + Math.cos(a) * dist;
-          const y = ay + Math.sin(a) * dist;
+          const shell = Math.floor(j / shellSize);
+          const idxInShell = j % shellSize;
+          const inShell = Math.min(shellSize, count - shell * shellSize);
+          // Evenly space within shell + small jitter
+          const baseAngle =
+            (idxInShell / inShell) * Math.PI * 2 +
+            shell * 0.35 +
+            rand() * 0.12;
+          // Inner shell tight, outer shells farther — scale with local count
+          const baseR =
+            52 +
+            shell * (28 + Math.min(18, count * 0.6)) +
+            (count > 12 ? 8 : 0);
+          const orbitR = Math.min(
+            maxOrbitBudget + shell * 12,
+            baseR + rand() * 10,
+          );
+          // Slow, varied revolution (some reverse for organic feel)
+          const dir = rand() > 0.42 ? 1 : -1;
+          const orbitSpeed = dir * (0.045 + rand() * 0.07 + shell * 0.008);
+          const x = ax + Math.cos(baseAngle) * orbitR;
+          const y = ay + Math.sin(baseAngle) * orbitR;
+
           nodes.push({
             ...n,
-            x: Math.min(w - 24, Math.max(24, x)),
-            y: Math.min(h - 48, Math.max(56, y)),
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            r: 4.5,
-            phase: Math.random() * Math.PI * 2,
-            floatAmp: 0.7 + Math.random() * 0.8,
+            x: Math.min(w - 20, Math.max(20, x)),
+            y: Math.min(h - 40, Math.max(48, y)),
+            vx: 0,
+            vy: 0,
+            r: 4.2 + (n.id.startsWith("s:") ? 0.8 : 0),
+            phase: rand() * Math.PI * 2,
+            floatAmp: 0.5 + rand() * 0.5,
+            orbitR,
+            orbitAngle: baseAngle,
+            orbitSpeed,
           });
         });
       });
@@ -267,6 +294,7 @@ export function ObsidianGraphFull({
         w,
         h,
         raf: prev?.raf ?? 0,
+        lastT: performance.now() / 1000,
       };
     },
     [graph],
@@ -289,14 +317,15 @@ export function ObsidianGraphFull({
 
     const prev = stateRef.current;
     const next = initSim(w, h);
-    if (prev && Math.abs(prev.w - w) < 4 && Math.abs(prev.h - h) < 4) {
+    // On small resizes keep angles/speeds but re-anchor orbits
+    if (prev && Math.abs(prev.w - w) < 8 && Math.abs(prev.h - h) < 8) {
       for (const n of next.nodes) {
         const p = prev.byId.get(n.id);
-        if (p) {
-          n.x = p.x;
-          n.y = p.y;
-          n.vx = p.vx;
-          n.vy = p.vy;
+        if (p && n.kind === "source") {
+          n.orbitAngle = p.orbitAngle;
+          n.orbitSpeed = p.orbitSpeed;
+          n.orbitR = p.orbitR;
+          n.phase = p.phase;
         }
       }
       next.byId = new Map(next.nodes.map((n) => [n.id, n]));
@@ -304,6 +333,7 @@ export function ObsidianGraphFull({
       next.nebulae = prev.nebulae;
       next.shoot = prev.shoot;
       next.nextShoot = prev.nextShoot;
+      next.lastT = prev.lastT;
     }
     stateRef.current = next;
   }, [initSim]);
@@ -344,123 +374,97 @@ export function ObsidianGraphFull({
       const { nodes, edges, byId, w, h, stars, nebulae } = state;
       const focus = focusRef.current;
       const hasFocus = focus.size > 0;
-      const t = performance.now() / 1000;
+      const now = performance.now() / 1000;
+      const dt = Math.min(0.05, Math.max(0.001, now - state.lastT));
+      state.lastT = now;
+      const t = now;
+      const selId = selectedRef.current;
+      const selNode = selId ? byId.get(selId) : null;
 
       if (!reduced) {
-        // Stronger repulsion so datasets stay spread out
-        for (let i = 0; i < nodes.length; i++) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const a = nodes[i];
-            const b = nodes[j];
-            const dx = b.x - a.x;
-            const dy = b.y - a.y;
-            const dist = Math.hypot(dx, dy) || 1;
-            const bothSources = a.kind === "source" && b.kind === "source";
-            const sameTheme =
-              bothSources &&
-              a.themeIds[0] &&
-              a.themeIds[0] === b.themeIds[0];
-            const minDist =
-              a.r +
-              b.r +
-              (a.kind === "theme" || b.kind === "theme"
-                ? 48
-                : sameTheme
-                  ? 42
-                  : bothSources
-                    ? 28
-                    : 22);
-            if (dist < minDist) {
-              const f = ((minDist - dist) / dist) * (sameTheme ? 0.045 : 0.032);
-              a.vx -= dx * f;
-              a.vy -= dy * f;
-              b.vx += dx * f;
-              b.vy += dy * f;
-            }
-          }
-        }
-
-        // Loose pull to primary theme — keeps clouds near theme without clustering
-        nodes.forEach((n) => {
-          if (n.kind !== "source") return;
-          const primary = n.themeIds[0];
-          if (!primary) return;
-          const theme = byId.get(`t:${primary}`);
-          if (!theme) return;
-          const dx = theme.x - n.x;
-          const dy = theme.y - n.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const target = 145; // farther orbital distance
-          const f = ((dist - target) / dist) * 0.0042;
-          n.vx += dx * f;
-          n.vy += dy * f;
-        });
-
-        // Very weak secondary theme links
-        edges.forEach((e) => {
-          if (e.kind !== "theme-source") return;
-          const a = byId.get(e.a);
-          const b = byId.get(e.b);
-          if (!a || !b) return;
-          const theme = a.kind === "theme" ? a : b;
-          const source = a.kind === "source" ? a : b;
-          if (theme.kind !== "theme" || source.kind !== "source") return;
-          const primary = source.themeIds[0];
-          if (primary && theme.themeId === primary) return;
-          const dx = theme.x - source.x;
-          const dy = theme.y - source.y;
-          const dist = Math.hypot(dx, dy) || 1;
-          const f = ((dist - 200) / dist) * 0.00045;
-          source.vx += dx * f;
-          source.vy += dy * f;
-        });
-
-        // Themes float on a slowly breathing outer ring
         const cx = w / 2;
         const cy = h / 2;
-        const themeRing =
-          Math.min(w, h) * (0.4 + 0.015 * Math.sin(t * 0.25));
+        const minSide = Math.min(w, h);
+        const themeRing = minSide * (0.38 + 0.012 * Math.sin(t * 0.22));
+
+        // ── Theme suns: slow revolution on galaxy ring ──
         const themes = nodes.filter((n) => n.kind === "theme");
         themes.forEach((n, i) => {
           const angle =
             (i / themes.length) * Math.PI * 2 -
             Math.PI / 2 +
-            t * 0.012; // slow orbit drift
+            t * 0.01;
           const tx = cx + Math.cos(angle) * themeRing;
           const ty = cy + Math.sin(angle) * themeRing;
-          n.vx += (tx - n.x) * 0.005;
-          n.vy += (ty - n.y) * 0.005;
-        });
-
-        // Ambient floating bob for every node
-        nodes.forEach((n) => {
-          const amp = n.floatAmp ?? 0.6;
-          n.vx += Math.sin(t * 0.55 + n.phase) * 0.012 * amp;
-          n.vy += Math.cos(t * 0.42 + n.phase * 1.3) * 0.011 * amp;
-          // Micro swirl
-          n.vx += Math.cos(t * 0.2 + n.phase) * 0.004;
-          n.vy += Math.sin(t * 0.18 + n.phase) * 0.004;
-
-          if (n.x < 20) n.vx += 0.12;
-          if (n.x > w - 20) n.vx -= 0.12;
-          if (n.y < 56) n.vy += 0.12;
-          if (n.y > h - 40) n.vy -= 0.12;
-
-          // Higher damping → more "weightless" float
-          n.vx *= 0.94;
-          n.vy *= 0.94;
+          // Soft spring to ring slot (suns stay ordered)
+          n.vx += (tx - n.x) * 0.08;
+          n.vy += (ty - n.y) * 0.08;
+          n.vx *= 0.82;
+          n.vy *= 0.82;
           n.x += n.vx;
           n.y += n.vy;
-          n.x = Math.max(n.r + 14, Math.min(w - n.r - 14, n.x));
-          n.y = Math.max(n.r + 56, Math.min(h - n.r - 48, n.y));
+        });
+
+        // ── Sources: true orbital motion around home sun ──
+        nodes.forEach((n) => {
+          if (n.kind !== "source") return;
+          const home = homeId(n);
+          if (!home) return;
+          const theme = byId.get(`t:${home}`);
+          if (!theme) return;
+
+          n.orbitAngle += n.orbitSpeed * dt;
+          // Gentle radial breathe so shells don't look rigid
+          const rBreath =
+            n.orbitR *
+            (1 + 0.03 * Math.sin(t * 0.6 + n.phase) * (n.floatAmp ?? 1));
+          const tx = theme.x + Math.cos(n.orbitAngle) * rBreath;
+          const ty = theme.y + Math.sin(n.orbitAngle) * rBreath;
+          // Strong spring to orbital slot — this is the "revolve around" feel
+          n.vx += (tx - n.x) * 0.14;
+          n.vy += (ty - n.y) * 0.14;
+          n.vx *= 0.78;
+          n.vy *= 0.78;
+          n.x += n.vx;
+          n.y += n.vy;
+        });
+
+        // Soft collision between nearby sources (same orbit cloud)
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          if (a.kind !== "source") continue;
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            if (b.kind !== "source") continue;
+            if (homeId(a) !== homeId(b)) continue;
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            const minDist = a.r + b.r + 14;
+            if (dist < minDist) {
+              const f = ((minDist - dist) / dist) * 0.04;
+              a.x -= dx * f;
+              a.y -= dy * f;
+              b.x += dx * f;
+              b.y += dy * f;
+              // Nudge orbital angles apart so they unstick
+              a.orbitAngle -= f * 0.15;
+              b.orbitAngle += f * 0.15;
+            }
+          }
+        }
+
+        // Clamp to viewport softly
+        nodes.forEach((n) => {
+          n.x = Math.max(n.r + 12, Math.min(w - n.r - 12, n.x));
+          n.y = Math.max(n.r + 52, Math.min(h - n.r - 44, n.y));
         });
       }
 
-      // ── Pure black universe background ──────────────────
+      // ── Pure black universe ────────────────────────────
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, w, h);
 
-      // Deep space radial glow (very subtle cream/gold center)
       const sky = ctx.createRadialGradient(
         w * 0.5,
         h * 0.42,
@@ -475,7 +479,6 @@ export function ObsidianGraphFull({
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, w, h);
 
-      // Soft vignette
       const vig = ctx.createRadialGradient(
         w / 2,
         h / 2,
@@ -489,7 +492,6 @@ export function ObsidianGraphFull({
       ctx.fillStyle = vig;
       ctx.fillRect(0, 0, w, h);
 
-      // Nebulae (slow drift)
       nebulae.forEach((neb, i) => {
         const dx = !reduced ? Math.cos(t * 0.05 + neb.drift) * 18 : 0;
         const dy = !reduced ? Math.sin(t * 0.04 + neb.drift * 1.3) * 14 : 0;
@@ -507,7 +509,6 @@ export function ObsidianGraphFull({
       });
       ctx.globalAlpha = 1;
 
-      // Starfield
       stars.forEach((s) => {
         const twinkle = reduced
           ? 1
@@ -519,7 +520,6 @@ export function ObsidianGraphFull({
           ? `rgba(243, 228, 201, ${alpha})`
           : `rgba(210, 220, 255, ${alpha})`;
         ctx.fill();
-        // Occasional soft core glow
         if (s.r > 1.2) {
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.r * 3.2, 0, Math.PI * 2);
@@ -530,10 +530,9 @@ export function ObsidianGraphFull({
         }
       });
 
-      // Shooting star (rare)
       if (!reduced) {
-        const now = performance.now();
-        if (!state.shoot && now > state.nextShoot) {
+        const wall = performance.now();
+        if (!state.shoot && wall > state.nextShoot) {
           const fromLeft = Math.random() > 0.5;
           state.shoot = {
             x: fromLeft ? -20 : w + 20,
@@ -543,7 +542,7 @@ export function ObsidianGraphFull({
             life: 0,
             maxLife: 45 + Math.random() * 35,
           };
-          state.nextShoot = now + 8000 + Math.random() * 12000;
+          state.nextShoot = wall + 8000 + Math.random() * 12000;
         }
         if (state.shoot) {
           const sh = state.shoot;
@@ -577,27 +576,103 @@ export function ObsidianGraphFull({
         }
       }
 
-      // ── Constellation edges ─────────────────────────────
+      // ── Orbital rings around each theme sun ────────────
+      nodes.forEach((theme) => {
+        if (theme.kind !== "theme") return;
+        const isSelTheme = selId === theme.id;
+        const inFocusTheme = !hasFocus || focus.has(theme.id);
+
+        // Collect home orbit radii for this sun
+        const radii = new Set<number>();
+        nodes.forEach((s) => {
+          if (s.kind !== "source") return;
+          if (homeId(s) !== theme.themeId) return;
+          // quantize for a few clean rings
+          radii.add(Math.round(s.orbitR / 12) * 12);
+        });
+
+        const ringAlpha = hasFocus
+          ? isSelTheme
+            ? 0.28
+            : inFocusTheme
+              ? 0.08
+              : 0.03
+          : 0.1;
+
+        radii.forEach((r) => {
+          if (r < 30) return;
+          ctx.beginPath();
+          ctx.ellipse(theme.x, theme.y, r, r * 0.92, 0.15, 0, Math.PI * 2);
+          ctx.strokeStyle = hexToRgba(theme.color, ringAlpha);
+          ctx.lineWidth = isSelTheme ? 1.1 : 0.55;
+          ctx.setLineDash(isSelTheme ? [] : [3, 6]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        });
+      });
+
+      // ── Constellation edges ────────────────────────────
       edges.forEach((e) => {
         const a = byId.get(e.a);
         const b = byId.get(e.b);
         if (!a || !b) return;
         if (e.kind === "theme-ring") return;
 
-        let isFocusedEdge = false;
-
         if (e.kind === "theme-source") {
           const theme = a.kind === "theme" ? a : b;
           const source = a.kind === "source" ? a : b;
           if (theme.kind !== "theme" || source.kind !== "source") return;
-          const isPrimary =
-            source.themeIds[0] && theme.themeId === source.themeIds[0];
-          if (!isPrimary && !hasFocus) return;
-          if (hasFocus && !(focus.has(a.id) && focus.has(b.id))) return;
-          isFocusedEdge = hasFocus && focus.has(a.id) && focus.has(b.id);
-        } else if (e.kind === "source-source") {
-          const sel = selectedRef.current;
-          const selNode = sel ? byId.get(sel) : null;
+
+          const home = homeId(source);
+          const isPrimary = Boolean(
+            home && theme.themeId && home === theme.themeId,
+          );
+          const edgeInFocus =
+            hasFocus && focus.has(theme.id) && focus.has(source.id);
+
+          // Idle: only faint home-orbit spokes
+          if (!hasFocus) {
+            if (!isPrimary) return;
+            ctx.beginPath();
+            ctx.moveTo(theme.x, theme.y);
+            ctx.lineTo(source.x, source.y);
+            ctx.globalAlpha = 0.1;
+            ctx.strokeStyle = hexToRgba(theme.color, 0.55);
+            ctx.lineWidth = 0.55;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            return;
+          }
+
+          if (!edgeInFocus) return;
+
+          // Focused: home spokes solid cream; secondary dashed gold
+          ctx.beginPath();
+          ctx.moveTo(theme.x, theme.y);
+          ctx.lineTo(source.x, source.y);
+          if (isPrimary) {
+            ctx.globalAlpha = 0.8;
+            ctx.strokeStyle = "rgba(243, 228, 201, 0.78)";
+            ctx.lineWidth = 1.45;
+            ctx.setLineDash([]);
+            ctx.shadowColor = "rgba(243, 228, 201, 0.3)";
+            ctx.shadowBlur = 4;
+          } else {
+            // Secondary membership — linked but orbits another sun
+            ctx.globalAlpha = 0.55;
+            ctx.strokeStyle = "rgba(196, 165, 116, 0.7)";
+            ctx.lineWidth = 1.05;
+            ctx.setLineDash([4, 5]);
+            ctx.shadowBlur = 0;
+          }
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
+          return;
+        }
+
+        if (e.kind === "source-source") {
           if (
             !(
               selNode?.kind === "source" &&
@@ -606,36 +681,20 @@ export function ObsidianGraphFull({
             )
           )
             return;
-          isFocusedEdge = true;
-        } else {
-          return;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.globalAlpha = 0.55;
+          ctx.strokeStyle = "rgba(200, 210, 230, 0.55)";
+          ctx.lineWidth = 1;
+          ctx.setLineDash([2, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.globalAlpha = 1;
         }
-
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-
-        if (isFocusedEdge) {
-          // Steady focus highlight — no pulse
-          ctx.globalAlpha = 0.75;
-          ctx.strokeStyle = "rgba(243, 228, 201, 0.72)";
-          ctx.lineWidth = 1.5;
-          ctx.shadowColor = "rgba(243, 228, 201, 0.35)";
-          ctx.shadowBlur = 4;
-        } else {
-          // Faint constellation dust lines
-          ctx.globalAlpha = 0.18;
-          ctx.strokeStyle = "rgba(180, 200, 230, 0.4)";
-          ctx.lineWidth = 0.6;
-          ctx.shadowBlur = 0;
-        }
-
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
       });
 
-      // ── Stellar nodes ───────────────────────────────────
+      // ── Nodes (sources under, suns on top) ─────────────
       const ordered = [...nodes].sort((a, b) =>
         a.kind === "theme" ? 1 : b.kind === "theme" ? -1 : 0,
       );
@@ -648,27 +707,30 @@ export function ObsidianGraphFull({
         const boost = isHover || isSel ? 1 : 0;
         const r = n.r + boost * 2;
 
-        // Outer atmospheric glow
+        // Theme-tinted body for sources from home sun
+        const home = homeId(n);
+        const homeTheme = home ? byId.get(`t:${home}`) : null;
+        const tint = homeTheme?.color ?? n.color;
+
         if (n.kind === "theme" || isHover || isSel || (hasFocus && inFocus)) {
-          const glowR = r * (n.kind === "theme" ? 3.6 : 2.8);
+          const glowR = r * (n.kind === "theme" ? 3.8 : 2.6);
           const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
-          const base = isSource ? "#c8d0e0" : n.color;
+          const base = isSource ? tint : n.color;
           glow.addColorStop(
             0,
-            hexToRgba(base, n.kind === "theme" ? 0.35 : 0.28),
+            hexToRgba(base, n.kind === "theme" ? 0.38 : 0.3),
           );
           glow.addColorStop(0.45, hexToRgba(base, 0.08));
           glow.addColorStop(1, hexToRgba(base, 0));
           ctx.globalAlpha =
-            hasFocus && !inFocus ? 0.35 : isSel ? 0.95 : isHover ? 0.8 : 0.65;
+            hasFocus && !inFocus ? 0.22 : isSel ? 0.95 : isHover ? 0.85 : 0.65;
           ctx.fillStyle = glow;
           ctx.beginPath();
           ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2);
           ctx.fill();
         }
 
-        // Core body
-        ctx.globalAlpha = hasFocus && !inFocus ? 0.55 : 1;
+        ctx.globalAlpha = hasFocus && !inFocus ? 0.28 : 1;
         const core = ctx.createRadialGradient(
           n.x - r * 0.25,
           n.y - r * 0.25,
@@ -678,9 +740,9 @@ export function ObsidianGraphFull({
           r,
         );
         if (isSource) {
-          core.addColorStop(0, "#f2f4f8");
-          core.addColorStop(0.55, "#c8cdd8");
-          core.addColorStop(1, "#8a92a3");
+          core.addColorStop(0, "#f4f2ec");
+          core.addColorStop(0.45, hexToRgba(tint, 0.75));
+          core.addColorStop(1, hexToRgba(tint, 0.55));
         } else {
           core.addColorStop(0, "#ffffff");
           core.addColorStop(0.35, n.color);
@@ -691,20 +753,21 @@ export function ObsidianGraphFull({
         ctx.fillStyle = core;
         if (isSel && n.kind === "theme") {
           ctx.shadowColor = n.color;
-          ctx.shadowBlur = 16;
+          ctx.shadowBlur = 18;
         }
         ctx.fill();
         ctx.shadowBlur = 0;
 
         if (n.kind === "theme") {
-          ctx.strokeStyle = inFocus
-            ? "rgba(243, 228, 201, 0.55)"
-            : "rgba(160, 170, 190, 0.3)";
-          ctx.lineWidth = inFocus && hasFocus ? 2 : 1;
+          ctx.strokeStyle =
+            inFocus && hasFocus
+              ? "rgba(243, 228, 201, 0.65)"
+              : "rgba(160, 170, 190, 0.3)";
+          ctx.lineWidth = inFocus && hasFocus ? 2.2 : 1;
           ctx.stroke();
         }
 
-        // Specular highlight
+        // Specular
         ctx.beginPath();
         ctx.arc(
           n.x - r * 0.3,
@@ -716,6 +779,27 @@ export function ObsidianGraphFull({
         ctx.fillStyle = "rgba(255,255,255,0.45)";
         ctx.fill();
 
+        // Home vs visitor badge when a theme is focused:
+        // sources orbiting this sun are solid; secondary links get a ring
+        if (
+          isSource &&
+          hasFocus &&
+          inFocus &&
+          selNode?.kind === "theme" &&
+          selNode.themeId
+        ) {
+          const isHomeHere = home === selNode.themeId;
+          if (!isHomeHere) {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, r + 2.5, 0, Math.PI * 2);
+            ctx.strokeStyle = "rgba(196, 165, 116, 0.85)";
+            ctx.lineWidth = 1.2;
+            ctx.setLineDash([2, 2]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+
         const showLabel =
           n.kind === "theme" ||
           (isSource && (isHover || isSel || (hasFocus && inFocus)));
@@ -725,10 +809,10 @@ export function ObsidianGraphFull({
               ? "600 11px var(--font-body), system-ui, sans-serif"
               : "500 9px var(--font-body), system-ui, sans-serif";
           ctx.fillStyle = isSource
-            ? "rgba(220, 225, 235, 0.92)"
+            ? "rgba(230, 228, 220, 0.95)"
             : "rgba(243, 228, 201, 0.95)";
           ctx.textAlign = "center";
-          ctx.shadowColor = "rgba(0,0,0,0.8)";
+          ctx.shadowColor = "rgba(0,0,0,0.85)";
           ctx.shadowBlur = 4;
           const label =
             n.kind === "theme" && n.label.length > 14
@@ -759,7 +843,7 @@ export function ObsidianGraphFull({
     const y = clientY - rect.top;
     for (let i = state.nodes.length - 1; i >= 0; i--) {
       const n = state.nodes[i];
-      if (Math.hypot(n.x - x, n.y - y) <= n.r + 8) return n;
+      if (Math.hypot(n.x - x, n.y - y) <= n.r + 9) return n;
     }
     return null;
   }, []);
@@ -773,6 +857,16 @@ export function ObsidianGraphFull({
     });
     return c;
   }, [focusSet, selectedId]);
+
+  const homeOrbitCount = useMemo(() => {
+    if (!selectedNode || selectedNode.kind !== "theme" || !selectedNode.themeId)
+      return 0;
+    return graph.nodes.filter(
+      (n) =>
+        n.kind === "source" &&
+        (n.homeThemeId ?? n.themeIds[0]) === selectedNode.themeId,
+    ).length;
+  }, [graph.nodes, selectedNode]);
 
   const onClick = (e: React.MouseEvent) => {
     const n = hitTest(e.clientX, e.clientY);
@@ -811,7 +905,7 @@ export function ObsidianGraphFull({
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
         role="img"
-        aria-label="Universe-style interlinked data graph. Click a theme to highlight its constellation of datasets."
+        aria-label="Universe graph: datasets orbit their home theme. Click a theme to highlight every linked source."
         onMouseMove={(e) => {
           const n = hitTest(e.clientX, e.clientY);
           setHover(n?.id ?? null);
@@ -838,9 +932,9 @@ export function ObsidianGraphFull({
           <p className="text-xs leading-relaxed text-[#C8C9BC]/90">
             {selectedNode
               ? selectedNode.kind === "theme"
-                ? `${selectedNode.label} — ${focusedSources} sources lit`
-                : `${selectedNode.label} · double-click or open`
-              : "Click a theme to light its constellation. Datasets float nearby."}
+                ? `${selectedNode.label} sun — ${homeOrbitCount} home orbiters · ${focusedSources} linked (dashed = visit from another orbit)`
+                : `${selectedNode.label} · home: ${selectedNode.homeThemeId ?? selectedNode.themeIds[0] ?? "—"} · double-click to open`
+              : "Each theme is a sun. Datasets revolve around their home theme — click a sun to light every linked source."}
           </p>
           {selectedNode?.kind === "source" && selectedNode.href && (
             <button
@@ -876,7 +970,7 @@ export function ObsidianGraphFull({
       </div>
 
       <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 px-4 text-center text-[10px] uppercase tracking-[0.18em] text-white/25">
-        Esc clears · scroll for more
+        Orbit home theme · click sun to highlight links · Esc clears
       </p>
     </div>
   );

@@ -4,8 +4,41 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowDown, Database, Network, BookOpen } from "lucide-react";
 import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
+import { ScrollStory } from "@/components/ScrollStory";
 import { Button } from "@/components/ui/button";
-import { clusters } from "@/data/clusters";
+import { domainClusters } from "@/lib/graphData";
+
+const STORY_SLIDES = [
+  {
+    kicker: "01",
+    title: "National data,\nmapped for research.",
+    subtitle:
+      "A public catalog of India’s statistical and administrative systems.",
+  },
+  {
+    kicker: "02",
+    title: "Honest access.\nNot just links.",
+    subtitle:
+      "Open download, dashboard, registration, DUA, request-only, paid—labeled as they really are.",
+  },
+  {
+    kicker: "03",
+    title: "Guides and variables\non every record.",
+    subtitle:
+      "Codebooks, portals, and representative field lists so you know what you’re getting.",
+  },
+  {
+    kicker: "04",
+    title: "Datasets orbit\ntheir themes.",
+    subtitle:
+      "Government surveys, academic archives, and community sources—linked for triangulation.",
+  },
+  {
+    kicker: "05",
+    title: "Maintained for\nthe public good.",
+    subtitle: "By Taha Ibrahim Siddiqui. Independent—not an official ministry portal.",
+  },
+];
 
 /** Stock cinematic India footage (YouTube embed — not rehosted). */
 const YT_ID = "tcxDfvMRjZI";
@@ -178,10 +211,10 @@ export function LandingExperience() {
                 <Link href="/explore">Browse catalog</Link>
               </Button>
               <a
-                href="#universe"
+                href="#story"
                 className="inline-flex min-h-12 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] transition hover:text-[#F3E4C9]"
               >
-                Scroll to universe
+                Scroll to explore
                 <ArrowDown className="size-4 animate-bounce" aria-hidden />
               </a>
             </div>
@@ -189,7 +222,7 @@ export function LandingExperience() {
         </div>
 
         <a
-          href="#universe"
+          href="#story"
           className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/45 transition hover:text-white/70"
         >
           Scroll down to explore
@@ -197,27 +230,32 @@ export function LandingExperience() {
         </a>
       </section>
 
-      {/* ── 2. Floating universe (full viewport) ──────────── */}
+      {/* ── 2. Scroll story (boilerlab expand → vanish) ───── */}
+      <div id="story">
+        <ScrollStory slides={STORY_SLIDES} vhPerSlide={1.2} />
+      </div>
+
+      {/* ── 3. Floating universe (full viewport) ──────────── */}
       <section
         id="universe"
         className="relative h-[100dvh] w-full border-t border-white/[0.06] bg-black"
       >
         <div className="absolute left-5 top-5 z-20 sm:left-8 sm:top-6">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
-            02 · Universe
+            Universe
           </p>
-          <h2 className="font-display mt-1 text-2xl font-semibold text-[#F3E4C9] sm:text-3xl">
+          <h2 className="font-display mt-1 text-2xl font-semibold text-[#F3EAD4] sm:text-3xl">
             Floating data map
           </h2>
         </div>
         <ObsidianGraphFull embedded />
       </section>
 
-      {/* ── 3. Proof / catalog bridge ─────────────────────── */}
-      <section className="relative border-t border-white/[0.06] bg-[#050505] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+      {/* ── 4. Proof / catalog bridge ─────────────────────── */}
+      <section className="relative border-t border-white/[0.06] bg-[#030303] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
         <div className="mx-auto max-w-[1400px]">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
-            03 · Catalog
+            Catalog
           </p>
           <h2 className="font-display mt-3 max-w-2xl text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-tight text-[#F3E4C9]">
             Built for researchers who need truth about access friction.
@@ -236,8 +274,8 @@ export function LandingExperience() {
               },
               {
                 icon: Network,
-                label: String(clusters.length),
-                blurb: "Domain themes linking surveys and admin systems",
+                label: String(domainClusters.length),
+                blurb: "Each theme is a sun — sources revolve around home, multi-link on click",
               },
               {
                 icon: BookOpen,

@@ -96,6 +96,11 @@ export type Dataset = {
   guides?: GuideLink[];
   bestFor: string;
   limitations: string;
+  /**
+   * Survey-family history: previous rounds, redesigns, and how this wave
+   * sits in the NSS/NSO lineage (used on dataset detail pages).
+   */
+  background?: string;
   pairsWith: string[];
   exampleUses: string;
   flags?: DatasetFlag[];

@@ -66,7 +66,12 @@ jobs:
             content/automation/**
           if-no-files-found: warn
 
+      # Requires: Settings → Actions → General → Workflow permissions
+      #   - Read and write permissions
+      #   - Allow GitHub Actions to create and approve pull requests
       - name: Create pull request if there are changes
+        id: cpr
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,3 +105,12 @@ jobs:
           add-paths: |
             content/automation/**
             src/data/datasetSummaries.ts
+
+      - name: PR creation status
+        if: always()
+        run: |
+          echo "pull-request-number=${{ steps.cpr.outputs.pull-request-number }}"
+          echo "pull-request-url=${{ steps.cpr.outputs.pull-request-url }}"
+          if [ "${{ steps.cpr.outcome }}" != "success" ]; then
+            echo "::warning::Could not open PR (enable 'Allow GitHub Actions to create and approve pull requests' under Settings → Actions → General). Artifacts still uploaded."
+          fi

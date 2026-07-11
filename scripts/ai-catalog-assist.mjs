@@ -158,21 +158,31 @@ async function resolveModel() {
 
 /** Dartmouth Chat Completions (OpenAI-compatible path) */
 async function dartmouthChat(model, userText) {
+  // Newer Claude Opus 4.x rejects `temperature` ("deprecated for this model").
+  const body = {
+    model,
+    stream: false,
+    messages: [
+      { role: "system", content: systemPrompt() },
+      {
+        role: "user",
+        content:
+          userText +
+          "\n\nRespond with a single JSON object only (no markdown fences).",
+      },
+    ],
+  };
+  if (!/claude.*opus-4/i.test(model)) {
+    body.temperature = 0.3;
+  }
+
   const res = await fetch(`${DARTMOUTH_BASE}/chat/completions`, {
     method: "POST",
     headers: {
       Authorization: `bearer ${KEY}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      model,
-      stream: false,
-      temperature: 0.3,
-      messages: [
-        { role: "system", content: systemPrompt() },
-        { role: "user", content: userText },
-      ],
-    }),
+    body: JSON.stringify(body),
     signal: AbortSignal.timeout(180000),
   });
   const text = await res.text();

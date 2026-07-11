@@ -1,0 +1,37 @@
+# One-shot / on-demand: list Gemini models available to the repo API key.
+name: List Gemini models
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: List models via Gemini API
+        env:
+          AI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY || secrets.AI_API_KEY }}
+        run: npx tsx scripts/list-gemini-models.mjs
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini-models-${{ github.run_id }}
+          path: content/automation/gemini-models-available.json
+          if-no-files-found: warn

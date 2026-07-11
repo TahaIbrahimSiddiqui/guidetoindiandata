@@ -488,6 +488,8 @@ function isBroadCatalogUrl(value) {
     return (
       path === "" ||
       path === "/nada/index.php/catalog" ||
+      path === "/nada/index.php/catalog/oth" ||
+      path === "/nada/index.php/catalog/pl" ||
       path === "/catalog" ||
       path === "/catalogs" ||
       path === "/scripts/statistics.aspx"
@@ -505,6 +507,8 @@ function isSpecificUrlKey(key) {
     if (
       path === "" ||
       path === "/nada/index.php/catalog" ||
+      path === "/nada/index.php/catalog/oth" ||
+      path === "/nada/index.php/catalog/pl" ||
       path === "/catalog" ||
       path === "/catalogs" ||
       path === "/scripts/statistics.aspx"

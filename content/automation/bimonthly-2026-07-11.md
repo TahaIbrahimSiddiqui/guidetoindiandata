@@ -11,7 +11,7 @@ Automated maintenance for the Indian Data Guide.
 | Missing access links | n/a |
 | Thin editorial fields | n/a |
 | Routes fails | n/a |
-| AI key present | no |
+| AI key present | yes |
 | Audit exit | 0 |
 | Audit test exit | 0 |
 | AI assist exit | 0 |
@@ -54,6 +54,6 @@ PASS page-content-audit.test.mjs — 165 datasets, 13 series, 20 clusters, 5 acc
 
 ### AI
 ```
-{"ok":true,"skipped":true,"reason":"AI_API_KEY (or OPENAI_API_KEY) not set — audit-only bi-monthly run."}
+{"ok":true,"provider":"dartmouth","model":"anthropic.claude-opus-4-8","candidates":1,"proposals":1,"applied":0}
 
 ```

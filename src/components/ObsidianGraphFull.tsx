@@ -119,6 +119,35 @@ function homeId(n: GraphNodeDef): string | undefined {
   return n.homeThemeId ?? n.themeIds[0];
 }
 
+/** Truncate canvas labels so they don't blow past the viewport. */
+function truncateLabel(text: string, maxChars: number): string {
+  if (text.length <= maxChars) return text;
+  return `${text.slice(0, Math.max(1, maxChars - 1))}…`;
+}
+
+/**
+ * Draw centered text clamped inside the canvas; flip above the node if the
+ * default under-node position would clip the bottom edge.
+ */
+function fillClampedLabel(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  yBelow: number,
+  yAbove: number,
+  w: number,
+  h: number,
+  pad = 10,
+) {
+  const tw = ctx.measureText(text).width;
+  const half = tw / 2;
+  const tx = Math.max(pad + half, Math.min(w - pad - half, x));
+  let ty = yBelow;
+  if (ty > h - pad) ty = yAbove;
+  if (ty < pad + 8) ty = Math.min(h - pad, yBelow);
+  ctx.fillText(text, tx, ty);
+}
+
 /**
  * Universe graph: each domain theme is a sun; datasets revolve around their
  * home theme. Multi-theme membership still highlights on click.
@@ -137,6 +166,9 @@ export function ObsidianGraphFull({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const [reduced, setReduced] = useState(false);
+  /** Larger hit targets + mobile HUD when finger / narrow screens. */
+  const [coarsePointer, setCoarsePointer] = useState(false);
+  const coarseRef = useRef(false);
   const [lastSourceClick, setLastSourceClick] = useState<{
     id: string;
     t: number;
@@ -177,13 +209,31 @@ export function ObsidianGraphFull({
     return () => mq.removeEventListener("change", fn);
   }, []);
 
+  useEffect(() => {
+    const update = () => {
+      const coarse =
+        window.matchMedia("(pointer: coarse)").matches ||
+        window.innerWidth < 768;
+      setCoarsePointer(coarse);
+      coarseRef.current = coarse;
+    };
+    update();
+    window.addEventListener("resize", update);
+    const mq = window.matchMedia("(pointer: coarse)");
+    mq.addEventListener("change", update);
+    return () => {
+      window.removeEventListener("resize", update);
+      mq.removeEventListener("change", update);
+    };
+  }, []);
+
   const initSim = useCallback(
     (w: number, h: number) => {
       const cx = w / 2;
       const cy = h / 2;
       const minSide = Math.min(w, h);
-      // Theme suns on a wide outer ring
-      const themeRing = minSide * 0.38;
+      // Theme suns on a wide outer ring — tighter on phones so labels fit
+      const themeRing = minSide * (w < 480 ? 0.3 : 0.34);
 
       const themes = graph.nodes.filter((n) => n.kind === "theme");
       const sources = graph.nodes.filter((n) => n.kind === "source");
@@ -225,7 +275,7 @@ export function ObsidianGraphFull({
         byHome.set(key, list);
       });
 
-      const maxOrbitBudget = minSide * 0.16;
+      const maxOrbitBudget = minSide * (w < 480 ? 0.13 : 0.16);
 
       byHome.forEach((list, themeKey) => {
         const anchor = themePos.get(themeKey);
@@ -391,7 +441,10 @@ export function ObsidianGraphFull({
         const cx = w / 2;
         const cy = h / 2;
         const minSide = Math.min(w, h);
-        const themeRing = minSide * (0.38 + 0.012 * Math.sin(t * 0.22));
+        // Slightly inside 0.5 so suns + orbiters + labels stay off the frame edge
+        const themeRing =
+          minSide *
+          ((w < 480 ? 0.3 : 0.34) + 0.01 * Math.sin(t * 0.22));
 
         // ── Theme suns: slow revolution on galaxy ring ──
         const themes = nodes.filter((n) => n.kind === "theme");
@@ -460,10 +513,12 @@ export function ObsidianGraphFull({
           }
         }
 
-        // Clamp to viewport softly
+        // Clamp to viewport softly — leave room for labels + map chrome/guide/HUD
+        const bottomPad = coarseRef.current ? 88 : 64;
+        const topPad = coarseRef.current ? 64 : 56;
         nodes.forEach((n) => {
-          n.x = Math.max(n.r + 12, Math.min(w - n.r - 12, n.x));
-          n.y = Math.max(n.r + 52, Math.min(h - n.r - 44, n.y));
+          n.x = Math.max(n.r + 16, Math.min(w - n.r - 16, n.x));
+          n.y = Math.max(n.r + topPad, Math.min(h - n.r - bottomPad, n.y));
         });
       }
 
@@ -582,6 +637,12 @@ export function ObsidianGraphFull({
         }
       }
 
+      // Keep constellation geometry inside the canvas box (labels/edges).
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, w, h);
+      ctx.clip();
+
       // ── Orbital rings around each theme sun ────────────
       nodes.forEach((theme) => {
         if (theme.kind !== "theme") return;
@@ -652,7 +713,10 @@ export function ObsidianGraphFull({
 
           if (!edgeInFocus) return;
 
-          // Focused: home spokes solid cream; secondary dashed gold
+          // Focused: home spokes solid cream; secondary dashed gold (always on).
+          // Soften very long secondary spokes so they don't dominate the frame.
+          const spokeLen = Math.hypot(source.x - theme.x, source.y - theme.y);
+          const longCap = Math.min(w, h) * 0.55;
           ctx.beginPath();
           ctx.moveTo(theme.x, theme.y);
           ctx.lineTo(source.x, source.y);
@@ -665,7 +729,11 @@ export function ObsidianGraphFull({
             ctx.shadowBlur = 4;
           } else {
             // Secondary membership — linked but orbits another sun
-            ctx.globalAlpha = 0.55;
+            const longFade =
+              spokeLen > longCap
+                ? Math.max(0.28, 0.55 * (longCap / spokeLen))
+                : 0.55;
+            ctx.globalAlpha = longFade;
             ctx.strokeStyle = "rgba(196, 165, 116, 0.7)";
             ctx.lineWidth = 1.05;
             ctx.setLineDash([4, 5]);
@@ -818,17 +886,29 @@ export function ObsidianGraphFull({
             ? "rgba(230, 228, 220, 0.95)"
             : "rgba(243, 228, 201, 0.95)";
           ctx.textAlign = "center";
+          ctx.textBaseline = "alphabetic";
           ctx.shadowColor = "rgba(0,0,0,0.85)";
           ctx.shadowBlur = 4;
           const label =
-            n.kind === "theme" && n.label.length > 14
-              ? n.label.slice(0, 12) + "…"
-              : n.label;
-          ctx.fillText(label, n.x, n.y + n.r + 13);
+            n.kind === "theme"
+              ? truncateLabel(n.label, 14)
+              : truncateLabel(n.label, isHover || isSel ? 28 : 22);
+          fillClampedLabel(
+            ctx,
+            label,
+            n.x,
+            n.y + n.r + 13,
+            n.y - n.r - 8,
+            w,
+            h,
+            10,
+          );
           ctx.shadowBlur = 0;
         }
         ctx.globalAlpha = 1;
       });
+
+      ctx.restore();
 
       state.raf = requestAnimationFrame(draw);
     };
@@ -847,11 +927,20 @@ export function ObsidianGraphFull({
     const rect = canvas.getBoundingClientRect();
     const x = clientX - rect.left;
     const y = clientY - rect.top;
+    // Finger-friendly hit slop on coarse pointers / narrow screens
+    const slop = coarseRef.current ? 22 : 9;
+    let best: SimNode | null = null;
+    let bestDist = Infinity;
     for (let i = state.nodes.length - 1; i >= 0; i--) {
       const n = state.nodes[i];
-      if (Math.hypot(n.x - x, n.y - y) <= n.r + 9) return n;
+      const d = Math.hypot(n.x - x, n.y - y);
+      const max = n.r + slop + (n.kind === "theme" ? 6 : 0);
+      if (d <= max && d < bestDist) {
+        best = n;
+        bestDist = d;
+      }
     }
-    return null;
+    return best;
   }, []);
 
   const selectedNode = graph.nodes.find((n) => n.id === selectedId);
@@ -904,15 +993,16 @@ export function ObsidianGraphFull({
       className={
         embedded
           ? "relative h-full w-full overflow-hidden bg-black"
-          : "fixed inset-0 z-0 h-[100dvh] w-screen overflow-hidden bg-black"
+          : "fixed inset-0 z-0 h-dvh w-full overflow-hidden bg-black"
       }
     >
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 h-full w-full"
+        className="absolute inset-0 h-full w-full touch-manipulation"
         role="img"
-        aria-label="Universe graph: datasets orbit their home theme. Click a theme to highlight every linked source."
+        aria-label="Universe graph: datasets orbit their home theme. Tap a theme to highlight linked sources."
         onMouseMove={(e) => {
+          if (coarseRef.current) return;
           const n = hitTest(e.clientX, e.clientY);
           setHover(n?.id ?? null);
           if (canvasRef.current)
@@ -940,8 +1030,8 @@ export function ObsidianGraphFull({
               {selectedNode
                 ? selectedNode.kind === "theme"
                   ? `${selectedNode.label} sun — ${homeOrbitCount} home orbiters · ${focusedSources} linked`
-                  : `${selectedNode.label} · double-click or Open →`
-                : "Click a theme sun, then a dataset."}
+                  : `${selectedNode.label} · double-tap or Open →`
+                : "Tap a theme sun, then a dataset."}
             </p>
             {selectedNode?.kind === "source" && selectedNode.href && (
               <button
@@ -958,8 +1048,14 @@ export function ObsidianGraphFull({
 
       {/* Selection HUD when parent owns chrome (map page) */}
       {!showChrome && selectedNode && (
-        <div className="pointer-events-none absolute right-4 top-20 z-20 sm:right-5 sm:top-20">
-          <div className="pointer-events-auto max-w-xs rounded-xl border border-white/[0.1] bg-black/70 px-4 py-3 backdrop-blur-md">
+        <div
+          className={
+            coarsePointer
+              ? "pointer-events-none absolute inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-20 sm:inset-x-auto sm:right-5 sm:bottom-auto sm:top-20"
+              : "pointer-events-none absolute right-4 top-20 z-20 sm:right-5 sm:top-20"
+          }
+        >
+          <div className="pointer-events-auto mx-auto w-full max-w-sm rounded-xl border border-white/[0.1] bg-black/80 px-4 py-3 shadow-[0_16px_48px_rgba(0,0,0,0.55)] backdrop-blur-md sm:mx-0 sm:max-w-xs">
             <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#C4A574]">
               {selectedNode.kind === "theme" ? "Theme" : "Dataset"}
             </p>
@@ -969,7 +1065,7 @@ export function ObsidianGraphFull({
             <p className="mt-1.5 text-xs leading-relaxed text-[#C8C9BC]/90">
               {selectedNode.kind === "theme"
                 ? `${homeOrbitCount} home · ${focusedSources} linked — pick a node`
-                : "Double-click or open for full record"}
+                : "Double-tap or open for full record"}
             </p>
             {selectedNode.kind === "source" && selectedNode.href && (
               <button

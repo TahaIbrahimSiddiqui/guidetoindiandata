@@ -1,12 +1,21 @@
-import type { Dataset } from "@/types/dataset";
+import type { Dataset, DatasetDraft } from "@/types/dataset";
 import { academicDatasets } from "@/data/academicDatasets";
 import { githubDatasets } from "@/data/githubDatasets";
+import { DATASET_SUMMARIES } from "@/data/datasetSummaries";
+
+function withSummary(d: DatasetDraft): Dataset {
+  const summary =
+    d.summary?.trim() ||
+    DATASET_SUMMARIES[d.slug] ||
+    `${d.shortTitle} is used for research and analysis on ${d.categories.slice(0, 3).join(", ") || "Indian data"}.`;
+  return { ...d, summary };
+}
 
 /**
  * Government / national catalog from content/guide_research.md.
  * Citation tokens stripped; access URLs point at known host portals where clear.
  */
-const governmentDatasets: Dataset[] = [
+const governmentDatasets: DatasetDraft[] = [
   // ── Health & Demography ──────────────────────────────────────────
   {
     slug: "nfhs-1",
@@ -151,6 +160,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["household survey", "district-level", "wave-based"],
     host: "MoHFW / IIPS",
     institution: "MoHFW / IIPS",
+    accessUrl: "https://www.iipsindia.ac.in/",
+    docsUrl: "https://ghdx.healthdata.org/",
     accessType: "request-only",
     sizeTier: "Large",
     formats: ["survey documentation", "tables"],
@@ -173,6 +184,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["household survey", "microdata", "district-level"],
     host: "MoHFW / IIPS / GHDx",
     institution: "MoHFW / IIPS",
+    accessUrl: "https://ghdx.healthdata.org/",
+    docsUrl: "https://www.iipsindia.ac.in/",
     accessType: "registration",
     sizeTier: "Very large",
     formats: ["microdata"],
@@ -195,6 +208,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["household survey", "microdata", "district-level"],
     host: "MoHFW / IIPS",
     institution: "MoHFW / IIPS",
+    accessUrl: "https://www.iipsindia.ac.in/",
+    docsUrl: "https://ghdx.healthdata.org/",
     accessType: "registration",
     sizeTier: "Very large",
     formats: ["microdata", "documentation"],
@@ -217,6 +232,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["household survey", "microdata", "district-level", "facility survey"],
     host: "MoHFW / IIPS / GHDx",
     institution: "MoHFW / IIPS",
+    accessUrl: "https://ghdx.healthdata.org/",
+    docsUrl: "https://www.iipsindia.ac.in/",
     accessType: "registration",
     sizeTier: "Large",
     formats: ["microdata"],
@@ -317,6 +334,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["household survey", "panel", "microdata"],
     host: "IIPS / Harvard / USC",
     institution: "IIPS / Harvard / USC",
+    accessUrl: "https://www.iipsindia.ac.in/content/LASI-data",
+    docsUrl: "https://www.iipsindia.ac.in/lasi/",
     accessType: "registration",
     sizeTier: "Very large",
     formats: ["survey files"],
@@ -339,6 +358,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["household survey", "microdata", "restricted access"],
     host: "USC / LASI-DAD",
     institution: "USC / LASI-DAD",
+    accessUrl: "https://www.lasi-dad.org/data/overview",
+    docsUrl: "https://www.lasi-dad.org/",
     accessType: "data-use-agreement",
     sizeTier: "Large",
     formats: ["survey files"],
@@ -410,6 +431,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "assessment", "periodic"],
     host: "NCERT / PARAKH / MoE",
     institution: "NCERT / MoE",
+    accessUrl: "https://parakh.ncert.gov.in/nas-dashboard",
+    docsUrl: "https://ncert.nic.in/",
     accessType: "public-dashboard",
     sizeTier: "Large",
     formats: ["dashboard", "report cards"],
@@ -815,6 +838,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["monthly", "open download"],
     host: "Office of Economic Adviser",
     institution: "DPIIT / OEA",
+    accessUrl: "https://eaindustry.nic.in/",
     accessType: "open-download",
     sizeTier: "Medium",
     formats: ["downloadable series"],
@@ -917,6 +941,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["public report", "periodic"],
     host: "Agriculture Census Division",
     institution: "Ministry of Agriculture",
+    accessUrl: "https://agcensus.nic.in/",
     accessType: "open-download",
     sizeTier: "Large",
     formats: ["report", "manual"],
@@ -939,6 +964,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["periodic", "public manual"],
     host: "Agriculture Census Division",
     institution: "Ministry of Agriculture",
+    accessUrl: "https://agcensus.nic.in/",
     accessType: "open-download",
     sizeTier: "Large",
     formats: ["manual", "reporting system"],
@@ -988,6 +1014,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["annual", "official scheme"],
     host: "DES / DACFW",
     institution: "DES / DACFW",
+    accessUrl: "https://desagri.gov.in/",
+    docsUrl: "https://cacp.dacnet.nic.in/",
     accessType: "open-download",
     sizeTier: "Large",
     formats: ["scheme summaries", "plot-level summaries"],
@@ -1034,6 +1062,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "operational"],
     host: "SFAC / MoAFW",
     institution: "SFAC / MoAFW",
+    accessUrl: "https://www.enam.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Very large",
     formats: ["dashboard"],
@@ -1056,6 +1085,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "operational"],
     host: "DACFW",
     institution: "Ministry of Agriculture",
+    accessUrl: "https://www.soilhealth.dac.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Large",
     formats: ["dashboard", "application"],
@@ -1143,7 +1173,7 @@ const governmentDatasets: Dataset[] = [
     timeCoverage: "Annual",
     keyVariables: ["capacity", "occupancy", "prisoner composition", "staff"],
     bestFor: "Prison system monitoring series",
-    limitations: "PDF packaging",
+    limitations: "Annual NCRB PDF packaging; definitions and table structures can shift across years",
     pairsWith: ["crime-in-india", "njdg"],
     exampleUses: "Overcrowding and incarceration composition",
     cluster: "governance-justice",
@@ -1376,6 +1406,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "daily", "WebGIS"],
     host: "CWC / NWIC",
     institution: "CWC / NWIC",
+    accessUrl: "https://indiawris.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Medium",
     formats: ["WebGIS dashboard"],
@@ -1398,6 +1429,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["portal", "quarterly"],
     host: "CGWB / NWIC",
     institution: "CGWB",
+    accessUrl: "https://indiawris.gov.in/",
+    docsUrl: "https://cgwb.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Large",
     formats: ["web portal"],
@@ -1429,7 +1462,7 @@ const governmentDatasets: Dataset[] = [
     timeCoverage: "Ongoing monthly",
     keyVariables: ["installed MW", "source", "sector", "state"],
     bestFor: "Official electricity capacity benchmark",
-    limitations: "PDF/XLS packaging",
+    limitations: "Monthly capacity tables arrive as PDF/XLS packs; series construction needs careful base handling",
     pairsWith: ["npp-grid-india", "national-accounts-statistics"],
     exampleUses: "Power mix and capacity expansion",
     flags: ["good-starting"],
@@ -1444,6 +1477,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "daily"],
     host: "NPP / GRID-INDIA",
     institution: "NPP / GRID-INDIA",
+    accessUrl: "https://npp.gov.in/",
+    docsUrl: "https://grid-india.in/",
     accessType: "public-dashboard",
     sizeTier: "Medium",
     formats: ["dashboard"],
@@ -1466,6 +1501,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["PDF report", "annual"],
     host: "MoRTH",
     institution: "Ministry of Road Transport & Highways",
+    accessUrl: "https://morth.nic.in/",
     accessType: "open-download",
     sizeTier: "Large",
     formats: ["PDF"],
@@ -1488,6 +1524,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "mission"],
     host: "Ministry of Rural Development",
     institution: "MoRD",
+    accessUrl: "https://omms.nic.in/",
+    docsUrl: "https://pmgsy.nic.in/",
     accessType: "public-dashboard",
     sizeTier: "Medium",
     formats: ["dashboard"],
@@ -1510,6 +1548,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["PDF", "monthly"],
     host: "DGCA",
     institution: "DGCA",
+    accessUrl: "https://www.dgca.gov.in/",
     accessType: "open-download",
     sizeTier: "Medium",
     formats: ["PDF"],
@@ -1532,6 +1571,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "mission"],
     host: "DDWS",
     institution: "Department of Drinking Water & Sanitation",
+    accessUrl: "https://ejalshakti.gov.in/jjmreport/JJMIndia.aspx",
+    docsUrl: "https://jaljeevanmission.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Medium",
     formats: ["dashboard"],
@@ -1555,6 +1596,7 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["dashboard", "mission"],
     host: "DDWS",
     institution: "Department of Drinking Water & Sanitation",
+    accessUrl: "https://sbm.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Medium",
     formats: ["dashboard"],
@@ -1654,6 +1696,8 @@ const governmentDatasets: Dataset[] = [
     technicalTags: ["atlas", "downloadable"],
     host: "DoLR / NRSC",
     institution: "Department of Land Resources / NRSC",
+    accessUrl: "https://dolr.gov.in/",
+    docsUrl: "https://bhuvan.nrsc.gov.in/",
     accessType: "open-download",
     sizeTier: "Medium",
     formats: ["atlas", "district/state sections"],
@@ -2957,7 +3001,7 @@ export const datasets: Dataset[] = [
   ...governmentDatasets,
   ...academicDatasets,
   ...githubDatasets,
-];
+].map(withSummary);
 
 export function getDatasetBySlug(slug: string): Dataset | undefined {
   return datasets.find((d) => d.slug === slug);

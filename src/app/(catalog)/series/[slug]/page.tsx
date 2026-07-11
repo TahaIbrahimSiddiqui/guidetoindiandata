@@ -49,7 +49,7 @@ export default async function SeriesDetailPage({ params }: Props) {
       <div className="mb-6">
         <Link
           href="/map"
-          className="inline-flex min-h-10 items-center text-xs font-medium uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
+          className="inline-flex min-h-11 items-center text-xs font-medium uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
         >
           ← Back to solar map
         </Link>

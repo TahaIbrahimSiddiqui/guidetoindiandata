@@ -57,7 +57,7 @@ export default function ClustersPage() {
                 </div>
                 <Link
                   href={`/explore?cluster=${cluster.id}`}
-                  className="inline-flex min-h-9 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] link-underline"
+                  className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C4A574] link-underline"
                 >
                   Browse {members.length} →
                 </Link>

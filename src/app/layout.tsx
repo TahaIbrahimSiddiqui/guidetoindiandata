@@ -36,6 +36,13 @@ export const metadata: Metadata = {
     "India’s research data, mapped as a solar system—click a theme sun, open a dataset, and get honest access, guides, and variables.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover" as const,
+  themeColor: "#000000",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -16,20 +16,42 @@ import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
  */
 export function MapExperience() {
   const [entered, setEntered] = useState(false);
-  const [guideOpen, setGuideOpen] = useState(true);
+  /** Closed by default on phones so the graph is tappable immediately. */
+  const [guideOpen, setGuideOpen] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [isNarrow, setIsNarrow] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    // Entrance: settle from zoom-in handoff
-    const t = window.setTimeout(() => setEntered(true), reduced ? 0 : 30);
-    return () => window.clearTimeout(t);
-  }, [reduced]);
+    const mqMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mqMotion.matches);
+    const onMotion = () => setReduced(mqMotion.matches);
+    mqMotion.addEventListener("change", onMotion);
+
+    const updateNarrow = () => {
+      const narrow =
+        window.matchMedia("(pointer: coarse)").matches ||
+        window.innerWidth < 768;
+      setIsNarrow(narrow);
+      // Desktop: open guide once; mobile stays closed until user asks
+      if (!narrow) setGuideOpen(true);
+    };
+    updateNarrow();
+    window.addEventListener("resize", updateNarrow);
+
+    const t = window.setTimeout(
+      () => setEntered(true),
+      mqMotion.matches ? 0 : 30,
+    );
+    return () => {
+      mqMotion.removeEventListener("change", onMotion);
+      window.removeEventListener("resize", updateNarrow);
+      window.clearTimeout(t);
+    };
+  }, []);
 
   return (
     <div
-      className={`relative h-dvh w-screen overflow-hidden bg-black transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`relative h-dvh w-full overflow-hidden bg-black transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         entered
           ? "scale-100 opacity-100"
           : reduced
@@ -43,43 +65,51 @@ export function MapExperience() {
         <ObsidianGraphFull embedded showChrome={false} />
       </div>
 
-      {/* Top chrome */}
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-3 p-4 sm:p-5">
-        <div className="pointer-events-auto flex flex-wrap items-center gap-2">
+      {/* Top chrome — compact on mobile; safe-area for notches */}
+      <header
+        className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:gap-3 sm:p-5"
+      >
+        <div className="pointer-events-auto flex max-w-[55%] flex-wrap items-center gap-2">
           <Link
             href="/"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.1] bg-black/65 px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9]"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:px-3.5"
           >
             <ArrowLeft className="size-3.5" aria-hidden />
-            Landing
+            <span className="sm:hidden">Home</span>
+            <span className="hidden sm:inline">Landing</span>
           </Link>
-          <span className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.08] bg-black/55 px-3.5 py-2 backdrop-blur-md">
-            <span
-              className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]"
-              aria-hidden
-            />
-            <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-              Guide to Indian Data
+          {!isNarrow && (
+            <span className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.08] bg-black/55 px-3.5 py-2 backdrop-blur-md">
+              <span
+                className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]"
+                aria-hidden
+              />
+              <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
+                Guide to Indian Data
+              </span>
             </span>
-          </span>
+          )}
         </div>
 
-        <div className="pointer-events-auto flex flex-wrap items-center gap-2">
+        <div className="pointer-events-auto flex flex-wrap items-center justify-end gap-2">
           <Link
             href="/about"
-            className="inline-flex min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9]"
+            className="inline-flex min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:px-3.5"
           >
             About
           </Link>
           <button
             type="button"
             onClick={() => setGuideOpen((v) => !v)}
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#C4A574]/30 bg-black/65 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3E4C9] backdrop-blur-md transition hover:bg-[#C4A574]/15"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#C4A574]/30 bg-black/65 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3E4C9] backdrop-blur-md transition hover:bg-[#C4A574]/15 sm:px-4"
             aria-expanded={guideOpen}
             aria-controls="map-guide"
           >
             <Sparkles className="size-3.5 text-[#C4A574]" aria-hidden />
-            {guideOpen ? "Hide guide" : "How to navigate"}
+            <span className="sm:hidden">{guideOpen ? "Hide" : "Guide"}</span>
+            <span className="hidden sm:inline">
+              {guideOpen ? "Hide guide" : "How to navigate"}
+            </span>
           </button>
         </div>
       </header>
@@ -88,7 +118,7 @@ export function MapExperience() {
       {guideOpen && (
         <aside
           id="map-guide"
-          className="pointer-events-auto absolute bottom-5 left-4 z-30 w-[min(100%-2rem,22rem)] rounded-2xl border border-white/[0.1] bg-black/75 p-4 shadow-[0_20px_60px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:left-5 sm:bottom-6 sm:p-5"
+          className="pointer-events-auto absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-3 z-30 max-h-[min(70dvh,28rem)] w-[min(100%-1.5rem,22rem)] overflow-y-auto rounded-2xl border border-white/[0.1] bg-black/80 p-4 shadow-[0_20px_60px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:bottom-6 sm:left-5 sm:p-5"
           aria-label="How to navigate the map"
         >
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C4A574]">
@@ -104,7 +134,7 @@ export function MapExperience() {
               </span>
               <div>
                 <p className="text-sm font-medium text-[#F3E4C9]">
-                  1. Click a theme sun
+                  1. Tap a theme sun
                 </p>
                 <p className="mt-0.5 text-xs leading-relaxed text-[#C8C9BC]/90">
                   Health, labour, trade… Datasets that live there light up.
@@ -118,11 +148,11 @@ export function MapExperience() {
               </span>
               <div>
                 <p className="text-sm font-medium text-[#F3E4C9]">
-                  2. Click a dataset
+                  2. Tap a dataset
                 </p>
                 <p className="mt-0.5 text-xs leading-relaxed text-[#C8C9BC]/90">
                   Small nodes orbit their home sun. Select one to see its name
-                  and links.
+                  and the Open button.
                 </p>
               </div>
             </li>
@@ -135,7 +165,7 @@ export function MapExperience() {
                   3. Open the full page
                 </p>
                 <p className="mt-0.5 text-xs leading-relaxed text-[#C8C9BC]/90">
-                  Double-click the node—or use{" "}
+                  Double-tap the node—or use{" "}
                   <span className="text-[#F3E4C9]">Open →</span>—for access,
                   guides, variables, and previous-round background.
                 </p>
@@ -157,8 +187,8 @@ export function MapExperience() {
       )}
 
       {!guideOpen && (
-        <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-20 px-4 text-center text-[10px] uppercase tracking-[0.18em] text-white/30">
-          Theme → dataset → open page · Esc clears
+        <p className="pointer-events-none absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-0 right-0 z-20 px-4 text-center text-[10px] uppercase tracking-[0.18em] text-white/30">
+          Theme → dataset → open page
         </p>
       )}
     </div>

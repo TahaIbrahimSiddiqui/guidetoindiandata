@@ -88,6 +88,7 @@ export function filterDatasets(
         d.shortTitle,
         d.host,
         d.institution,
+        d.summary,
         d.bestFor,
         d.exampleUses,
         d.dataDoi,

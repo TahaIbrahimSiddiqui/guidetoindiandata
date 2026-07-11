@@ -25,17 +25,17 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="glass-header sticky top-0 z-50 border-b border-border/80">
+    <header className="glass-header sticky top-0 z-50 border-b border-border/80 pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
         <Link
           href="/"
-          className="group flex min-h-11 items-center gap-2.5 text-foreground focus-visible:outline-offset-4"
+          className="group flex min-h-11 min-w-0 items-center gap-2.5 text-foreground focus-visible:outline-offset-4"
         >
           <span
             className="inline-block h-2 w-2 rotate-45 bg-primary transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-125 group-hover:rotate-[225deg]"
             aria-hidden
           />
-          <span className="font-display text-sm font-semibold tracking-tight">
+          <span className="font-display truncate text-sm font-semibold tracking-tight">
             Guide to Indian Data
             <span className="align-super text-[0.65em] text-brand-gold/80">
               ®
@@ -75,14 +75,18 @@ export function SiteHeader() {
           <Button
             asChild
             size="sm"
-            className="ml-3 h-9 bg-primary px-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary-foreground hover:bg-primary/90"
+            className="ml-3 min-h-11 bg-primary px-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary-foreground hover:bg-primary/90"
           >
             <Link href="/map">Solar map</Link>
           </Button>
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
-          <Button asChild size="sm" className="h-9 text-[10px] uppercase tracking-[0.12em]">
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
+          <Button
+            asChild
+            size="sm"
+            className="min-h-11 text-[10px] uppercase tracking-[0.12em]"
+          >
             <Link href="/map">Map</Link>
           </Button>
           <Sheet>

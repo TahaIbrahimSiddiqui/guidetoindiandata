@@ -9,11 +9,11 @@ export default function CatalogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-dvh flex-col bg-obsidian-bg">
+    <div className="flex min-h-dvh min-w-0 flex-col overflow-x-hidden bg-obsidian-bg">
       <SiteHeader />
-      <main id="main-content" className="flex-1" tabIndex={-1}>
+      <main id="main-content" className="min-w-0 flex-1" tabIndex={-1}>
         <AdScript />
-        <div className="bg-vault min-h-[70vh]">
+        <div className="bg-vault min-h-[70vh] min-w-0">
           <ContentWithAds>{children}</ContentWithAds>
         </div>
       </main>

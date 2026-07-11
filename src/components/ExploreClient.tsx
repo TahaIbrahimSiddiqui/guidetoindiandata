@@ -142,22 +142,13 @@ export function ExploreClient() {
           of <span className="tabular-nums">{datasets.length}</span> datasets
         </p>
         <div className="flex flex-wrap gap-2">
-          <Link
-            href="/explore?source=government"
-            className="quick-chip !min-h-9 text-xs"
-          >
+          <Link href="/explore?source=government" className="quick-chip text-xs">
             Government
           </Link>
-          <Link
-            href="/explore?source=academic"
-            className="quick-chip !min-h-9 text-xs"
-          >
+          <Link href="/explore?source=academic" className="quick-chip text-xs">
             Academic
           </Link>
-          <Link
-            href="/explore?source=github"
-            className="quick-chip !min-h-9 text-xs"
-          >
+          <Link href="/explore?source=github" className="quick-chip text-xs">
             GitHub
           </Link>
         </div>

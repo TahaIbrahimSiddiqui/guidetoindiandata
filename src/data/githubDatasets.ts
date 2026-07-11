@@ -1,10 +1,10 @@
-import type { Dataset } from "@/types/dataset";
+import type { DatasetDraft } from "@/types/dataset";
 
 /**
  * GitHub-hosted India datasets from content/github_dataset.md.
  * Repo-level licenses shown; upstream terms still need user verification.
  */
-export const githubDatasets: Dataset[] = [
+export const githubDatasets: DatasetDraft[] = [
   {
     slug: "gh-datameet-maps",
     title: "DataMeet Maps — India administrative & electoral boundaries",
@@ -344,7 +344,7 @@ export const githubDatasets: Dataset[] = [
     bestFor: "School-point geospatial layer for education mapping",
     limitations: "License not always surfaced; verify official UDISE terms",
     pairsWith: ["udise-plus", "gh-colleges-api"],
-    exampleUses: "School access maps",
+    exampleUses: "School access maps and catchment analysis against population layers",
     cluster: "education",
     sourceKind: "github-community",
     academicBadges: ["github-repo", "metadata-incomplete"],
@@ -370,7 +370,7 @@ export const githubDatasets: Dataset[] = [
     bestFor: "Front-end map consumption via CDN",
     limitations: "Provenance thinner than top geospatial repos",
     pairsWith: ["gh-datameet-maps", "gh-indian-shapefiles"],
-    exampleUses: "Quick web maps",
+    exampleUses: "Quick web maps and front-end demos via CDN-friendly map assets",
     cluster: "geospatial-remote-sensing",
     sourceKind: "github-community",
     academicBadges: ["github-repo", "metadata-incomplete"],
@@ -396,7 +396,7 @@ export const githubDatasets: Dataset[] = [
     bestFor: "Village-level boundary layer with attribution guidance",
     limitations: "ODbL share-alike; incomplete in places; older maintenance",
     pairsWith: ["gh-datameet-maps", "census-pca-2011"],
-    exampleUses: "Village choropleths",
+    exampleUses: "Village choropleths and rural boundary joins with survey microdata",
     cluster: "geospatial-remote-sensing",
     sourceKind: "github-community",
     academicBadges: ["github-repo"],

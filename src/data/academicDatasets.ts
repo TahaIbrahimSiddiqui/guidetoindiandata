@@ -1,4 +1,4 @@
-import type { Dataset } from "@/types/dataset";
+import type { DatasetDraft } from "@/types/dataset";
 
 function doiUrl(doi: string) {
   return `https://doi.org/${doi}`;
@@ -8,7 +8,7 @@ function doiUrl(doi: string) {
  * Academic / Harvard Dataverse layer from content/academic_dataset_harvard.md.
  * Licenses and file sizes marked NR in the source are not invented here.
  */
-export const academicDatasets: Dataset[] = [
+export const academicDatasets: DatasetDraft[] = [
   // ── Core reference ─────────────────────────────────────────────
   {
     slug: "indian-census-collection-1901-2026",
@@ -697,7 +697,7 @@ export const academicDatasets: Dataset[] = [
     timeCoverage: "Covid era",
     keyVariables: ["reproduction number R", "test-based estimates"],
     bestFor: "National and subnational Covid-19 R estimates from test results",
-    limitations: "License/formats NR",
+    limitations: "Research deposit; check Dataverse license and formats before redistribution",
     pairsWith: ["hmis", "nfhs-5"],
     exampleUses: "Epidemic monitoring research",
     cluster: "health-demography",
@@ -781,7 +781,7 @@ export const academicDatasets: Dataset[] = [
     timeCoverage: "1948–2026",
     keyVariables: ["treaty IDs", "dates", "subject matter", "linkage fields"],
     bestFor: "India treaty-registry reference dataset",
-    limitations: "License/formats NR",
+    limitations: "Research deposit; verify Dataverse license and citation terms for reuse",
     pairsWith: ["india-treaty-nesting"],
     exampleUses: "International law and IR research",
     cluster: "governance-justice",

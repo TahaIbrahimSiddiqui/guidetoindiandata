@@ -15,11 +15,17 @@ import type { CatalogStats } from "@/lib/catalogStats";
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "/guidetoindiandata";
 const LANDING_VIDEO = `${BASE}/videos/indian-street-market-background-web-1080p-muted.mp4`;
 
-/** Rotating affordance lines — any of these enters the solar map. */
-const ACTION_LINES = [
+/** Desktop affordance lines — any of these enters the solar map. */
+const ACTION_LINES_DESKTOP = [
   "Scroll down",
   "Click anywhere on the hero",
   "Press Enter or Space",
+  "Use the button below",
+];
+
+/** Touch / coarse-pointer lines (no wheel or keyboard). */
+const ACTION_LINES_TOUCH = [
+  "Tap anywhere on the hero",
   "Use the button below",
 ];
 
@@ -35,6 +41,7 @@ export function LandingExperience({ stats }: Props) {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [reduced, setReduced] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [phase, setPhase] = useState<"idle" | "zooming">("idle");
   const [actionIdx, setActionIdx] = useState(0);
@@ -50,6 +57,18 @@ export function LandingExperience({ stats }: Props) {
     const fn = () => setReduced(mq.matches);
     mq.addEventListener("change", fn);
     return () => mq.removeEventListener("change", fn);
+  }, []);
+
+  useEffect(() => {
+    const update = () => {
+      setIsTouch(
+        window.matchMedia("(pointer: coarse)").matches ||
+          window.innerWidth < 768,
+      );
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   // Cascade text in, then kick off counters
@@ -90,15 +109,17 @@ export function LandingExperience({ stats }: Props) {
 
   useEffect(() => {
     if (reduced) return;
+    const lines = isTouch ? ACTION_LINES_TOUCH : ACTION_LINES_DESKTOP;
+    setActionIdx(0);
     const id = window.setInterval(() => {
       setActionVisible(false);
       window.setTimeout(() => {
-        setActionIdx((i) => (i + 1) % ACTION_LINES.length);
+        setActionIdx((i) => (i + 1) % lines.length);
         setActionVisible(true);
       }, 220);
     }, 2800);
     return () => window.clearInterval(id);
-  }, [reduced]);
+  }, [reduced, isTouch]);
 
   useEffect(() => {
     router.prefetch("/map");
@@ -143,7 +164,8 @@ export function LandingExperience({ stats }: Props) {
   }, [enterMap, phase]);
 
   const zooming = phase === "zooming";
-  const actionLine = ACTION_LINES[actionIdx];
+  const actionLines = isTouch ? ACTION_LINES_TOUCH : ACTION_LINES_DESKTOP;
+  const actionLine = actionLines[actionIdx % actionLines.length];
   const shown = (step: number) => revealStep >= step;
 
   return (
@@ -156,30 +178,33 @@ export function LandingExperience({ stats }: Props) {
       style={{ transformOrigin: "50% 42%" }}
     >
       {/* ── Sticky chrome ─────────────────────────────── */}
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/[0.06] bg-black/45 backdrop-blur-md">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/[0.06] bg-black/45 pt-[env(safe-area-inset-top)] backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-5 sm:h-16 sm:px-8 lg:px-12">
-          <Link href="/" className="flex min-h-11 items-center gap-2.5">
+          <Link href="/" className="flex min-h-11 min-w-0 items-center gap-2.5">
             <span
-              className="inline-block h-2 w-2 rotate-45 bg-[#8B5E3C]"
+              className="inline-block h-2 w-2 shrink-0 rotate-45 bg-[#8B5E3C]"
               aria-hidden
             />
-            <span className="font-display text-sm font-semibold tracking-tight">
+            <span className="font-display truncate text-sm font-semibold tracking-tight">
               Guide to Indian Data
             </span>
           </Link>
-          <nav className="flex items-center gap-1 sm:gap-2" aria-label="Main">
+          <nav className="flex shrink-0 items-center gap-1 sm:gap-2" aria-label="Main">
             <Link
               href="/about"
-              className="inline-flex min-h-11 items-center rounded-md px-3 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] transition hover:text-[#F3E4C9]"
+              className="inline-flex min-h-11 items-center rounded-md px-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] transition hover:text-[#F3E4C9] sm:px-3"
             >
               About
             </Link>
             <Button
               asChild
               size="sm"
-              className="h-9 bg-[#8B5E3C] px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#a06d45] sm:px-4"
+              className="min-h-11 bg-[#8B5E3C] px-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#a06d45] sm:px-4"
             >
-              <Link href="/map">Solar map</Link>
+              <Link href="/map">
+                <span className="sm:hidden">Map</span>
+                <span className="hidden sm:inline">Solar map</span>
+              </Link>
             </Button>
           </nav>
         </div>
@@ -187,7 +212,7 @@ export function LandingExperience({ stats }: Props) {
 
       {/* ── Hero: full first screen including stats ───── */}
       <section
-        className="relative flex h-dvh flex-col pt-14 sm:pt-16"
+        className="relative flex h-dvh flex-col overflow-y-auto overscroll-contain pt-[calc(3.5rem+env(safe-area-inset-top))] sm:pt-[calc(4rem+env(safe-area-inset-top))]"
         onClick={(e) => {
           const t = e.target as HTMLElement;
           if (t.closest("a, button")) return;
@@ -215,7 +240,7 @@ export function LandingExperience({ stats }: Props) {
                 muted
                 loop
                 playsInline
-                preload="auto"
+                preload={isTouch ? "metadata" : "auto"}
               />
             </div>
           )}
@@ -258,7 +283,7 @@ export function LandingExperience({ stats }: Props) {
               className={revealClass(
                 shown(2),
                 reduced,
-                "font-display max-w-4xl text-[clamp(1.85rem,5.5vw,4.25rem)] font-bold leading-[1.08] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)]",
+                "font-display max-w-4xl text-[clamp(1.55rem,6.5vw,4.25rem)] font-bold leading-[1.08] tracking-tight text-[#F3E4C9] drop-shadow-[0_4px_28px_rgba(0,0,0,0.95)] max-[400px]:text-[clamp(1.4rem,7vw,1.85rem)]",
               )}
             >
               <AnimatedHeadline
@@ -289,14 +314,17 @@ export function LandingExperience({ stats }: Props) {
               <Button
                 type="button"
                 size="lg"
-                className="h-11 bg-[#8B5E3C] px-5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white hover:bg-[#a06d45] sm:h-12 sm:px-6"
+                className="h-11 max-w-full whitespace-normal bg-[#8B5E3C] px-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#a06d45] sm:h-12 sm:whitespace-nowrap sm:px-6 sm:tracking-[0.16em]"
                 onClick={(e) => {
                   e.stopPropagation();
                   enterMap();
                 }}
               >
-                <Orbit className="size-4" aria-hidden />
-                Enter Indian Data solar system
+                <Orbit className="size-4 shrink-0" aria-hidden />
+                <span className="sm:hidden">Enter solar map</span>
+                <span className="hidden sm:inline">
+                  Enter Indian Data solar system
+                </span>
               </Button>
               <Link
                 href="/about"
@@ -318,7 +346,7 @@ export function LandingExperience({ stats }: Props) {
               aria-live="polite"
             >
               <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[#C4A574]">
-                {actionIdx === 0 ? (
+                {!isTouch && actionIdx === 0 ? (
                   <ArrowDown className="size-3.5" aria-hidden />
                 ) : (
                   <MousePointer2 className="size-3.5" aria-hidden />

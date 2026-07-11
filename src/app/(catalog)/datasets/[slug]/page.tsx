@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!d) return { title: "Dataset" };
   return {
     title: d.shortTitle,
-    description: d.bestFor,
+    description: d.summary || d.bestFor,
   };
 }
 
@@ -115,7 +115,7 @@ export default async function DatasetPage({ params }: Props) {
       <div className="mb-6">
         <Link
           href="/map"
-          className="inline-flex min-h-10 items-center gap-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
+          className="inline-flex min-h-11 items-center gap-1.5 text-xs font-medium uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
         >
           ← Back to solar map
         </Link>
@@ -137,6 +137,9 @@ export default async function DatasetPage({ params }: Props) {
         <h1 className="font-display mt-3 max-w-4xl text-3xl font-semibold tracking-tight text-obsidian-text sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
           {dataset.title}
         </h1>
+        <p className="mt-4 max-w-3xl text-base leading-relaxed text-[#D3D4C0]/95 sm:text-lg">
+          {dataset.summary}
+        </p>
 
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <AccessBadge accessType={dataset.accessType} />
@@ -188,21 +191,21 @@ export default async function DatasetPage({ params }: Props) {
           className="mt-6 flex flex-wrap gap-2"
         >
           {guides.length > 0 && (
-            <Button asChild variant="outline" size="sm" className="h-9">
+            <Button asChild variant="outline" size="sm" className="min-h-11">
               <a href="#guides">
                 <BookOpen className="size-3.5" aria-hidden />
                 Guides ({guides.length})
               </a>
             </Button>
           )}
-          <Button asChild variant="outline" size="sm" className="h-9">
+          <Button asChild variant="outline" size="sm" className="min-h-11">
             <a href="#variables">
               <Table2 className="size-3.5" aria-hidden />
               Variables ({variableInfo.entries.length})
             </a>
           </Button>
           {dataset.background && (
-            <Button asChild variant="outline" size="sm" className="h-9">
+            <Button asChild variant="outline" size="sm" className="min-h-11">
               <a href="#background">
                 <GitBranch className="size-3.5" aria-hidden />
                 Background
@@ -210,7 +213,7 @@ export default async function DatasetPage({ params }: Props) {
             </Button>
           )}
           {(dataset.accessUrl || dataset.docsUrl) && (
-            <Button asChild variant="outline" size="sm" className="h-9">
+            <Button asChild variant="outline" size="sm" className="min-h-11">
               <a href="#access">
                 <ExternalLink className="size-3.5" aria-hidden />
                 Access
@@ -367,7 +370,7 @@ export default async function DatasetPage({ params }: Props) {
             )}
           </div>
           {variableInfo.url && (
-            <Button asChild variant="outline" size="sm" className="h-9">
+            <Button asChild variant="outline" size="sm" className="min-h-11">
               <a
                 href={variableInfo.url}
                 target="_blank"

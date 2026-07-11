@@ -67,8 +67,8 @@ export function DatasetCard({ dataset }: { dataset: Dataset }) {
               />
             </span>
           </div>
-          <CardDescription className="mt-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-            {dataset.bestFor}
+          <CardDescription className="mt-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+            {dataset.summary}
           </CardDescription>
         </CardHeader>
 

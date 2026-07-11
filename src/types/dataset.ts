@@ -95,6 +95,11 @@ export type Dataset = {
   variablesUrl?: string;
   /** How-to guides, codebooks, and tutorials for using this dataset. */
   guides?: GuideLink[];
+  /**
+   * Plain-language one-liner: what researchers use this data for
+   * (e.g. “ASUSE is used to study India’s informal enterprise sector.”).
+   */
+  summary: string;
   bestFor: string;
   limitations: string;
   /**
@@ -117,6 +122,9 @@ export type Dataset = {
   recommendedCitation?: string;
   repository?: string;
 };
+
+/** Catalog input before summary is attached from datasetSummaries.ts */
+export type DatasetDraft = Omit<Dataset, "summary"> & { summary?: string };
 
 export type SeriesFamily = "nfhs" | "nss" | "dlhs" | "other" | "academic";
 

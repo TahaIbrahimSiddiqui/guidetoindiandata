@@ -455,10 +455,38 @@ function urlKey(value) {
   }
 }
 
+function isBroadCatalogUrl(value) {
+  const key = urlKey(value);
+  if (!key) return false;
+  try {
+    const u = new URL(key);
+    const path = u.pathname.replace(/\/+$/g, "").toLowerCase();
+    return (
+      path === "" ||
+      path === "/nada/index.php/catalog" ||
+      path === "/catalog" ||
+      path === "/catalogs" ||
+      path === "/scripts/statistics.aspx"
+    );
+  } catch {
+    return false;
+  }
+}
+
 function isSpecificUrlKey(key) {
   if (!key) return false;
   try {
     const u = new URL(key);
+    const path = u.pathname.replace(/\/+$/g, "").toLowerCase();
+    if (
+      path === "" ||
+      path === "/nada/index.php/catalog" ||
+      path === "/catalog" ||
+      path === "/catalogs" ||
+      path === "/scripts/statistics.aspx"
+    ) {
+      return false;
+    }
     const segments = u.pathname.split("/").filter(Boolean);
     if (segments.length >= 3) return true;
     if (
@@ -474,6 +502,50 @@ function isSpecificUrlKey(key) {
     return false;
   }
   return false;
+}
+
+function findEvidence(candidate, sources) {
+  const candidateWords = titleWords(
+    `${candidate.title} ${candidate.shortTitle}`,
+  );
+  let best = { score: 0, url: "", label: "" };
+
+  for (const source of sources) {
+    const sourceText = normalizeText(
+      [
+        source.title,
+        source.text?.slice(0, 8000),
+        ...(source.links || []).flatMap((link) => [link.label, link.url]),
+      ].join(" "),
+    );
+    const hits = candidateWords.filter((word) =>
+      sourceText.includes(word),
+    ).length;
+    if (hits >= Math.min(3, candidateWords.length)) {
+      best = {
+        score: Math.max(best.score, hits / Math.max(candidateWords.length, 1)),
+        url: best.url || source.finalUrl,
+        label: best.label || source.title,
+      };
+    }
+
+    for (const link of source.links || []) {
+      const score = jaccard(
+        candidateWords,
+        titleWords(`${link.label} ${link.url}`),
+      );
+      if (score > best.score) {
+        best = { score, url: link.url, label: link.label };
+      }
+    }
+  }
+
+  return {
+    matched: best.score >= 0.28,
+    url: best.url,
+    label: best.label,
+    score: best.score,
+  };
 }
 
 function inferCluster(categories) {
@@ -795,6 +867,22 @@ async function main() {
     for (const raw of rawCandidates) {
       const normalized = normalizeCandidate(raw);
       const reasons = [...normalized.errors];
+      const evidence = findEvidence(normalized.record, sources);
+      if (!evidence.matched) {
+        reasons.push("no matching source evidence");
+      }
+      if (evidence.url) {
+        normalized.meta.evidenceUrl = evidence.url;
+        if (isBroadCatalogUrl(normalized.record.accessUrl)) {
+          normalized.record.accessUrl = evidence.url;
+        }
+        if (
+          normalized.record.docsUrl &&
+          isBroadCatalogUrl(normalized.record.docsUrl)
+        ) {
+          normalized.record.docsUrl = evidence.url;
+        }
+      }
       const dup = findDuplicate(normalized.record, index, acceptedIndex);
       if (dup) reasons.push(dup);
 

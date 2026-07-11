@@ -44,3 +44,6 @@ next-env.d.ts
 .playwright-mcp/
 mcps/
 
+# bi-monthly automation scratch (reports under content/automation/ are committed via PR)
+content/automation/.scratch/
+

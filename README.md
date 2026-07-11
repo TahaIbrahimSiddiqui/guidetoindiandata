@@ -57,6 +57,38 @@ With ads disabled, subtle placeholders keep layout stable without dominating the
 - `src/components/ObsidianGraphFull.tsx` — landing universe graph (Obsidian-style)
 - `src/components/ads/*` — monetization chrome
 - `content/guide_research.md` — research source
+- `.github/workflows/deploy.yml` — build + GitHub Pages
+- `.github/workflows/bimonthly-catalog-refresh.yml` — scheduled audit / AI assist + PR
+
+## Bi-monthly automation
+
+GitHub Actions runs **Bi-monthly catalog refresh** on the 1st of odd months (Jan/Mar/May/Jul/Sep/Nov) at 06:00 UTC, and on demand via **Actions → Run workflow**.
+
+| Step | Behavior |
+|------|----------|
+| Content audit | Re-checks all dataset required fields, guides, variables, access links |
+| AI assist (optional) | If `AI_API_KEY` is set, drafts better summaries for thin/generic rows |
+| Pull request | Opens a PR with `content/automation/*` reports (and summary edits if apply is on) |
+| Site update | Merging the PR to `main` triggers the existing Pages deploy workflow |
+
+### Secrets to add (repo → Settings → Secrets and variables → Actions)
+
+| Secret | Required | Notes |
+|--------|----------|--------|
+| `AI_API_KEY` | for AI | Your provider API key (OpenAI-compatible) |
+| `AI_BASE_URL` | no | Default `https://api.openai.com/v1` — set for OpenRouter, Azure, SpaceXAI, etc. |
+| `AI_MODEL` | no | Default `gpt-4o-mini` |
+
+Manual apply of AI summaries: run workflow with **apply_ai_summaries = true** (still goes through a PR).
+
+Local:
+
+```bash
+npm run refresh:bimonthly
+# with AI:
+# set AI_API_KEY=... AI_BASE_URL=... AI_MODEL=...
+npm run refresh:ai
+```
 
 ## License
 

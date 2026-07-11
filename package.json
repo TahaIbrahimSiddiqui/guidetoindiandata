@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:content": "tsx scripts/page-content-audit.mjs",
+    "audit:content:test": "tsx scripts/page-content-audit.test.mjs",
+    "refresh:bimonthly": "tsx scripts/bimonthly-catalog-refresh.mjs",
+    "refresh:ai": "tsx scripts/ai-catalog-assist.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

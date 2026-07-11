@@ -1,0 +1,167 @@
+# Month-end article digest for top economics journals plus JDE.
+# Runs on the last day in Asia/Kolkata and sends matches as a GitHub issue.
+name: Monthly journal article digest
+
+on:
+  schedule:
+    # 23:55 Asia/Kolkata on days that might be month-end; guard below keeps only
+    # the actual last local day of the month.
+    - cron: "25 18 28-31 * *"
+  workflow_dispatch:
+    inputs:
+      from_date:
+        description: "Start date, yyyy-mm-dd. Empty = current month in Asia/Kolkata."
+        required: false
+        default: ""
+      to_date:
+        description: "End date, yyyy-mm-dd. Empty = today in Asia/Kolkata."
+        required: false
+        default: ""
+      min_score:
+        description: "Keyword fallback threshold"
+        required: false
+        default: "4"
+      create_issue_when_empty:
+        description: "Create/update the issue even when there are no matches (true/false)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: monthly-journal-digest
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: End-of-month guard
+        id: guard
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$(TZ=Asia/Kolkata date -d tomorrow +%d)" = "01" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Not the last day of the month in Asia/Kolkata; skipping."
+          fi
+
+      - name: Checkout
+        if: steps.guard.outputs.run == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        if: steps.guard.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        if: steps.guard.outputs.run == 'true'
+        run: npm ci
+
+      - name: Compute digest window
+        if: steps.guard.outputs.run == 'true'
+        id: dates
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.from_date }}" ]; then
+            FROM="${{ github.event.inputs.from_date }}"
+          else
+            FROM="$(TZ=Asia/Kolkata date +%Y-%m-01)"
+          fi
+
+          if [ -n "${{ github.event.inputs.to_date }}" ]; then
+            TO="${{ github.event.inputs.to_date }}"
+          else
+            TO="$(TZ=Asia/Kolkata date +%Y-%m-%d)"
+          fi
+
+          MONTH="${FROM:0:7}"
+          echo "from=$FROM" >> "$GITHUB_OUTPUT"
+          echo "to=$TO" >> "$GITHUB_OUTPUT"
+          echo "month=$MONTH" >> "$GITHUB_OUTPUT"
+
+      - name: Build journal digest
+        if: steps.guard.outputs.run == 'true'
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_PROVIDER: dartmouth
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          AI_BASE_URL: ${{ secrets.AI_BASE_URL || 'https://chat.dartmouth.edu/api' }}
+          DIGEST_FROM: ${{ steps.dates.outputs.from }}
+          DIGEST_TO: ${{ steps.dates.outputs.to }}
+          DIGEST_MONTH: ${{ steps.dates.outputs.month }}
+          DIGEST_INTERESTS: "politics, India, discrimination, political economy"
+          DIGEST_MIN_SCORE: ${{ github.event.inputs.min_score || '4' }}
+          OPENALEX_MAILTO: ${{ vars.OPENALEX_MAILTO }}
+        run: npm run digest:journals
+
+      - name: Upload digest artifact
+        if: always() && steps.guard.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: monthly-journal-digest-${{ steps.dates.outputs.month }}-${{ github.run_id }}
+          path: |
+            content/automation/journal-digest-*
+          if-no-files-found: warn
+
+      - name: Send digest as GitHub issue
+        if: steps.guard.outputs.run == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CREATE_EMPTY: ${{ github.event.inputs.create_issue_when_empty || 'false' }}
+        run: |
+          set -euo pipefail
+          source content/automation/journal-digest-meta.env
+
+          if [ "$MATCH_COUNT" = "0" ] && [ "$CREATE_EMPTY" != "true" ]; then
+            echo "No matches; uploaded artifact only."
+            exit 0
+          fi
+
+          gh label create journal-digest \
+            --color 4F46E5 \
+            --description "Monthly journal article digest" || true
+
+          issue_number="$(gh issue list \
+            --state open \
+            --search "$ISSUE_TITLE in:title" \
+            --json number,title \
+            --jq ".[] | select(.title == \"$ISSUE_TITLE\") | .number" \
+            | head -n 1)"
+
+          if [ -n "$issue_number" ]; then
+            gh issue edit "$issue_number" \
+              --body-file content/automation/journal-digest-latest.md \
+              --add-label journal-digest
+            echo "Updated issue #$issue_number"
+          else
+            gh issue create \
+              --title "$ISSUE_TITLE" \
+              --body-file content/automation/journal-digest-latest.md \
+              --label journal-digest \
+              --assignee "${GITHUB_REPOSITORY_OWNER}" \
+              || gh issue create \
+                --title "$ISSUE_TITLE" \
+                --body-file content/automation/journal-digest-latest.md \
+                --label journal-digest
+          fi
+
+      - name: Job summary
+        if: always() && steps.guard.outputs.run == 'true'
+        shell: bash
+        run: |
+          if [ -f content/automation/journal-digest-latest.md ]; then
+            cat content/automation/journal-digest-latest.md >> "$GITHUB_STEP_SUMMARY"
+          fi

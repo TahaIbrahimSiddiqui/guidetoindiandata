@@ -10,6 +10,7 @@
     "audit:content": "tsx scripts/page-content-audit.mjs",
     "audit:content:test": "tsx scripts/page-content-audit.test.mjs",
     "discover:datasets": "tsx scripts/ai-dataset-discovery.mjs",
+    "digest:journals": "tsx scripts/monthly-journal-digest.mjs",
     "refresh:bimonthly": "tsx scripts/bimonthly-catalog-refresh.mjs",
     "refresh:ai": "tsx scripts/ai-catalog-assist.mjs",
     "ai:models": "tsx scripts/list-ai-models.mjs"

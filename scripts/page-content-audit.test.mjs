@@ -142,6 +142,80 @@ for (const slug of spot) {
   assert(!!d.accessUrl, `spot accessUrl for CTA ${slug}`);
 }
 
+// ── Link completeness (internal + external path integrity) ────────
+function isHttpUrl(u) {
+  return typeof u === "string" && /^https?:\/\//i.test(u.trim());
+}
+const slugSet = new Set(datasets.map((d) => d.slug));
+const brokenPairs = [];
+const badAccessUrls = [];
+const badGuideUrls = [];
+for (const d of datasets) {
+  if (d.accessUrl && !isHttpUrl(d.accessUrl)) {
+    badAccessUrls.push({ slug: d.slug, field: "accessUrl", value: d.accessUrl });
+  }
+  if (d.docsUrl && !isHttpUrl(d.docsUrl)) {
+    badAccessUrls.push({ slug: d.slug, field: "docsUrl", value: d.docsUrl });
+  }
+  for (const p of d.pairsWith || []) {
+    if (!slugSet.has(p)) brokenPairs.push(`${d.slug}->${p}`);
+  }
+  for (const g of resolveGuides(d)) {
+    if (!isHttpUrl(g.url)) {
+      badGuideUrls.push({ slug: d.slug, title: g.title, url: g.url });
+    }
+  }
+}
+assert(brokenPairs.length === 0, `broken pairsWith: ${brokenPairs.slice(0, 10).join("; ")}`);
+assert(badAccessUrls.length === 0, `non-http access/docs: ${JSON.stringify(badAccessUrls.slice(0, 5))}`);
+assert(badGuideUrls.length === 0, `bad guide urls: ${JSON.stringify(badGuideUrls.slice(0, 5))}`);
+
+for (const s of seriesList) {
+  for (const w of s.waves || []) {
+    assert(
+      slugSet.has(w.datasetSlug),
+      `series ${s.slug} wave missing dataset ${w.datasetSlug}`,
+    );
+  }
+}
+
+// Dataset page must expose all CTA types (no docs hidden behind paper DOI)
+const detailPage = readFileSync(
+  join(process.cwd(), "src/app/(catalog)/datasets/[slug]/page.tsx"),
+  "utf8",
+);
+assert(
+  !detailPage.includes("docsUrl && !dataset.paperDoi") &&
+    !detailPage.includes("docsUrl && !paperDoi"),
+  "dataset page must not hide Documentation when paperDoi is set",
+);
+assert(detailPage.includes("Documentation"), "dataset page has Documentation CTA label");
+assert(detailPage.includes("Open paper"), "dataset page has Open paper CTA");
+assert(detailPage.includes("Repository"), "dataset page has Repository CTA");
+assert(
+  detailPage.includes("dataDoi") && detailPage.includes("Open access portal"),
+  "dataset page has access/DOI CTA paths",
+);
+
+// Site chrome must link major catalog routes
+for (const rel of [
+  "src/components/SiteHeader.tsx",
+  "src/components/SiteFooter.tsx",
+]) {
+  const text = readFileSync(join(process.cwd(), rel), "utf8");
+  for (const path of ["/explore", "/clusters", "/series", "/academic"]) {
+    assert(text.includes(path), `${rel} missing nav link ${path}`);
+  }
+}
+const aboutText = readFileSync(
+  join(process.cwd(), "src/app/(catalog)/about/page.tsx"),
+  "utf8",
+);
+assert(
+  aboutText.includes('href="/map"') && aboutText.includes("neural ecosystem map"),
+  "About how-to-use map link should point at /map",
+);
+
 const report = {
   total: datasets.length,
   hardFails,

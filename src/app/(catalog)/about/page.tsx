@@ -113,10 +113,14 @@ export default function AboutPage() {
           {[
             <>
               Start from the{" "}
-              <Link href="/" className="text-[#C4A574] link-underline">
+              <Link href="/map" className="text-[#C4A574] link-underline">
                 neural ecosystem map
               </Link>{" "}
-              or a theme.
+              or a{" "}
+              <Link href="/clusters" className="text-[#C4A574] link-underline">
+                theme
+              </Link>
+              .
             </>,
             <>
               Narrow in{" "}

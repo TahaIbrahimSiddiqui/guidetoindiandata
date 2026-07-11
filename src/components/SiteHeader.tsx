@@ -14,10 +14,14 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-/** Primary destinations + about profile. Dataset pages keep this chrome. */
+/** Primary destinations — every major catalog route is one click away. */
 const nav = [
   { href: "/", label: "Landing" },
   { href: "/map", label: "Map" },
+  { href: "/explore", label: "Explore" },
+  { href: "/clusters", label: "Themes" },
+  { href: "/series", label: "Series" },
+  { href: "/academic", label: "Academic" },
   { href: "/about", label: "About" },
 ];
 

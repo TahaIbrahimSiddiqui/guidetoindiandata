@@ -212,7 +212,7 @@ export default async function DatasetPage({ params }: Props) {
               </a>
             </Button>
           )}
-          {(dataset.accessUrl || dataset.docsUrl) && (
+          {(dataset.accessUrl || dataset.docsUrl || dataset.dataDoi) && (
             <Button asChild variant="outline" size="sm" className="min-h-11">
               <a href="#access">
                 <ExternalLink className="size-3.5" aria-hidden />
@@ -513,7 +513,7 @@ export default async function DatasetPage({ params }: Props) {
         </Card>
       )}
 
-      {/* Access CTAs */}
+      {/* Access CTAs — show every available external path */}
       <div
         id="access"
         className="mt-10 flex scroll-mt-24 flex-wrap gap-3 border-t border-border pt-8"
@@ -525,7 +525,43 @@ export default async function DatasetPage({ params }: Props) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {dataset.dataDoi ? "Open data DOI" : "Open access portal"}
+              Open access portal
+              <ExternalLink className="size-4" aria-hidden />
+            </a>
+          </Button>
+        )}
+        {!dataset.accessUrl && dataset.dataDoi && (
+          <Button asChild size="lg" className="h-11">
+            <a
+              href={`https://doi.org/${dataset.dataDoi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open data DOI
+              <ExternalLink className="size-4" aria-hidden />
+            </a>
+          </Button>
+        )}
+        {dataset.dataDoi && dataset.accessUrl && (
+          <Button asChild variant="outline" size="lg" className="h-11">
+            <a
+              href={`https://doi.org/${dataset.dataDoi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Data DOI
+              <ExternalLink className="size-4" aria-hidden />
+            </a>
+          </Button>
+        )}
+        {dataset.docsUrl && (
+          <Button asChild variant="outline" size="lg" className="h-11">
+            <a
+              href={dataset.docsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Documentation
               <ExternalLink className="size-4" aria-hidden />
             </a>
           </Button>
@@ -542,19 +578,23 @@ export default async function DatasetPage({ params }: Props) {
             </a>
           </Button>
         )}
-        {dataset.docsUrl && !dataset.paperDoi && (
+        {dataset.repository && (
           <Button asChild variant="outline" size="lg" className="h-11">
             <a
-              href={dataset.docsUrl}
+              href={
+                /^https?:\/\//i.test(dataset.repository)
+                  ? dataset.repository
+                  : `https://github.com/${dataset.repository}`
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
-              Documentation
+              Repository
               <ExternalLink className="size-4" aria-hidden />
             </a>
           </Button>
         )}
-        {!dataset.accessUrl && (
+        {!dataset.accessUrl && !dataset.docsUrl && !dataset.dataDoi && (
           <p className="text-sm text-muted-foreground">
             Access via {dataset.host} — search the official portal for current
             download or request paths.

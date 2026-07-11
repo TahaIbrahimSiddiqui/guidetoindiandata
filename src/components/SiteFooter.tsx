@@ -6,7 +6,16 @@ const footerNav = [
     links: [
       { href: "/", label: "Landing" },
       { href: "/map", label: "Solar system map" },
+      { href: "/explore", label: "Explore" },
       { href: "/about", label: "About" },
+    ],
+  },
+  {
+    title: "Catalog",
+    links: [
+      { href: "/clusters", label: "Themes" },
+      { href: "/series", label: "Series" },
+      { href: "/academic", label: "Academic & Dataverse" },
     ],
   },
   {
@@ -22,7 +31,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-obsidian-border bg-black">
       <div className="mx-auto max-w-[1400px] px-5 py-14 sm:px-8 lg:px-12">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-md">
             <div className="mb-4 flex items-center gap-2.5">
               <span

@@ -41,13 +41,18 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Run bi-monthly refresh (audit + optional AI)
+      - name: Run bi-monthly refresh (audit + Gemini Pro + Google Search)
         env:
           SCRATCH: ${{ github.workspace }}/content/automation/.scratch
-          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          # Prefer dedicated Gemini secret; fall back to AI_API_KEY
+          AI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY || secrets.AI_API_KEY }}
+          AI_PROVIDER: google
+          # Latest stable Pro model with Google Search grounding
+          AI_MODEL: ${{ vars.AI_MODEL || 'gemini-2.5-pro' }}
           AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
-          AI_MODEL: ${{ secrets.AI_MODEL }}
+          AI_GOOGLE_SEARCH: "true"
           AI_MAX_ITEMS: ${{ github.event.inputs.max_ai_items || '12' }}
+          AI_BATCH_SIZE: "4"
           AI_APPLY: ${{ github.event.inputs.apply_ai_summaries || 'false' }}
           # Non-strict: AI failures write a report but do not fail the job
           AI_STRICT: "0"
@@ -72,20 +77,21 @@ jobs:
             Automated bi-monthly catalog maintenance.
 
             - Full content/link audit via `scripts/page-content-audit.mjs`
-            - Optional AI assist when `AI_API_KEY` secret is set
+            - AI assist: **Gemini Pro + Google Search grounding** when a Gemini/Google key is set
             - Report under `content/automation/`
 
             ### Review
-            1. Open `content/automation/LATEST.md`
+            1. Open `content/automation/LATEST.md` and `ai-assist-*.md`
             2. If AI applied summaries, skim `src/data/datasetSummaries.ts` diffs
-            3. Merge to deploy via the existing Pages workflow
+            3. Merge to deploy via the existing Pages deploy workflow
 
             ### Secrets (repo Settings → Secrets and variables → Actions)
             | Secret | Required | Purpose |
             |--------|----------|---------|
-            | `AI_API_KEY` | for AI step | Bearer token for your AI API |
-            | `AI_BASE_URL` | no | OpenAI-compatible base (default `https://api.openai.com/v1`) |
-            | `AI_MODEL` | no | Model id (default `gpt-4o-mini`) |
+            | `GEMINI_API_KEY` or `GOOGLE_API_KEY` or `AI_API_KEY` | for AI | Google AI Studio / Gemini API key |
+            | `AI_MODEL` | no | Default **`gemini-2.5-pro`** (override e.g. `gemini-2.5-flash`) |
+            | `AI_PROVIDER` | no | Default `google` (`openai` for OpenAI-compatible) |
+            | `AI_BASE_URL` | no | Only for OpenAI-compatible providers |
 
             Manual run: Actions → **Bi-monthly catalog refresh** → Run workflow.
           branch: chore/bimonthly-refresh-${{ github.run_id }}

@@ -75,9 +75,12 @@ GitHub Actions runs **Bi-monthly catalog refresh** on the 1st of odd months (Jan
 
 | Secret | Required | Notes |
 |--------|----------|--------|
-| `AI_API_KEY` | for AI | Your provider API key (OpenAI-compatible) |
-| `AI_BASE_URL` | no | Default `https://api.openai.com/v1` — set for OpenRouter, Azure, SpaceXAI, etc. |
-| `AI_MODEL` | no | Default `gpt-4o-mini` |
+| `GEMINI_API_KEY` (or `GOOGLE_API_KEY` / `AI_API_KEY`) | for AI | [Google AI Studio](https://aistudio.google.com/apikey) Gemini API key |
+| `AI_MODEL` | no | Default **`gemini-2.5-pro`** with **Google Search** grounding |
+| `AI_PROVIDER` | no | Default `google` |
+| `AI_BASE_URL` | no | Only if using an OpenAI-compatible provider |
+
+The bi-monthly job uses **Gemini Pro + Google Search** to verify hosts/access tips and improve thin catalog copy, then opens a PR.
 
 Manual apply of AI summaries: run workflow with **apply_ai_summaries = true** (still goes through a PR).
 
@@ -85,8 +88,8 @@ Local:
 
 ```bash
 npm run refresh:bimonthly
-# with AI:
-# set AI_API_KEY=... AI_BASE_URL=... AI_MODEL=...
+# Gemini + Google Search (default):
+# $env:AI_API_KEY="your-gemini-key"; $env:AI_PROVIDER="google"; $env:AI_MODEL="gemini-2.5-pro"
 npm run refresh:ai
 ```
 

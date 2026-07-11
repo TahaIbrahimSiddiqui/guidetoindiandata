@@ -1,0 +1,6 @@
+/.scratch/
+/run-test*/
+/*.json
+/*.md
+!/.gitkeep
+!/.gitignore

@@ -9,6 +9,7 @@
     "lint": "eslint",
     "audit:content": "tsx scripts/page-content-audit.mjs",
     "audit:content:test": "tsx scripts/page-content-audit.test.mjs",
+    "discover:datasets": "tsx scripts/ai-dataset-discovery.mjs",
     "refresh:bimonthly": "tsx scripts/bimonthly-catalog-refresh.mjs",
     "refresh:ai": "tsx scripts/ai-catalog-assist.mjs",
     "ai:models": "tsx scripts/list-ai-models.mjs"
@@ -33,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
+    "tsx": "^4.23.0",
     "typescript": "^5"
   }
 }

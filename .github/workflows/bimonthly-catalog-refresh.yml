@@ -1,14 +1,21 @@
-# Biweekly catalog maintenance: audit + optional AI assist + PR.
+# Twice-monthly catalog discovery: dedupe + optional AI assist + PR.
 # Deploy still runs from deploy.yml on push to main (after you merge the PR).
-name: Biweekly catalog refresh
+name: Catalog discovery refresh
 
 on:
   schedule:
-    # GitHub cron cannot express a true every-two-weeks cadence directly.
-    # Wake weekly at 06:00 UTC on Monday; the cadence step skips off weeks.
-    - cron: "0 6 * * 1"
+    # Twice monthly at 06:00 UTC on the 1st and 15th.
+    - cron: "0 6 1,15 * *"
   workflow_dispatch:
     inputs:
+      apply_new_datasets:
+        description: "Append high-confidence new dataset records (true/false)"
+        required: false
+        default: "true"
+      max_new_datasets:
+        description: "Max new datasets to add per run"
+        required: false
+        default: "2"
       apply_ai_summaries:
         description: "Write AI summary proposals into datasetSummaries.ts (true/false)"
         required: false
@@ -23,58 +30,26 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: biweekly-catalog-refresh
+  group: catalog-discovery-refresh
   cancel-in-progress: false
-
-env:
-  BIWEEKLY_ANCHOR_DATE: "2026-07-13"
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - name: Check biweekly cadence
-        id: cadence
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          anchor="${BIWEEKLY_ANCHOR_DATE}"
-          today="$(date -u +%F)"
-          day_of_week="$(date -u +%u)"
-          week_start="$(date -u -d "$today -$((day_of_week - 1)) days" +%F)"
-          anchor_day_of_week="$(date -u -d "$anchor" +%u)"
-          anchor_week_start="$(date -u -d "$anchor -$((anchor_day_of_week - 1)) days" +%F)"
-          elapsed_days=$(( ( $(date -u -d "$week_start" +%s) - $(date -u -d "$anchor_week_start" +%s) ) / 86400 ))
-
-          if [ $((elapsed_days % 14)) -eq 0 ]; then
-            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
-            echo "Running biweekly refresh for week starting $week_start."
-          else
-            echo "run_refresh=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping off-week refresh for week starting $week_start."
-          fi
-
       - name: Checkout
-        if: steps.cadence.outputs.run_refresh == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node
-        if: steps.cadence.outputs.run_refresh == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
 
       - name: Install
-        if: steps.cadence.outputs.run_refresh == 'true'
         run: npm ci
 
-      - name: Run biweekly refresh (audit + Dartmouth Chat AI)
-        if: steps.cadence.outputs.run_refresh == 'true'
+      - name: Run catalog discovery refresh (Dartmouth AI + audit)
         env:
           SCRATCH: ${{ github.workspace }}/content/automation/.scratch
           # Dartmouth Chat API key (https://rc.dartmouth.edu/ai/online-resources/using-the-api/)
@@ -86,15 +61,19 @@ jobs:
           AI_MAX_ITEMS: ${{ github.event.inputs.max_ai_items || '12' }}
           AI_BATCH_SIZE: "4"
           AI_APPLY: ${{ github.event.inputs.apply_ai_summaries || 'false' }}
+          DISCOVERY_APPLY: ${{ github.event.inputs.apply_new_datasets || 'true' }}
+          DISCOVERY_MAX_ADDITIONS: ${{ github.event.inputs.max_new_datasets || '2' }}
+          DISCOVERY_MIN_CONFIDENCE: "0.86"
           # Non-strict: AI failures write a report but do not fail the job
           AI_STRICT: "0"
+          DISCOVERY_STRICT: "0"
         run: npx tsx scripts/bimonthly-catalog-refresh.mjs
 
       - name: Upload automation artifacts
-        if: always() && steps.cadence.outputs.run_refresh == 'true'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: biweekly-automation-${{ github.run_id }}
+          name: catalog-discovery-${{ github.run_id }}
           path: |
             content/automation/**
           if-no-files-found: warn
@@ -104,24 +83,24 @@ jobs:
       #   - Allow GitHub Actions to create and approve pull requests
       - name: Create pull request if there are changes
         id: cpr
-        if: steps.cadence.outputs.run_refresh == 'true'
         continue-on-error: true
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: biweekly catalog refresh"
-          title: "chore: biweekly catalog refresh (${{ github.run_id }})"
+          commit-message: "chore: catalog discovery refresh"
+          title: "chore: catalog discovery refresh (${{ github.run_id }})"
           body: |
-            Automated biweekly catalog maintenance.
+            Automated twice-monthly catalog discovery.
 
+            - New dataset discovery via **Dartmouth Chat API** (`https://chat.dartmouth.edu/api`) when `AI_API_KEY` is set
+            - Duplicate filtering before any catalog write
             - Full content/link audit via `scripts/page-content-audit.mjs`
-            - AI assist via **Dartmouth Chat API** (`https://chat.dartmouth.edu/api`) when `AI_API_KEY` is set
-            - Auto-selects a pro-class model from `GET /models` unless `AI_MODEL` var is set
-            - Report under `content/automation/`
+            - Optional existing-copy assist for thin summaries
+            - Reports stay in the workflow artifact so empty runs do not create PR clutter
 
             ### Review
-            1. Open `content/automation/LATEST.md` and `ai-assist-*.md`
-            2. If AI applied summaries, skim `src/data/datasetSummaries.ts` diffs
+            1. Review additions in `src/data/discoveredDatasets.ts`
+            2. Download this run's `catalog-discovery-*` artifact to inspect `discovery-latest.md`
             3. Merge to deploy via the existing Pages deploy workflow
 
             ### Secrets / docs
@@ -132,16 +111,16 @@ jobs:
 
             Docs: https://rc.dartmouth.edu/ai/online-resources/using-the-api/
 
-            Manual run: Actions → **Biweekly catalog refresh** → Run workflow.
+            Manual run: Actions → **Catalog discovery refresh** → Run workflow.
             List models: Actions → **List AI models**.
-          branch: chore/biweekly-refresh-${{ github.run_id }}
+          branch: chore/catalog-discovery-${{ github.run_id }}
           delete-branch: true
           add-paths: |
-            content/automation/**
+            src/data/discoveredDatasets.ts
             src/data/datasetSummaries.ts
 
       - name: PR creation status
-        if: always() && steps.cadence.outputs.run_refresh == 'true'
+        if: always()
         run: |
           echo "pull-request-number=${{ steps.cpr.outputs.pull-request-number }}"
           echo "pull-request-url=${{ steps.cpr.outputs.pull-request-url }}"

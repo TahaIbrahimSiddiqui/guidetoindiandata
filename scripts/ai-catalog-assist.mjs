@@ -139,9 +139,7 @@ async function listDartmouthModels() {
     throw new Error(`Dartmouth /models ${res.status}: ${text.slice(0, 400)}`);
   }
   const data = JSON.parse(text);
-  return (data.data || [])
-    .map((m) => m.id)
-    .filter(Boolean);
+  return (data.data || []).map((m) => m.id).filter(Boolean);
 }
 
 async function resolveModel() {
@@ -199,7 +197,10 @@ async function geminiGenerate(model, userText) {
   const body = {
     systemInstruction: { parts: [{ text: systemPrompt() }] },
     contents: [{ role: "user", parts: [{ text: userText }] }],
-    generationConfig: { temperature: 0.3, responseMimeType: "application/json" },
+    generationConfig: {
+      temperature: 0.3,
+      responseMimeType: "application/json",
+    },
     tools: [{ google_search: {} }],
   };
   const res = await fetch(url, {
@@ -240,7 +241,8 @@ async function openaiChat(model, userText) {
     signal: AbortSignal.timeout(180000),
   });
   const text = await res.text();
-  if (!res.ok) throw new Error(`OpenAI-compat ${res.status}: ${text.slice(0, 500)}`);
+  if (!res.ok)
+    throw new Error(`OpenAI-compat ${res.status}: ${text.slice(0, 500)}`);
   const data = JSON.parse(text);
   return extractJson(data.choices?.[0]?.message?.content);
 }
@@ -313,7 +315,10 @@ async function main() {
     ranAt: new Date().toISOString(),
     provider: PROVIDER,
     model: null,
-    baseUrl: PROVIDER === "dartmouth" ? DARTMOUTH_BASE : process.env.AI_BASE_URL || null,
+    baseUrl:
+      PROVIDER === "dartmouth"
+        ? DARTMOUTH_BASE
+        : process.env.AI_BASE_URL || null,
     apply: APPLY,
     skipped: false,
     candidates: 0,
@@ -329,7 +334,13 @@ async function main() {
       join(OUT_DIR, `ai-assist-${stamp()}.json`),
       JSON.stringify(report, null, 2),
     );
-    console.log(JSON.stringify({ ok: true, skipped: true, reason: report.error }));
+    writeFileSync(
+      join(OUT_DIR, "ai-assist-latest.json"),
+      JSON.stringify(report, null, 2),
+    );
+    console.log(
+      JSON.stringify({ ok: true, skipped: true, reason: report.error }),
+    );
     process.exit(0);
   }
 
@@ -341,7 +352,13 @@ async function main() {
       join(OUT_DIR, `ai-assist-${stamp()}.json`),
       JSON.stringify(report, null, 2),
     );
-    console.log(JSON.stringify({ ok: true, candidates: 0, provider: PROVIDER }));
+    writeFileSync(
+      join(OUT_DIR, "ai-assist-latest.json"),
+      JSON.stringify(report, null, 2),
+    );
+    console.log(
+      JSON.stringify({ ok: true, candidates: 0, provider: PROVIDER }),
+    );
     process.exit(0);
   }
 
@@ -385,8 +402,13 @@ async function main() {
     }
 
     writeFileSync(join(OUT_DIR, `ai-assist-${stamp()}.md`), md.join("\n"));
+    writeFileSync(join(OUT_DIR, "ai-assist-latest.md"), md.join("\n"));
     writeFileSync(
       join(OUT_DIR, `ai-assist-${stamp()}.json`),
+      JSON.stringify(report, null, 2),
+    );
+    writeFileSync(
+      join(OUT_DIR, "ai-assist-latest.json"),
       JSON.stringify(report, null, 2),
     );
 
@@ -394,6 +416,10 @@ async function main() {
       report.applied = applySummaries(allProposals);
       writeFileSync(
         join(OUT_DIR, `ai-assist-${stamp()}.json`),
+        JSON.stringify(report, null, 2),
+      );
+      writeFileSync(
+        join(OUT_DIR, "ai-assist-latest.json"),
         JSON.stringify(report, null, 2),
       );
     }
@@ -412,6 +438,10 @@ async function main() {
     report.error = String(e?.message || e);
     writeFileSync(
       join(OUT_DIR, `ai-assist-${stamp()}.json`),
+      JSON.stringify(report, null, 2),
+    );
+    writeFileSync(
+      join(OUT_DIR, "ai-assist-latest.json"),
       JSON.stringify(report, null, 2),
     );
     console.error(report.error);

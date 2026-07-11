@@ -1,5 +1,6 @@
 import type { Dataset, DatasetDraft } from "@/types/dataset";
 import { academicDatasets } from "@/data/academicDatasets";
+import { discoveredDatasets } from "@/data/discoveredDatasets";
 import { githubDatasets } from "@/data/githubDatasets";
 import { DATASET_SUMMARIES } from "@/data/datasetSummaries";
 
@@ -33,9 +34,15 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Wave-based (historical)",
     geographyLevel: ["India", "state"],
     timeCoverage: "1992–93",
-    keyVariables: ["fertility", "family planning", "mortality", "maternal health"],
+    keyVariables: [
+      "fertility",
+      "family planning",
+      "mortality",
+      "maternal health",
+    ],
     bestFor: "Historical baseline for modern Indian health analysis",
-    limitations: "Older geography and modules; not district-representative like NFHS-4/5",
+    limitations:
+      "Older geography and modules; not district-representative like NFHS-4/5",
     pairsWith: ["nfhs-5", "srs-statistical-reports", "crs-vital-statistics"],
     exampleUses: "Long-run fertility and MCH trend reconstruction",
     cluster: "health-demography",
@@ -80,7 +87,8 @@ const governmentDatasets: DatasetDraft[] = [
     geographyLevel: ["India", "state"],
     timeCoverage: "2005–06",
     keyVariables: ["HIV testing", "fertility", "nutrition", "women’s status"],
-    bestFor: "Public-health and nutrition work needing HIV and women’s status modules",
+    bestFor:
+      "Public-health and nutrition work needing HIV and women’s status modules",
     limitations: "Pre-district-estimate era for many indicators",
     pairsWith: ["nfhs-4", "nfhs-5", "lasi-wave-1"],
     exampleUses: "HIV prevalence and gender-health intersection analysis",
@@ -92,7 +100,12 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "NFHS-4",
     abbreviations: ["NFHS-4"],
     categories: ["health", "demographics", "district development"],
-    technicalTags: ["household survey", "microdata", "district-level", "wave-based"],
+    technicalTags: [
+      "household survey",
+      "microdata",
+      "district-level",
+      "wave-based",
+    ],
     host: "IIPS / DHS Program",
     institution: "IIPS / MoHFW",
     accessUrl: "https://dhsprogram.com/data/",
@@ -102,7 +115,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Wave-based",
     geographyLevel: ["India", "state", "district"],
     timeCoverage: "2015–16",
-    keyVariables: ["district indicators", "child growth", "sanitation", "biomarkers"],
+    keyVariables: [
+      "district indicators",
+      "child growth",
+      "sanitation",
+      "biomarkers",
+    ],
     bestFor: "District-comparable health and nutrition baselines before NFHS-5",
     limitations: "Single wave; biomarkers subset by design",
     pairsWith: ["nfhs-5", "hmis", "census-pca-2011", "ahs-eag"],
@@ -116,7 +134,12 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "NFHS-5",
     abbreviations: ["NFHS-5", "NFHS"],
     categories: ["health", "demographics", "nutrition", "gender"],
-    technicalTags: ["household survey", "microdata", "district-level", "wave-based"],
+    technicalTags: [
+      "household survey",
+      "microdata",
+      "district-level",
+      "wave-based",
+    ],
     host: "IIPS / DHS Program",
     institution: "IIPS / MoHFW",
     accessUrl: "https://dhsprogram.com/data/",
@@ -137,7 +160,8 @@ const governmentDatasets: DatasetDraft[] = [
       "district IDs",
     ],
     bestFor: "Flagship modern district-level household health source",
-    limitations: "Licensed microdata; multi-year fieldwork complicates single-year claims",
+    limitations:
+      "Licensed microdata; multi-year fieldwork complicates single-year claims",
     pairsWith: [
       "hmis",
       "srs-statistical-reports",
@@ -147,7 +171,8 @@ const governmentDatasets: DatasetDraft[] = [
       "poshan-tracker",
       "ahs-eag",
     ],
-    exampleUses: "District development, maternal-child health, NCD screening analyses",
+    exampleUses:
+      "District development, maternal-child health, NCD screening analyses",
     flags: ["good-starting", "best-district"],
     cluster: "health-demography",
   },
@@ -168,7 +193,11 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Wave-based (historical)",
     geographyLevel: ["India", "district"],
     timeCoverage: "1998–99",
-    keyVariables: ["reproductive health", "family planning", "district indicators"],
+    keyVariables: [
+      "reproductive health",
+      "family planning",
+      "district indicators",
+    ],
     bestFor: "Early district-oriented RCH program evidence",
     limitations: "Historical access paths are fragmented",
     pairsWith: ["dlhs-4", "nfhs-2", "hmis"],
@@ -229,7 +258,12 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "DLHS-4",
     abbreviations: ["DLHS-4"],
     categories: ["health"],
-    technicalTags: ["household survey", "microdata", "district-level", "facility survey"],
+    technicalTags: [
+      "household survey",
+      "microdata",
+      "district-level",
+      "facility survey",
+    ],
     host: "MoHFW / IIPS / GHDx",
     institution: "MoHFW / IIPS",
     accessUrl: "https://ghdx.healthdata.org/",
@@ -318,7 +352,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual",
     geographyLevel: ["India", "state"],
     timeCoverage: "Annual registration outputs",
-    keyVariables: ["registered births", "registered deaths", "infant deaths", "sex ratios"],
+    keyVariables: [
+      "registered births",
+      "registered deaths",
+      "infant deaths",
+      "sex ratios",
+    ],
     bestFor: "Civil registration completeness and vital-statistics benchmarks",
     limitations: "Registration completeness uneven across states",
     pairsWith: ["srs-statistical-reports", "nfhs-5", "hmis"],
@@ -342,7 +381,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Planned multi-year waves",
     geographyLevel: ["India", "state"],
     timeCoverage: "Fieldwork 2017–19 (Wave 1)",
-    keyVariables: ["health", "cognition", "work", "family support", "community modules"],
+    keyVariables: [
+      "health",
+      "cognition",
+      "work",
+      "family support",
+      "community modules",
+    ],
     bestFor: "National aging, health, and economic support for 45+",
     limitations: "Registration-dependent access; Wave 1 is baseline only",
     pairsWith: ["lasi-dad", "nfhs-5", "ihds-ii"],
@@ -366,7 +411,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Specialized follow-on",
     geographyLevel: ["India"],
     timeCoverage: "LASI subsample 60+",
-    keyVariables: ["cognitive tests", "informant interview", "geriatric assessment", "biomarkers"],
+    keyVariables: [
+      "cognitive tests",
+      "informant interview",
+      "geriatric assessment",
+      "biomarkers",
+    ],
     bestFor: "Dementia and cognitive-aging research",
     limitations: "DUA required; subsample of LASI",
     pairsWith: ["lasi-wave-1", "nfhs-5"],
@@ -391,9 +441,16 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual school-year cycle",
     geographyLevel: ["India", "state", "district", "school"],
     timeCoverage: "Ongoing annual",
-    keyVariables: ["school profile", "infrastructure", "teachers", "enrolment", "exam results"],
+    keyVariables: [
+      "school profile",
+      "infrastructure",
+      "teachers",
+      "enrolment",
+      "exam results",
+    ],
     bestFor: "Core school-system infrastructure and enrolment mapping",
-    limitations: "Microdata often requires request; administrative quality varies",
+    limitations:
+      "Microdata often requires request; administrative quality varies",
     pairsWith: ["nas-2021", "aser", "aishe"],
     exampleUses: "School facility gaps and GER/NER style tracking",
     flags: ["good-starting"],
@@ -415,7 +472,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual",
     geographyLevel: ["India", "state", "institution"],
     timeCoverage: "Since 2010–11",
-    keyVariables: ["teachers", "enrolment", "programmes", "finance", "infrastructure"],
+    keyVariables: [
+      "teachers",
+      "enrolment",
+      "programmes",
+      "finance",
+      "infrastructure",
+    ],
     bestFor: "Institution-level higher education system statistics",
     limitations: "Less granular on learning outcomes than school assessments",
     pairsWith: ["udise-plus", "nas-2021"],
@@ -439,7 +502,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Periodic rounds",
     geographyLevel: ["India", "state", "district"],
     timeCoverage: "2021 round (720 districts)",
-    keyVariables: ["test scores", "pupil questionnaire", "school questionnaire", "teacher questionnaire"],
+    keyVariables: [
+      "test scores",
+      "pupil questionnaire",
+      "school questionnaire",
+      "teacher questionnaire",
+    ],
     bestFor: "Strongest official learning-outcome assessment at district scale",
     limitations: "Periodic not annual; sample design constraints",
     pairsWith: ["udise-plus", "aser"],
@@ -463,7 +531,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual or thematic rounds",
     geographyLevel: ["India", "state", "rural"],
     timeCoverage: "Ongoing rural series",
-    keyVariables: ["enrolment", "reading", "arithmetic", "school report card items"],
+    keyVariables: [
+      "enrolment",
+      "reading",
+      "arithmetic",
+      "school report card items",
+    ],
     bestFor: "Independent rural learning assessment counterpoint to admin data",
     limitations: "Primarily rural; tool differs from NAS",
     pairsWith: ["udise-plus", "nas-2021"],
@@ -490,9 +563,18 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual",
     geographyLevel: ["India", "state", "rural", "urban"],
     timeCoverage: "July 2023–June 2024",
-    keyVariables: ["WPR", "LFPR", "UR", "industry", "occupation", "earnings", "hours"],
+    keyVariables: [
+      "WPR",
+      "LFPR",
+      "UR",
+      "industry",
+      "occupation",
+      "earnings",
+      "hours",
+    ],
     bestFor: "India’s baseline labor-market dataset",
-    limitations: "Registration for microdata; do not stack with pre-2017 EUS without redesign caveats",
+    limitations:
+      "Registration for microdata; do not stack with pre-2017 EUS without redesign caveats",
     background:
       "Background (previous rounds). Before PLFS, labour force was measured mainly through thick NSS Employment–Unemployment Survey (EUS) rounds—notably 61st (2004–05), 66th (2009–10), and 68th (2011–12)—not as a continuous annual panel. PLFS launched in 2017–18 for quarterly urban CWS plus annual rural+urban usual status (ps+ss) and CWS. MoSPI NADA’s PLFS collection lists July–June annual unit files for 2017–18 (catalog/204), 2018–19 (/216), 2019–20 (/217), 2020–21 (/206), 2021–22 (/214), 2022–23 (/210), and 2023–24 (/213)—seven full annual waves including pandemic years. Do not stack PLFS with pre-2017 EUS without redesign caveats. This page is the 2023–24 annual microdata only—not a calendar-year or quarterly extract.",
     pairsWith: [
@@ -525,9 +607,14 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Quarterly / calendar annualized",
     geographyLevel: ["India", "urban", "rural"],
     timeCoverage: "2025 calendar and quarterly extracts",
-    keyVariables: ["activity status", "employment indicators", "household files"],
+    keyVariables: [
+      "activity status",
+      "employment indicators",
+      "household files",
+    ],
     bestFor: "Short-term labor turning points",
-    limitations: "Not a substitute for July–June annual microdata; design refresh from 2025",
+    limitations:
+      "Not a substitute for July–June annual microdata; design refresh from 2025",
     background:
       "Background (previous rounds). PLFS always had a high-frequency arm separate from the July–June annual wave. Predecessors in that arm on NADA include calendar-year unit extracts for 2021, 2022, 2023, and 2024 (e.g. catalog/209, /211, /208, /254) plus quarterly unit files (e.g. Apr–Dec 2025, catalog/292) and earlier urban CWS quarterly bulletins from late 2018. Sampling was revamped from January 2025 for higher-frequency indicators. This catalog entry is for those calendar/quarterly products—not legacy NSS EUS rounds (61st/66th/68th) and not the annual July–June PLFS microdata stack.",
     pairsWith: ["plfs-annual-2023-24", "cmie-cphs", "iip"],
@@ -551,7 +638,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Episodic",
     geographyLevel: ["India"],
     timeCoverage: "January–December 2024",
-    keyVariables: ["paid work", "unpaid care", "domestic services", "learning", "leisure"],
+    keyVariables: [
+      "paid work",
+      "unpaid care",
+      "domestic services",
+      "learning",
+      "leisure",
+    ],
     bestFor: "Strongest official source for care and unpaid work",
     limitations: "Episodic survey; not annual—compare carefully to 2019 TUS",
     background:
@@ -579,7 +672,8 @@ const governmentDatasets: DatasetDraft[] = [
     timeCoverage: "2022–23",
     keyVariables: ["MPCE", "food items", "non-food items", "quantity/value"],
     bestFor: "Post-pandemic consumption benchmark",
-    limitations: "Methodological differences vs NSS 68th (2011–12) CES; multi-visit design",
+    limitations:
+      "Methodological differences vs NSS 68th (2011–12) CES; multi-visit design",
     background:
       "Background (previous rounds). MoSPI NADA’s Household Consumption Expenditure (CEXP) collection holds 29 studies spanning thick quinquennial CES and thinner annual CES schedules. Landmark quinquennials include 27th (1972–73), 32nd (1977–78), 38th (1983), 43rd (1987–88), 50th (1993–94), 55th (1999–00), 61st (2004–05), 66th (2009–10), and 68th (2011–12 Type 1/2 on NADA, e.g. catalog/126). Annual-style CES files also exist for many intervening rounds (56th–64th, 72nd services/durables Sch 1.5, etc.). After 2011–12 there was no published national CES until HCES 2022–23 (catalog/224); a 2017–18 exercise was not released over quality concerns. HCES 2022–23 restarts the series with multi-visit canvassing—not a simple continuation of 68th-round schedules.",
     pairsWith: ["hces-2023-24", "cpi-combined", "plfs-annual-2023-24"],
@@ -602,13 +696,24 @@ const governmentDatasets: DatasetDraft[] = [
     formats: ["microdata", "DDI", "report"],
     updateFrequency: "Annualized special release",
     geographyLevel: ["India", "state"],
-    timeCoverage: "2023–24 (fielding window Aug 2023–Jul 2024 in official notes)",
-    keyVariables: ["MPCE fractiles", "item quantity/value", "food and non-food"],
+    timeCoverage:
+      "2023–24 (fielding window Aug 2023–Jul 2024 in official notes)",
+    keyVariables: [
+      "MPCE fractiles",
+      "item quantity/value",
+      "food and non-food",
+    ],
     bestFor: "Essential welfare measurement and CPI weights",
-    limitations: "Registration required; large multi-level files; bridge carefully to 2011–12",
+    limitations:
+      "Registration required; large multi-level files; bridge carefully to 2011–12",
     background:
       "Background (previous rounds). Second consecutive modern HCES after the post-2011–12 gap (HCES 2022–23 = NADA catalog/224; this wave = catalog/237). Official notes compare MPCE to HCES 2022–23 and to NSS 68th (2011–12) at current and constant prices—but item baskets, visit structure, and free-social-transfer imputation differ. Full CES lineage on NADA CEXP (29 studies) includes quinquennials through 68th plus annual CES in intervening NSS rounds (e.g. 56th–64th, 72nd Sch 1.5). Use with HCES 2022–23 for short-run change; bridge to 68th only with explicit methodology notes.",
-    pairsWith: ["hces-2022-23", "cpi-combined", "plfs-annual-2023-24", "ihds-ii"],
+    pairsWith: [
+      "hces-2022-23",
+      "cpi-combined",
+      "plfs-annual-2023-24",
+      "ihds-ii",
+    ],
     exampleUses: "Poverty, inequality, and consumption baskets",
     flags: ["good-starting"],
     cluster: "labor-firms",
@@ -629,7 +734,14 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Panel baseline",
     geographyLevel: ["India"],
     timeCoverage: "2004–05 (41,554 households)",
-    keyVariables: ["health", "education", "employment", "assets", "caste", "social capital"],
+    keyVariables: [
+      "health",
+      "education",
+      "employment",
+      "assets",
+      "caste",
+      "social capital",
+    ],
     bestFor: "Exceptionally broad multi-topic household baseline",
     limitations: "Older wave; free academic registration",
     pairsWith: ["ihds-ii", "nfhs-3", "plfs-annual-2023-24"],
@@ -653,7 +765,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Panel wave",
     geographyLevel: ["India"],
     timeCoverage: "2011–12 (42,152 households)",
-    keyVariables: ["income", "consumption", "agriculture", "education", "programs"],
+    keyVariables: [
+      "income",
+      "consumption",
+      "agriculture",
+      "education",
+      "programs",
+    ],
     bestFor: "Medium-run panel analysis with IHDS-I",
     limitations: "Pre-2010s labor market; not a substitute for PLFS",
     pairsWith: ["ihds-i", "hces-2023-24", "plfs-annual-2023-24"],
@@ -699,7 +817,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Regularly updated",
     geographyLevel: ["India", "firm"],
     timeCoverage: "Many series from 1990s",
-    keyVariables: ["P&L", "balance sheet", "ratios", "share prices", "corporate actions"],
+    keyVariables: [
+      "P&L",
+      "balance sheet",
+      "ratios",
+      "share prices",
+      "corporate actions",
+    ],
     bestFor: "Company financials and listed-firm research",
     limitations: "Paid; coverage skewed to formal/registered firms",
     pairsWith: ["asi-2023-24", "asuse-2023-24", "rbi-dbie"],
@@ -723,9 +847,16 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual",
     geographyLevel: ["India"],
     timeCoverage: "2023–24",
-    keyVariables: ["establishment traits", "output", "value added", "employment"],
-    bestFor: "Unincorporated non-agricultural establishments and informal MSMEs",
-    limitations: "Registration; not factory-sector ASI; schedule differs from 67th/73rd",
+    keyVariables: [
+      "establishment traits",
+      "output",
+      "value added",
+      "employment",
+    ],
+    bestFor:
+      "Unincorporated non-agricultural establishments and informal MSMEs",
+    limitations:
+      "Registration; not factory-sector ASI; schedule differs from 67th/73rd",
     background:
       "Background (previous rounds). MoSPI NADA Enterprises (ENT) collection documents the unincorporated-sector lineage. Pre-ASUSE thick rounds include NSS 73rd (2015–16 unincorporated non-ag excl. construction, catalog/139), 67th (2010–11, catalog/125), 62nd unorganised manufacturing (area/list frames, 2005–06), 56th (2000–01), 55th informal non-ag (1999–00), 51st (1994–95), and older trade streams (e.g. 46th). ASUSE piloted in 2019 (six months), then annual unit files for 2021–22 (catalog/221), 2022–23 (/222), 2023–24 (/238), and 2025 calendar (/293). ASUSE 2023–24 is a regular annual wave (~500k establishments in official notes)—not factory ASI and not a drop-in replacement for 67th/73rd schedules without bridging.",
     pairsWith: ["asi-2023-24", "plfs-annual-2023-24", "economic-census"],
@@ -749,9 +880,16 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual",
     geographyLevel: ["India", "state"],
     timeCoverage: "2023–24",
-    keyVariables: ["ownership", "fixed assets", "labor cost", "inputs", "outputs"],
+    keyVariables: [
+      "ownership",
+      "fixed assets",
+      "labor cost",
+      "inputs",
+      "outputs",
+    ],
     bestFor: "Standard organized manufacturing / factory sector analysis",
-    limitations: "Registered factories only; frame and NIC codes change across decades",
+    limitations:
+      "Registered factories only; frame and NIC codes change across decades",
     background:
       "Background (previous rounds). ASI is a long-running annual survey of registered factories (Factories Act universe)—not a household NSS “round” like 61st/68th. MoSPI NADA’s ASI collection holds ~48 studies, including modern unit-level waves 2015–16 through 2023–24 (e.g. 2018–19 catalog/150 … 2022–23 /205, 2023–24 /256) and older summary/unit releases back into the 1980s–1990s (e.g. 1986–87 through early 1990s summary files). Block schedules cover identification, assets, employment, inputs/outputs. Cross-year work needs multipliers, status-of-unit, and industrial classification (e.g. NIC-2008). Pair with ASUSE for the unincorporated sector.",
     pairsWith: ["asuse-2023-24", "iip", "cmie-prowessdx", "economic-census"],
@@ -868,7 +1006,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Series-dependent",
     geographyLevel: ["India"],
     timeCoverage: "Long macro-financial history",
-    keyVariables: ["real sector", "financial markets", "external sector", "public finance"],
+    keyVariables: [
+      "real sector",
+      "financial markets",
+      "external sector",
+      "public finance",
+    ],
     bestFor: "Default reference for finance-facing macro series",
     limitations: "Portal UX and series codes change over time",
     pairsWith: [
@@ -901,7 +1044,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Quintennial",
     geographyLevel: ["India", "state"],
     timeCoverage: "2015–16",
-    keyVariables: ["operational holdings", "size class", "irrigation", "tenancy", "land use"],
+    keyVariables: [
+      "operational holdings",
+      "size class",
+      "irrigation",
+      "tenancy",
+      "land use",
+    ],
     bestFor: "Canonical farm-structure baseline",
     limitations: "Tables/reports more than unit-level microdata",
     pairsWith: ["input-survey-2016-17", "agmarknet", "imd-rainfall"],
@@ -951,7 +1100,11 @@ const governmentDatasets: DatasetDraft[] = [
     keyVariables: ["fertilizers", "pesticides", "manures", "irrigated crops"],
     bestFor: "Operational holding input-use evidence",
     limitations: "Report-oriented packaging",
-    pairsWith: ["agriculture-census-2015-16", "soil-health-card", "cost-of-cultivation"],
+    pairsWith: [
+      "agriculture-census-2015-16",
+      "soil-health-card",
+      "cost-of-cultivation",
+    ],
     exampleUses: "Input intensity and irrigation practices",
     cluster: "agriculture",
   },
@@ -997,10 +1150,15 @@ const governmentDatasets: DatasetDraft[] = [
     timeCoverage: "Jan–Dec 2019 (77th round)",
     keyVariables: ["income", "debt", "assets", "farming practices", "schemes"],
     bestFor: "Essential farm household economics",
-    limitations: "Episodic (~decade spacing); concepts of farmer vs agricultural household change across rounds",
+    limitations:
+      "Episodic (~decade spacing); concepts of farmer vs agricultural household change across rounds",
     background:
       "Background (previous rounds). Official SAS is episodic (roughly decadal), not annual. First integrated Situation Assessment Survey of Farmers was NSS 59th round (Jan–Dec 2003, Schedule 33)—first time NSSO canvassed an integrated farm-household schedule on education, living standards, income/assets, indebtedness, practices, and technology access. NSS 70th round (Jan–Dec 2013) repeated the survey as Situation Assessment of Agricultural Households (NADA e.g. catalog/134 Visit 2; related LLS visit files also on NADA), with concept updates (agricultural household vs earlier “farmer”). NSS 77th round (Jan–Dec 2019, NADA catalog/157) is the third SAS: integrated “Land and Livestock Holdings of Households and Situation Assessment of Agricultural Households” (Visit 1 & 2). Income, debt, and scheme modules are the usual comparison set—always check schedule changes before stacking 59th → 70th → 77th.",
-    pairsWith: ["agriculture-census-2015-16", "cost-of-cultivation", "hces-2023-24"],
+    pairsWith: [
+      "agriculture-census-2015-16",
+      "cost-of-cultivation",
+      "hces-2023-24",
+    ],
     exampleUses: "Farm income, indebtedness, technology adoption",
     flags: ["good-starting"],
     cluster: "agriculture",
@@ -1045,7 +1203,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Near-daily",
     geographyLevel: ["India", "state", "district", "mandi"],
     timeCoverage: "Operational daily series",
-    keyVariables: ["mandi", "commodity", "arrivals", "min/modal/max price", "date"],
+    keyVariables: [
+      "mandi",
+      "commodity",
+      "arrivals",
+      "min/modal/max price",
+      "date",
+    ],
     bestFor: "Daily agricultural price discovery",
     limitations: "Coverage and quality vary by mandi/commodity",
     pairsWith: ["enam-dashboard", "cpi-combined", "imd-rainfall"],
@@ -1069,7 +1233,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Operational updates",
     geographyLevel: ["India", "state", "APMC"],
     timeCoverage: "Ongoing electronic mandi network",
-    keyVariables: ["APMC", "commodity", "prices", "arrivals", "traded quantity"],
+    keyVariables: [
+      "APMC",
+      "commodity",
+      "prices",
+      "arrivals",
+      "traded quantity",
+    ],
     bestFor: "Electronic market integration research",
     limitations: "Dashboard-first; not always bulk download friendly",
     pairsWith: ["agmarknet", "cost-of-cultivation"],
@@ -1092,7 +1262,16 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Periodic operational",
     geographyLevel: ["India", "farm holding"],
     timeCoverage: "Ongoing mission data",
-    keyVariables: ["N", "P", "K", "S", "micronutrients", "organic carbon", "pH", "EC"],
+    keyVariables: [
+      "N",
+      "P",
+      "K",
+      "S",
+      "micronutrients",
+      "organic carbon",
+      "pH",
+      "EC",
+    ],
     bestFor: "Nutrient and soil condition monitoring",
     limitations: "Operational data quality and coverage vary",
     pairsWith: ["input-survey-2016-17", "agriculture-census-2015-16"],
@@ -1118,7 +1297,11 @@ const governmentDatasets: DatasetDraft[] = [
     keyVariables: ["scheme type", "ownership", "holding size", "utilization"],
     bestFor: "Village-level irrigation asset mapping",
     limitations: "Census lag; not daily water levels",
-    pairsWith: ["india-wris-reservoirs", "cgwb-groundwater", "agriculture-census-2015-16"],
+    pairsWith: [
+      "india-wris-reservoirs",
+      "cgwb-groundwater",
+      "agriculture-census-2015-16",
+    ],
     exampleUses: "Irrigation infrastructure GIS joins",
     cluster: "agriculture",
   },
@@ -1173,7 +1356,8 @@ const governmentDatasets: DatasetDraft[] = [
     timeCoverage: "Annual",
     keyVariables: ["capacity", "occupancy", "prisoner composition", "staff"],
     bestFor: "Prison system monitoring series",
-    limitations: "Annual NCRB PDF packaging; definitions and table structures can shift across years",
+    limitations:
+      "Annual NCRB PDF packaging; definitions and table structures can shift across years",
     pairsWith: ["crime-in-india", "njdg"],
     exampleUses: "Overcrowding and incarceration composition",
     cluster: "governance-justice",
@@ -1217,7 +1401,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Daily / near-real-time",
     geographyLevel: ["India", "state", "district", "taluka"],
     timeCoverage: "Live operational series",
-    keyVariables: ["instituted", "pending", "disposed", "case type", "delay reasons"],
+    keyVariables: [
+      "instituted",
+      "pending",
+      "disposed",
+      "case type",
+      "delay reasons",
+    ],
     bestFor: "Live judicial system observatory",
     limitations: "Dashboard-first; bulk research extracts can be hard",
     pairsWith: ["crime-in-india", "prison-statistics-india"],
@@ -1288,7 +1478,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Election-cycle",
     geographyLevel: ["India", "constituency"],
     timeCoverage: "Candidate affidavits across elections",
-    keyVariables: ["assets", "liabilities", "education", "criminal cases", "party"],
+    keyVariables: [
+      "assets",
+      "liabilities",
+      "education",
+      "criminal cases",
+      "party",
+    ],
     bestFor: "Candidate-level transparency from affidavits",
     limitations: "Structured bulk extract is DIY; not official ECI dump",
     pairsWith: ["eci-general-election-reports", "lok-dhaba"],
@@ -1311,7 +1507,11 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Research archive updates",
     geographyLevel: ["India", "constituency"],
     timeCoverage: "From 1962 onward (LS & VS)",
-    keyVariables: ["results", "constituency history", "candidate/party trajectories"],
+    keyVariables: [
+      "results",
+      "constituency history",
+      "candidate/party trajectories",
+    ],
     bestFor: "Long-run legislative politics research dataset",
     limitations: "Academic packaging; always cross-check contested cells",
     pairsWith: [
@@ -1416,7 +1616,11 @@ const governmentDatasets: DatasetDraft[] = [
     keyVariables: ["storage", "level", "inflow/outflow", "location", "date"],
     bestFor: "Daily water storage monitoring",
     limitations: "Dashboard packaging; export workflows vary",
-    pairsWith: ["cgwb-groundwater", "imd-rainfall", "minor-irrigation-census-6"],
+    pairsWith: [
+      "cgwb-groundwater",
+      "imd-rainfall",
+      "minor-irrigation-census-6",
+    ],
     exampleUses: "Reservoir stress and irrigation season tracking",
     cluster: "climate-infra",
   },
@@ -1462,7 +1666,8 @@ const governmentDatasets: DatasetDraft[] = [
     timeCoverage: "Ongoing monthly",
     keyVariables: ["installed MW", "source", "sector", "state"],
     bestFor: "Official electricity capacity benchmark",
-    limitations: "Monthly capacity tables arrive as PDF/XLS packs; series construction needs careful base handling",
+    limitations:
+      "Monthly capacity tables arrive as PDF/XLS packs; series construction needs careful base handling",
     pairsWith: ["npp-grid-india", "national-accounts-statistics"],
     exampleUses: "Power mix and capacity expansion",
     flags: ["good-starting"],
@@ -1508,7 +1713,13 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Annual",
     geographyLevel: ["India", "state"],
     timeCoverage: "Annual official series",
-    keyVariables: ["accidents", "deaths", "injuries", "road category", "road user type"],
+    keyVariables: [
+      "accidents",
+      "deaths",
+      "injuries",
+      "road category",
+      "road user type",
+    ],
     bestFor: "Official road-safety series",
     limitations: "PDF tables; under-reporting caveats",
     pairsWith: ["adsi", "pmgsy-dashboard", "cpcb-aqi"],
@@ -1532,7 +1743,12 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Regularly refreshed",
     geographyLevel: ["India", "state"],
     timeCoverage: "Mission build-out progress",
-    keyVariables: ["km", "roads sanctioned/completed", "habitations", "financial progress"],
+    keyVariables: [
+      "km",
+      "roads sanctioned/completed",
+      "habitations",
+      "financial progress",
+    ],
     bestFor: "All-weather rural road connectivity progress",
     limitations: "Dashboard metrics not full road network GIS",
     pairsWith: ["jjm-dashboard", "sbm-g-dashboard", "census-pca-2011"],
@@ -1626,8 +1842,16 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Decennial (2011 wave)",
     geographyLevel: ["India", "state", "district", "village", "town"],
     timeCoverage: "2011",
-    keyVariables: ["population", "sex", "literacy", "workers", "SC/ST", "households"],
-    bestFor: "Small-area demographic base layer until next full PCA is fully available",
+    keyVariables: [
+      "population",
+      "sex",
+      "literacy",
+      "workers",
+      "SC/ST",
+      "households",
+    ],
+    bestFor:
+      "Small-area demographic base layer until next full PCA is fully available",
     limitations: "Aging base year; 2021 delayed",
     pairsWith: [
       "district-census-handbook",
@@ -1657,10 +1881,22 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Decennial",
     geographyLevel: ["district", "village"],
     timeCoverage: "2011 books",
-    keyVariables: ["amenities", "roads", "power", "medical", "education", "households"],
+    keyVariables: [
+      "amenities",
+      "roads",
+      "power",
+      "medical",
+      "education",
+      "households",
+    ],
     bestFor: "Rural amenities and settlement studies",
     limitations: "PDF-heavy; extraction effort",
-    pairsWith: ["census-pca-2011", "pmgsy-dashboard", "jjm-dashboard", "census-tables"],
+    pairsWith: [
+      "census-pca-2011",
+      "pmgsy-dashboard",
+      "jjm-dashboard",
+      "census-tables",
+    ],
     exampleUses: "Village amenity access analysis",
     cluster: "climate-infra",
   },
@@ -1680,10 +1916,20 @@ const governmentDatasets: DatasetDraft[] = [
     updateFrequency: "Product-dependent",
     geographyLevel: ["India"],
     timeCoverage: "Multiple thematic product years",
-    keyVariables: ["LULC", "urban land use", "wasteland", "water bodies", "flood layers"],
+    keyVariables: [
+      "LULC",
+      "urban land use",
+      "wasteland",
+      "water bodies",
+      "flood layers",
+    ],
     bestFor: "India-wide thematic spatial layers for GIS workflows",
     limitations: "Product-specific licenses and access steps",
-    pairsWith: ["wastelands-atlas-2019", "landsat-collection-2", "sentinel-2-l2a"],
+    pairsWith: [
+      "wastelands-atlas-2019",
+      "landsat-collection-2",
+      "sentinel-2-l2a",
+    ],
     exampleUses: "Land use change and hazard layers",
     cluster: "climate-infra",
   },
@@ -1728,7 +1974,8 @@ const governmentDatasets: DatasetDraft[] = [
     geographyLevel: ["ADM0–ADMn"],
     timeCoverage: "Versioned boundary releases",
     keyVariables: ["admin geometries", "metadata", "license"],
-    bestFor: "Open-license administrative boundaries when official shapefiles are limited",
+    bestFor:
+      "Open-license administrative boundaries when official shapefiles are limited",
     limitations: "Not an official Survey of India product",
     pairsWith: ["osm-india", "census-pca-2011", "nfhs-5"],
     exampleUses: "Choropleth basemaps and spatial joins",
@@ -1837,8 +2084,15 @@ const governmentDatasets: DatasetDraft[] = [
       "Reporter–partner asymmetries; free API/download quotas; services trade is thinner than goods",
     background:
       "UN Comtrade aggregates official customs statistics from ~200 economies (99%+ of world merchandise trade). India appears as both reporter and partner. Use Comtrade Plus for modern UI/API; historical annual series go back to the 1960s. Prefer HS revision consistent with your period; always check data availability flags for India years.",
-    pairsWith: ["wits-india", "cepii-baci", "dgcis-ftddp", "commerce-tradestat", "unctadstat"],
-    exampleUses: "India’s product–partner export baskets, China–India trade balances, HS-level gravity work",
+    pairsWith: [
+      "wits-india",
+      "cepii-baci",
+      "dgcis-ftddp",
+      "commerce-tradestat",
+      "unctadstat",
+    ],
+    exampleUses:
+      "India’s product–partner export baskets, China–India trade balances, HS-level gravity work",
     flags: ["good-starting"],
     cluster: "trade-commerce",
     sourceKind: "government",
@@ -1874,7 +2128,8 @@ const governmentDatasets: DatasetDraft[] = [
     background:
       "WITS merges UN Comtrade trade flows with UNCTAD TRAINS tariff/NTM data. The India country profile is the usual entry point for export/import totals, partners, products, and effectively applied / MFN tariffs. Use alongside Comtrade for raw HS flows and DGCIS for official Indian customs releases.",
     pairsWith: ["un-comtrade", "unctadstat", "wto-stats", "dgcis-ftddp"],
-    exampleUses: "Tariff incidence on Indian imports; partner concentration; trade openness series",
+    exampleUses:
+      "Tariff incidence on Indian imports; partner concentration; trade openness series",
     flags: ["good-starting"],
     cluster: "trade-commerce",
     sourceKind: "government",
@@ -1909,8 +2164,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Indicator level (not full HS micro-trade); definitions differ from MoSPI national accounts",
     background:
       "UNCTADstat consolidates 150+ indicators for nearly all economies. For India research, use country profiles and the data centre for trade in goods/services, FDI, and commodity dependence—then drill to Comtrade/WITS for product-level detail.",
-    pairsWith: ["un-comtrade", "wits-india", "wto-stats", "world-bank-wdi-india"],
-    exampleUses: "India FDI inflows vs peers; services export growth; commodity price shocks",
+    pairsWith: [
+      "un-comtrade",
+      "wits-india",
+      "wto-stats",
+      "world-bank-wdi-india",
+    ],
+    exampleUses:
+      "India FDI inflows vs peers; services export growth; commodity price shocks",
     cluster: "trade-commerce",
     sourceKind: "government",
   },
@@ -1942,7 +2203,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "More aggregated than Comtrade HS-6; services definitions follow BPM/EBOPS conventions",
     pairsWith: ["un-comtrade", "wits-india", "unctadstat"],
-    exampleUses: "India tariff bindings vs applied rates; services trade balances",
+    exampleUses:
+      "India tariff bindings vs applied rates; services trade balances",
     cluster: "trade-commerce",
     sourceKind: "government",
   },
@@ -1976,7 +2238,8 @@ const governmentDatasets: DatasetDraft[] = [
     background:
       "BACI builds on UN Comtrade by reconciling exporter and importer declarations so each bilateral flow appears once. Widely used in academic trade research when raw Comtrade mirror discrepancies matter. Pair with Comtrade for latest years and DGCIS for India-official totals.",
     pairsWith: ["un-comtrade", "wits-india", "asi-2023-24"],
-    exampleUses: "India product-space / export sophistication; bilateral trade networks",
+    exampleUses:
+      "India product-space / export sophistication; bilateral trade networks",
     cluster: "trade-commerce",
     sourceKind: "academic-reference",
     academicBadges: ["core-reference"],
@@ -1989,7 +2252,8 @@ const governmentDatasets: DatasetDraft[] = [
     categories: ["trade", "macroeconomy"],
     technicalTags: ["official Indian customs", "principal commodities"],
     host: "DGCI&S / Ministry of Commerce",
-    institution: "Directorate General of Commercial Intelligence and Statistics",
+    institution:
+      "Directorate General of Commercial Intelligence and Statistics",
     accessUrl: "https://ftddp.dgciskol.gov.in/dgcis/",
     docsUrl: "https://www.dgciskol.gov.in/",
     accessType: "registration",
@@ -1997,7 +2261,8 @@ const governmentDatasets: DatasetDraft[] = [
     formats: ["portal extracts", "principal commodity tables"],
     updateFrequency: "Monthly (quick estimates → finalized)",
     geographyLevel: ["India", "customs zone", "partner / commodity"],
-    timeCoverage: "Contemporary monthly series (portal coverage expands over time)",
+    timeCoverage:
+      "Contemporary monthly series (portal coverage expands over time)",
     keyVariables: [
       "exports / imports",
       "principal commodities",
@@ -2012,7 +2277,8 @@ const governmentDatasets: DatasetDraft[] = [
     background:
       "DGCI&S (Kolkata) is India’s pioneer agency for foreign trade statistics. FTDDP is the current dissemination portal; principal commodity-level series are widely used in Indian policy work. Complements (does not replace) UN Comtrade for cross-country HS consistency.",
     pairsWith: ["commerce-tradestat", "un-comtrade", "wits-india", "wpi"],
-    exampleUses: "Official monthly Indian export/import tracking; commodity-wise EXIM",
+    exampleUses:
+      "Official monthly Indian export/import tracking; commodity-wise EXIM",
     flags: ["good-starting"],
     cluster: "trade-commerce",
     sourceKind: "government",
@@ -2045,7 +2311,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Dashboard/query tool—not full research microdata; definitions follow Commerce presentation",
     pairsWith: ["dgcis-ftddp", "un-comtrade", "wits-india"],
-    exampleUses: "Country-wise export shares; commodity group EXIM for briefings",
+    exampleUses:
+      "Country-wise export shares; commodity group EXIM for briefings",
     cluster: "trade-commerce",
     sourceKind: "government",
   },
@@ -2059,7 +2326,8 @@ const governmentDatasets: DatasetDraft[] = [
     host: "World Bank",
     institution: "World Bank",
     accessUrl: "https://data.worldbank.org/country/india",
-    docsUrl: "https://databank.worldbank.org/source/world-development-indicators",
+    docsUrl:
+      "https://databank.worldbank.org/source/world-development-indicators",
     accessType: "open-download",
     sizeTier: "Large",
     formats: ["CSV", "API", "DataBank"],
@@ -2077,8 +2345,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Cross-country macro and development series for India in a standard World Bank panel",
     limitations:
       "National aggregates—not district microdata; some series lag or are modeled estimates",
-    pairsWith: ["national-accounts-statistics", "unctadstat", "un-comtrade", "hces-2023-24"],
-    exampleUses: "India vs peers dashboards; long-run growth and trade openness",
+    pairsWith: [
+      "national-accounts-statistics",
+      "unctadstat",
+      "un-comtrade",
+      "hces-2023-24",
+    ],
+    exampleUses:
+      "India vs peers dashboards; long-run growth and trade openness",
     flags: ["good-starting"],
     cluster: "international-india",
     sourceKind: "government",
@@ -2111,7 +2385,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Not HS product-level; methodology differs from Comtrade/DGCIS; portal access rules apply",
     pairsWith: ["un-comtrade", "wits-india", "world-bank-wdi-india"],
-    exampleUses: "India bilateral trade balances with major partners over decades",
+    exampleUses:
+      "India bilateral trade balances with major partners over decades",
     cluster: "trade-commerce",
     sourceKind: "government",
   },
@@ -2133,7 +2408,8 @@ const governmentDatasets: DatasetDraft[] = [
     formats: ["CSV", "API", "curated Asia-Pacific files"],
     updateFrequency: "Twice weekly (global); curated regional files weekly",
     geographyLevel: ["India", "subnational", "point locations"],
-    timeCoverage: "Asia coverage from ~2010s (check current India start date on portal)",
+    timeCoverage:
+      "Asia coverage from ~2010s (check current India start date on portal)",
     keyVariables: [
       "event type / sub-event",
       "actors",
@@ -2155,7 +2431,8 @@ const governmentDatasets: DatasetDraft[] = [
       "varshney-wilkinson-riots",
       "crime-in-india",
     ],
-    exampleUses: "District protest/violence trends; civilian targeting; election-period unrest",
+    exampleUses:
+      "District protest/violence trends; civilian targeting; election-period unrest",
     flags: ["good-starting"],
     cluster: "crime-justice",
     sourceKind: "academic-reference",
@@ -2163,7 +2440,8 @@ const governmentDatasets: DatasetDraft[] = [
   },
   {
     slug: "gdelt",
-    title: "GDELT — Global Database of Events, Language, and Tone (India filter)",
+    title:
+      "GDELT — Global Database of Events, Language, and Tone (India filter)",
     shortTitle: "GDELT",
     abbreviations: ["GDELT"],
     categories: ["conflict", "protest", "international", "governance"],
@@ -2192,8 +2470,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Huge files; false positives and media bias; not expert-validated like ACLED/UCDP; India extracts need careful filtering",
     background:
       "GDELT machine-codes global news into CAMEO-style events plus a Global Knowledge Graph. For India, researchers typically filter on location/actor fields in BigQuery or daily files. ACLED’s methodological notes caution that full India-year extracts can require stitching many files. Prefer ACLED/UCDP for curated conflict research; use GDELT for nowcasting and media-attention studies.",
-    pairsWith: ["acled-india", "ucdp-ged", "gtd-terrorism", "varshney-wilkinson-riots"],
-    exampleUses: "Media-attention shocks; protest keyword spikes; cross-border event networks",
+    pairsWith: [
+      "acled-india",
+      "ucdp-ged",
+      "gtd-terrorism",
+      "varshney-wilkinson-riots",
+    ],
+    exampleUses:
+      "Media-attention shocks; protest keyword spikes; cross-border event networks",
     cluster: "international-india",
     sourceKind: "academic-reference",
     academicBadges: ["core-reference"],
@@ -2229,8 +2513,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Stricter fatality/organization thresholds than ACLED; slower than near-real-time monitors; not communal-riot census for 1950–95",
     background:
       "UCDP GED is the most disaggregated UCDP product: individual organized-violence events geocoded to villages when possible. Complements ACLED (broader protest/political violence, faster) and GTD (terrorism-focused). Filter country = India in the global GED download.",
-    pairsWith: ["acled-india", "gtd-terrorism", "gdelt", "varshney-wilkinson-riots"],
-    exampleUses: "Organized armed violence trends; spatial conflict econometrics",
+    pairsWith: [
+      "acled-india",
+      "gtd-terrorism",
+      "gdelt",
+      "varshney-wilkinson-riots",
+    ],
+    exampleUses:
+      "Organized armed violence trends; spatial conflict econometrics",
     flags: ["good-starting"],
     cluster: "crime-justice",
     sourceKind: "academic-reference",
@@ -2244,7 +2534,8 @@ const governmentDatasets: DatasetDraft[] = [
     categories: ["terrorism", "conflict", "crime"],
     technicalTags: ["incident database", "academic"],
     host: "START / University of Maryland",
-    institution: "National Consortium for the Study of Terrorism and Responses to Terrorism",
+    institution:
+      "National Consortium for the Study of Terrorism and Responses to Terrorism",
     accessUrl: "https://www.start.umd.edu/gtd/",
     accessType: "registration",
     sizeTier: "Large",
@@ -2265,8 +2556,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Incident-level terrorism research with India as a high-volume country in the global GTD",
     limitations:
       "Definition of terrorism; coding lags; registration; not a substitute for ACLED protest data or Varshney–Wilkinson communal riots",
-    pairsWith: ["acled-india", "ucdp-ged", "crime-in-india", "varshney-wilkinson-riots"],
-    exampleUses: "Naxal / separatist / communal terror incident counts; target-type analysis",
+    pairsWith: [
+      "acled-india",
+      "ucdp-ged",
+      "crime-in-india",
+      "varshney-wilkinson-riots",
+    ],
+    exampleUses:
+      "Naxal / separatist / communal terror incident counts; target-type analysis",
     cluster: "crime-justice",
     sourceKind: "academic-reference",
     academicBadges: ["core-reference"],
@@ -2299,8 +2596,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Comparable international disaster event series for floods, cyclones, droughts, and quakes in India",
     limitations:
       "Entry thresholds; damages often incomplete; not a substitute for IMD event meteorology",
-    pairsWith: ["imd-rainfall", "imd-temperature", "acled-india", "world-bank-wdi-india"],
-    exampleUses: "Disaster frequency/severity panels; climate impact correlators",
+    pairsWith: [
+      "imd-rainfall",
+      "imd-temperature",
+      "acled-india",
+      "world-bank-wdi-india",
+    ],
+    exampleUses:
+      "Disaster frequency/severity panels; climate impact correlators",
     cluster: "environment-climate",
     sourceKind: "academic-reference",
   },
@@ -2308,7 +2611,8 @@ const governmentDatasets: DatasetDraft[] = [
   // ── Research infrastructure / census & NSS expansion ────────────
   {
     slug: "shrug",
-    title: "SHRUG / SHRID Socioeconomic High-resolution Rural-Urban Geographic Platform",
+    title:
+      "SHRUG / SHRID Socioeconomic High-resolution Rural-Urban Geographic Platform",
     shortTitle: "SHRUG / SHRID",
     abbreviations: ["SHRUG", "SHRID"],
     categories: [
@@ -2317,7 +2621,11 @@ const governmentDatasets: DatasetDraft[] = [
       "development",
       "geospatial",
     ],
-    technicalTags: ["linked research platform", "village/town keys", "open research data"],
+    technicalTags: [
+      "linked research platform",
+      "village/town keys",
+      "open research data",
+    ],
     host: "Development Data Lab",
     institution: "Development Data Lab",
     accessUrl: "https://www.devdatalab.org/shrug",
@@ -2338,8 +2646,15 @@ const governmentDatasets: DatasetDraft[] = [
       "Core village/town linked research infrastructure for India—especially development economics work needing consistent place IDs across datasets",
     limitations:
       "Research download/registration workflow; not a substitute for raw official Census or LGD codes without checking versioned keys",
-    pairsWith: ["census-pca-2011", "lgd", "secc-2011", "district-census-handbook", "geoboundaries-india"],
-    exampleUses: "Merging village outcomes, elections, night lights, and amenities on common SHRID keys",
+    pairsWith: [
+      "census-pca-2011",
+      "lgd",
+      "secc-2011",
+      "district-census-handbook",
+      "geoboundaries-india",
+    ],
+    exampleUses:
+      "Merging village outcomes, elections, night lights, and amenities on common SHRID keys",
     flags: ["good-starting"],
     cluster: "research-replication",
     sourceKind: "academic-project",
@@ -2350,14 +2665,19 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "SECC 2011",
     abbreviations: ["SECC"],
     categories: ["welfare", "poverty", "demographics", "social protection"],
-    technicalTags: ["census-style listing", "deprivation criteria", "public portal"],
+    technicalTags: [
+      "census-style listing",
+      "deprivation criteria",
+      "public portal",
+    ],
     host: "SECC / DoRD",
     institution: "Ministry of Rural Development / SECC",
     accessUrl: "https://secc.dord.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Very large",
     formats: ["portal tables", "reports"],
-    updateFrequency: "One-time 2011 enumeration (portal still queried for targeting)",
+    updateFrequency:
+      "One-time 2011 enumeration (portal still queried for targeting)",
     geographyLevel: ["India", "state", "district", "block", "GP", "village"],
     timeCoverage: "2011",
     keyVariables: [
@@ -2372,7 +2692,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "2011 base year; portal packaging is not full research microdata; definitional differences vs Census PCA",
     pairsWith: ["census-pca-2011", "nfhs-5", "im-pds", "pmay-g", "shrug"],
-    exampleUses: "Welfare eligibility rules, deprivation maps, SECC-linked scheme targeting studies",
+    exampleUses:
+      "Welfare eligibility rules, deprivation maps, SECC-linked scheme targeting studies",
     flags: ["good-starting"],
     cluster: "social-protection",
   },
@@ -2405,8 +2726,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Round-to-round design changes; not a continuous firm panel like ASI unit files; table packages vary by release",
     background:
       "Economic Census rounds enumerate non-agricultural establishments (and related employment) outside the factory ASI frame. Use with ASI for organized manufacturing and ASUSE for unincorporated enterprise surveys; do not treat EC tables as a drop-in for ASI unit microdata.",
-    pairsWith: ["asi-2023-24", "asuse-2023-24", "plfs-annual-2023-24", "nss-microdata-catalog"],
-    exampleUses: "District establishment density, informal non-farm employment denominators",
+    pairsWith: [
+      "asi-2023-24",
+      "asuse-2023-24",
+      "plfs-annual-2023-24",
+      "nss-microdata-catalog",
+    ],
+    exampleUses:
+      "District establishment density, informal non-farm employment denominators",
     flags: ["good-starting"],
     cluster: "firms-industry",
   },
@@ -2420,7 +2747,8 @@ const governmentDatasets: DatasetDraft[] = [
     host: "NSO / MoSPI NADA",
     institution: "NSO / MoSPI",
     accessUrl: "https://microdata.gov.in/NADA/index.php/catalog",
-    docsUrl: "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
+    docsUrl:
+      "https://mospi.gov.in/sites/default/files/data_disemination/Guide_to_download_microdata.pdf",
     accessType: "registration",
     sizeTier: "Very large",
     formats: ["microdata", "DDI", "XML", "JSON", "documentation"],
@@ -2451,7 +2779,8 @@ const governmentDatasets: DatasetDraft[] = [
       "asuse-2023-24",
       "sas-ag-households-2019",
     ],
-    exampleUses: "Finding historical NSS health/education rounds; locating debt & investment or migration schedules",
+    exampleUses:
+      "Finding historical NSS health/education rounds; locating debt & investment or migration schedules",
     flags: ["good-starting"],
     cluster: "data-catalogs",
   },
@@ -2468,9 +2797,17 @@ const governmentDatasets: DatasetDraft[] = [
     accessType: "open-download",
     sizeTier: "Very large",
     formats: ["tables", "Excel", "PDF"],
-    updateFrequency: "Decennial (2011 fully published; later waves as released)",
-    geographyLevel: ["India", "state", "district", "sub-district", "town/village (table-dependent)"],
-    timeCoverage: "Primarily Census 2011 table suites (and earlier published series)",
+    updateFrequency:
+      "Decennial (2011 fully published; later waves as released)",
+    geographyLevel: [
+      "India",
+      "state",
+      "district",
+      "sub-district",
+      "town/village (table-dependent)",
+    ],
+    timeCoverage:
+      "Primarily Census 2011 table suites (and earlier published series)",
     keyVariables: [
       "religion tables",
       "language tables",
@@ -2485,8 +2822,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Table packaging is fragmented across families; not always village-level; 2011 still the workhorse year for many series",
     background:
       "Primary Census Abstract and District Census Handbooks are only two entry points. ORGI’s census-tables portal indexes the broader published families researchers routinely need for religion, mother tongue, migration streams, economic activity of workers, SC/ST, and houselisting/housing stock.",
-    pairsWith: ["census-pca-2011", "district-census-handbook", "secc-2011", "shrug"],
-    exampleUses: "District religion/language composition; migration stream tables; houselisting housing stock",
+    pairsWith: [
+      "census-pca-2011",
+      "district-census-handbook",
+      "secc-2011",
+      "shrug",
+    ],
+    exampleUses:
+      "District religion/language composition; migration stream tables; houselisting housing stock",
     flags: ["good-starting"],
     cluster: "population-demography",
   },
@@ -2519,7 +2862,13 @@ const governmentDatasets: DatasetDraft[] = [
       "District-level health data for Empowered Action Group (EAG) states—useful bridge between DLHS and NFHS district eras",
     limitations:
       "EAG-state focus only; historical series; access via research archive registration rather than a live MoHFW dashboard",
-    pairsWith: ["dlhs-4", "nfhs-4", "nfhs-5", "hmis", "srs-statistical-reports"],
+    pairsWith: [
+      "dlhs-4",
+      "nfhs-4",
+      "nfhs-5",
+      "hmis",
+      "srs-statistical-reports",
+    ],
     exampleUses: "Pre-NFHS-4 district MCH triangulation in high-focus states",
     flags: ["best-district"],
     cluster: "health-nutrition",
@@ -2533,7 +2882,8 @@ const governmentDatasets: DatasetDraft[] = [
     technicalTags: ["nutrition survey", "biomarkers", "reports"],
     host: "NHM / MoHFW",
     institution: "Ministry of Health & Family Welfare / UNICEF (CNNS)",
-    accessUrl: "https://nhm.gov.in/index1.php?lang=1&level=2&lid=713&sublinkid=1332",
+    accessUrl:
+      "https://nhm.gov.in/index1.php?lang=1&level=2&lid=713&sublinkid=1332",
     accessType: "registration",
     sizeTier: "Large",
     formats: ["reports", "tables", "microdata (restricted)"],
@@ -2552,7 +2902,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Not a continuous annual series; microdata access is more restricted than published reports; design differs from NFHS biomarkers",
     pairsWith: ["nfhs-4", "nfhs-5", "poshan-tracker", "pm-poshan"],
-    exampleUses: "State micronutrient deficiency profiles; adolescent anemia and growth analysis",
+    exampleUses:
+      "State micronutrient deficiency profiles; adolescent anemia and growth analysis",
     cluster: "health-nutrition",
   },
 
@@ -2584,8 +2935,15 @@ const governmentDatasets: DatasetDraft[] = [
       "One of India’s most important public administrative datasets: works, job cards, wages, and person-days under rural employment guarantee",
     limitations:
       "MIS definitions and corrections matter; not a probability sample; geography codes need LGD/census crosswalks for research panels",
-    pairsWith: ["plfs-annual-2023-24", "sas-ag-households-2019", "lgd", "egram-swaraj", "pmay-g"],
-    exampleUses: "District person-day intensity; wage payment delays; drought-year employment response",
+    pairsWith: [
+      "plfs-annual-2023-24",
+      "sas-ag-households-2019",
+      "lgd",
+      "egram-swaraj",
+      "pmay-g",
+    ],
+    exampleUses:
+      "District person-day intensity; wage payment delays; drought-year employment response",
     flags: ["good-starting"],
     cluster: "social-protection",
   },
@@ -2595,7 +2953,11 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "LGD",
     abbreviations: ["LGD"],
     categories: ["local government", "governance", "geospatial"],
-    technicalTags: ["admin codes", "open directory", "crosswalk infrastructure"],
+    technicalTags: [
+      "admin codes",
+      "open directory",
+      "crosswalk infrastructure",
+    ],
     host: "LGD / MoPR",
     institution: "Ministry of Panchayati Raj / Government of India",
     accessUrl: "https://lgdirectory.gov.in/",
@@ -2603,8 +2965,18 @@ const governmentDatasets: DatasetDraft[] = [
     sizeTier: "Large",
     formats: ["portal downloads", "code directories"],
     updateFrequency: "Continuously updated as admin units change",
-    geographyLevel: ["India", "state", "district", "sub-district", "block", "GP", "village", "ULB"],
-    timeCoverage: "Living directory of current (and versioned) local-body codes",
+    geographyLevel: [
+      "India",
+      "state",
+      "district",
+      "sub-district",
+      "block",
+      "GP",
+      "village",
+      "ULB",
+    ],
+    timeCoverage:
+      "Living directory of current (and versioned) local-body codes",
     keyVariables: [
       "state/district/block codes",
       "panchayat / village codes",
@@ -2616,8 +2988,15 @@ const governmentDatasets: DatasetDraft[] = [
       "Official changing admin and local-body codes—crucial for matching districts, blocks, panchayats, and villages across datasets",
     limitations:
       "Codes evolve; historical merges/splits require careful versioning; not a boundary shapefile product by itself",
-    pairsWith: ["shrug", "egram-swaraj", "census-pca-2011", "geoboundaries-india", "mgnrega-mis"],
-    exampleUses: "Stable joins across NREGA, eGramSwaraj, Census, and mission dashboards",
+    pairsWith: [
+      "shrug",
+      "egram-swaraj",
+      "census-pca-2011",
+      "geoboundaries-india",
+      "mgnrega-mis",
+    ],
+    exampleUses:
+      "Stable joins across NREGA, eGramSwaraj, Census, and mission dashboards",
     flags: ["good-starting"],
     cluster: "politics-governance",
   },
@@ -2626,7 +3005,12 @@ const governmentDatasets: DatasetDraft[] = [
     title: "eGramSwaraj (Panchayat plans, works, finance)",
     shortTitle: "eGramSwaraj",
     abbreviations: ["eGramSwaraj", "e-Gram Swaraj"],
-    categories: ["local government", "governance", "panchayat", "public finance"],
+    categories: [
+      "local government",
+      "governance",
+      "panchayat",
+      "public finance",
+    ],
     technicalTags: ["dashboard", "panchayat MIS", "mission"],
     host: "eGramSwaraj / MoPR",
     institution: "Ministry of Panchayati Raj",
@@ -2644,11 +3028,19 @@ const governmentDatasets: DatasetDraft[] = [
       "progress status",
       "GP identifiers",
     ],
-    bestFor: "Panchayat plans, works, finance, and payments in one rural local-government stack",
+    bestFor:
+      "Panchayat plans, works, finance, and payments in one rural local-government stack",
     limitations:
       "Dashboard-first packaging; research extraction and historical completeness vary by state and module",
-    pairsWith: ["lgd", "mgnrega-mis", "pmay-g", "jjm-dashboard", "sbm-g-dashboard"],
-    exampleUses: "GP-level plan vs expenditure tracking; linking panchayat finance to rural works",
+    pairsWith: [
+      "lgd",
+      "mgnrega-mis",
+      "pmay-g",
+      "jjm-dashboard",
+      "sbm-g-dashboard",
+    ],
+    exampleUses:
+      "GP-level plan vs expenditure tracking; linking panchayat finance to rural works",
     cluster: "politics-governance",
   },
   {
@@ -2674,11 +3066,19 @@ const governmentDatasets: DatasetDraft[] = [
       "instalment / payment status",
       "geo-tagged progress",
     ],
-    bestFor: "Rural housing delivery under PMAY-G—sanctions, completions, and beneficiary progress",
+    bestFor:
+      "Rural housing delivery under PMAY-G—sanctions, completions, and beneficiary progress",
     limitations:
       "Mission MIS definitions; not a full housing stock census; pair with Census houselisting for stock baselines",
-    pairsWith: ["pmay-u", "secc-2011", "census-pca-2011", "mgnrega-mis", "egram-swaraj"],
-    exampleUses: "District rural housing completion rates; SECC-linked beneficiary targeting checks",
+    pairsWith: [
+      "pmay-u",
+      "secc-2011",
+      "census-pca-2011",
+      "mgnrega-mis",
+      "egram-swaraj",
+    ],
+    exampleUses:
+      "District rural housing completion rates; SECC-linked beneficiary targeting checks",
     cluster: "social-protection",
   },
   {
@@ -2704,11 +3104,18 @@ const governmentDatasets: DatasetDraft[] = [
       "beneficiary coverage",
       "central assistance",
     ],
-    bestFor: "Urban housing delivery progress under PMAY-U by city and component",
+    bestFor:
+      "Urban housing delivery progress under PMAY-U by city and component",
     limitations:
       "Dashboard metrics need careful reading of verticals (BLC, AHP, ISSR, CLSS historically); not a substitute for Census housing stock",
-    pairsWith: ["pmay-g", "census-tables", "census-pca-2011", "geoboundaries-india"],
-    exampleUses: "City housing mission tracking; urban housing completion vs need indicators",
+    pairsWith: [
+      "pmay-g",
+      "census-tables",
+      "census-pca-2011",
+      "geoboundaries-india",
+    ],
+    exampleUses:
+      "City housing mission tracking; urban housing completion vs need indicators",
     cluster: "urban-development",
   },
   {
@@ -2739,7 +3146,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Public views emphasize aggregates and operational KPIs; full transaction microdata is not openly packaged for research",
     pairsWith: ["secc-2011", "nfhs-5", "hces-2023-24", "pmjdy"],
-    exampleUses: "State PDS transaction intensity; portability uptake; card vs consumption triangulation",
+    exampleUses:
+      "State PDS transaction intensity; portability uptake; card vs consumption triangulation",
     flags: ["good-starting"],
     cluster: "social-protection",
   },
@@ -2757,7 +3165,12 @@ const governmentDatasets: DatasetDraft[] = [
     sizeTier: "Very large",
     formats: ["dashboard", "monitoring views"],
     updateFrequency: "Operationally refreshed",
-    geographyLevel: ["India", "state", "district", "project / AWC (where exposed)"],
+    geographyLevel: [
+      "India",
+      "state",
+      "district",
+      "project / AWC (where exposed)",
+    ],
     timeCoverage: "Poshan Abhiyaan / digital ICDS monitoring period",
     keyVariables: [
       "Anganwadi service delivery",
@@ -2766,7 +3179,8 @@ const governmentDatasets: DatasetDraft[] = [
       "supplementary nutrition",
       "AWC activity markers",
     ],
-    bestFor: "Anganwadi/ICDS service delivery and nutrition monitoring at scale",
+    bestFor:
+      "Anganwadi/ICDS service delivery and nutrition monitoring at scale",
     limitations:
       "Administrative data quality varies; public layers may not equal research-ready unit files; triangulate with NFHS/CNNS",
     pairsWith: ["nfhs-5", "cnns-2016-18", "pm-poshan", "hmis"],
@@ -2781,7 +3195,8 @@ const governmentDatasets: DatasetDraft[] = [
     categories: ["education", "nutrition", "mid-day meals", "welfare"],
     technicalTags: ["dashboard", "school meals", "mission"],
     host: "PM-POSHAN / MoE",
-    institution: "Ministry of Education / Department of School Education & Literacy",
+    institution:
+      "Ministry of Education / Department of School Education & Literacy",
     accessUrl: "https://pmposhan.education.gov.in/",
     accessType: "public-dashboard",
     sizeTier: "Large",
@@ -2800,7 +3215,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Programme MIS, not a nutrition survey; pair with UDISE+ for school system context and NFHS/CNNS for outcomes",
     pairsWith: ["udise-plus", "poshan-tracker", "nfhs-5", "cnns-2016-18"],
-    exampleUses: "State meal coverage vs school enrolment; nutrition programme process indicators",
+    exampleUses:
+      "State meal coverage vs school enrolment; nutrition programme process indicators",
     cluster: "education",
   },
 
@@ -2811,7 +3227,11 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "EPFO Payroll",
     abbreviations: ["EPFO"],
     categories: ["formal employment", "labor", "finance"],
-    technicalTags: ["monthly indicator", "administrative series", "open tables"],
+    technicalTags: [
+      "monthly indicator",
+      "administrative series",
+      "open tables",
+    ],
     host: "EPFO",
     institution: "Employees' Provident Fund Organisation",
     accessUrl: "https://www.epfindia.gov.in/site_en/Estimate_of_Payroll.php",
@@ -2819,7 +3239,11 @@ const governmentDatasets: DatasetDraft[] = [
     sizeTier: "Medium",
     formats: ["Excel", "PDF tables"],
     updateFrequency: "Monthly",
-    geographyLevel: ["India", "state (where published)", "age/gender breakdowns"],
+    geographyLevel: [
+      "India",
+      "state (where published)",
+      "age/gender breakdowns",
+    ],
     timeCoverage: "Monthly payroll series from mid-2010s (as published)",
     keyVariables: [
       "new subscribers / payroll additions",
@@ -2831,8 +3255,14 @@ const governmentDatasets: DatasetDraft[] = [
     bestFor: "Monthly formal-employment proxy from EPFO net payroll additions",
     limitations:
       "Covers EPFO universe only (not all formal jobs); revisions happen; not a substitute for PLFS labour-force rates",
-    pairsWith: ["plfs-annual-2023-24", "iip", "national-accounts-statistics", "rbi-dbie"],
-    exampleUses: "High-frequency formal job creation charts; age-structure of new EPFO subscribers",
+    pairsWith: [
+      "plfs-annual-2023-24",
+      "iip",
+      "national-accounts-statistics",
+      "rbi-dbie",
+    ],
+    exampleUses:
+      "High-frequency formal job creation charts; age-structure of new EPFO subscribers",
     flags: ["good-starting"],
     cluster: "labour-employment",
   },
@@ -2863,8 +3293,13 @@ const governmentDatasets: DatasetDraft[] = [
       "Vehicle registration by state/RTO/fuel/maker/category—useful for mobility, consumption, and EV adoption",
     limitations:
       "Dashboard coverage and historical depth vary; not a full transport survey; EV labels depend on fuel coding quality",
-    pairsWith: ["road-accidents-india", "dgca-monthly-traffic", "trai-subscriptions"],
-    exampleUses: "State EV share trends; two-wheeler vs car registration growth; RTO-level motorization",
+    pairsWith: [
+      "road-accidents-india",
+      "dgca-monthly-traffic",
+      "trai-subscriptions",
+    ],
+    exampleUses:
+      "State EV share trends; two-wheeler vs car registration growth; RTO-level motorization",
     flags: ["good-starting"],
     cluster: "infrastructure-transport",
   },
@@ -2897,7 +3332,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "PDF-first packaging in many months; circle geography ≠ district; not application-layer internet use data",
     pairsWith: ["npci-upi", "pmjdy", "vahan"],
-    exampleUses: "Circle tele-density time series; broadband adoption vs digital payments",
+    exampleUses:
+      "Circle tele-density time series; broadband adoption vs digital payments",
     cluster: "digital-economy",
   },
   {
@@ -2906,7 +3342,11 @@ const governmentDatasets: DatasetDraft[] = [
     shortTitle: "NPCI UPI",
     abbreviations: ["UPI", "NPCI"],
     categories: ["digital payments", "finance", "banking"],
-    technicalTags: ["monthly statistics", "open tables", "payments infrastructure"],
+    technicalTags: [
+      "monthly statistics",
+      "open tables",
+      "payments infrastructure",
+    ],
     host: "NPCI",
     institution: "National Payments Corporation of India",
     accessUrl: "https://www.npci.org.in/product/upi/product-statistics",
@@ -2927,7 +3367,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "National aggregates first; limited public micro-geography; product table layout changes over time",
     pairsWith: ["rbi-dbie", "pmjdy", "trai-subscriptions", "epfo-payroll"],
-    exampleUses: "UPI adoption curves; payments intensity vs formal employment and banking inclusion",
+    exampleUses:
+      "UPI adoption curves; payments intensity vs formal employment and banking inclusion",
     flags: ["good-starting"],
     cluster: "digital-economy",
   },
@@ -2959,7 +3400,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Mission account counts ≠ active usage; not full banking microdata; pair with RBI series for system credit/deposit stock",
     pairsWith: ["rbi-dbie", "npci-upi", "epfo-payroll", "im-pds"],
-    exampleUses: "State account penetration; deposit balances vs digital payment growth",
+    exampleUses:
+      "State account penetration; deposit balances vs digital payment growth",
     flags: ["good-starting"],
     cluster: "banking-finance",
   },
@@ -2990,8 +3432,14 @@ const governmentDatasets: DatasetDraft[] = [
       "Paid/licensed but important harmonized macro and state time-series source for research and teaching",
     limitations:
       "Subscription required; not open data; still verify definitions against RBI/MoSPI originals for critical work",
-    pairsWith: ["rbi-dbie", "national-accounts-statistics", "cpi-combined", "iip"],
-    exampleUses: "State GSDP panels; long-run banking and price series with cleaner packaging than scattered PDFs",
+    pairsWith: [
+      "rbi-dbie",
+      "national-accounts-statistics",
+      "cpi-combined",
+      "iip",
+    ],
+    exampleUses:
+      "State GSDP panels; long-run banking and price series with cleaner packaging than scattered PDFs",
     cluster: "public-finance",
   },
 
@@ -3006,7 +3454,8 @@ const governmentDatasets: DatasetDraft[] = [
     host: "Government of Kerala / NIC",
     institution: "Kerala State IT Mission / state departments",
     accessUrl: "https://kerala.data.gov.in/",
-    docsUrl: "https://itmission.kerala.gov.in/projects/open-government-data-portal",
+    docsUrl:
+      "https://itmission.kerala.gov.in/projects/open-government-data-portal",
     accessType: "open-download",
     sizeTier: "Very large",
     formats: ["CSV", "portal tables", "APIs where published"],
@@ -3056,7 +3505,8 @@ const governmentDatasets: DatasetDraft[] = [
     limitations:
       "Metadata quality uneven; many resources are PDFs or thin CSVs—inspect each dataset",
     pairsWith: ["kerala-ogd-portal", "nss-microdata-catalog", "lgd"],
-    exampleUses: "Discover ministry and state-published open files before deep survey work",
+    exampleUses:
+      "Discover ministry and state-published open files before deep survey work",
     flags: ["good-starting"],
     cluster: "data-catalogs",
     sourceKind: "government",
@@ -3075,7 +3525,12 @@ const governmentDatasets: DatasetDraft[] = [
     sizeTier: "Large",
     formats: ["dashboard", "catalogue views"],
     updateFrequency: "Operational platform updates",
-    geographyLevel: ["India", "state", "district", "block (indicator-dependent)"],
+    geographyLevel: [
+      "India",
+      "state",
+      "district",
+      "block (indicator-dependent)",
+    ],
     timeCoverage: "Multi-source contemporary development indicators",
     keyVariables: [
       "state / district indicators",
@@ -3094,9 +3549,10 @@ const governmentDatasets: DatasetDraft[] = [
   },
 ];
 
-/** Combined catalog: government + academic + GitHub community */
+/** Combined catalog: government + automated discovery + academic + GitHub community */
 export const datasets: Dataset[] = [
   ...governmentDatasets,
+  ...discoveredDatasets,
   ...academicDatasets,
   ...githubDatasets,
 ].map(withSummary);

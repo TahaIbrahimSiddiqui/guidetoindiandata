@@ -58,6 +58,36 @@ function isEmpty(v) {
 }
 
 // Criterion 1 + 2: every dataset
+const slugCounts = new Map();
+const titleCounts = new Map();
+for (const d of datasets) {
+  slugCounts.set(d.slug, (slugCounts.get(d.slug) || 0) + 1);
+  titleCounts.set(
+    String(d.title || "")
+      .trim()
+      .toLowerCase(),
+    (titleCounts.get(
+      String(d.title || "")
+        .trim()
+        .toLowerCase(),
+    ) || 0) + 1,
+  );
+}
+const duplicateSlugs = [...slugCounts.entries()]
+  .filter(([, count]) => count > 1)
+  .map(([slug]) => slug);
+const duplicateTitles = [...titleCounts.entries()]
+  .filter(([title, count]) => title && count > 1)
+  .map(([title]) => title);
+assert(
+  duplicateSlugs.length === 0,
+  `duplicate slugs: ${duplicateSlugs.join(", ")}`,
+);
+assert(
+  duplicateTitles.length === 0,
+  `duplicate titles: ${duplicateTitles.join(", ")}`,
+);
+
 const hardFails = [];
 const noAccess = [];
 const thin = [];
@@ -119,7 +149,13 @@ const pages = [
   ["src/app/privacy/page.tsx", ["Privacy"]],
   [
     "src/app/(catalog)/datasets/[slug]/page.tsx",
-    ["resolveGuides", "resolveVariables", "bestFor", "limitations", "Open access portal"],
+    [
+      "resolveGuides",
+      "resolveVariables",
+      "bestFor",
+      "limitations",
+      "Open access portal",
+    ],
   ],
 ];
 for (const [rel, markers] of pages) {
@@ -152,7 +188,11 @@ const badAccessUrls = [];
 const badGuideUrls = [];
 for (const d of datasets) {
   if (d.accessUrl && !isHttpUrl(d.accessUrl)) {
-    badAccessUrls.push({ slug: d.slug, field: "accessUrl", value: d.accessUrl });
+    badAccessUrls.push({
+      slug: d.slug,
+      field: "accessUrl",
+      value: d.accessUrl,
+    });
   }
   if (d.docsUrl && !isHttpUrl(d.docsUrl)) {
     badAccessUrls.push({ slug: d.slug, field: "docsUrl", value: d.docsUrl });
@@ -166,9 +206,18 @@ for (const d of datasets) {
     }
   }
 }
-assert(brokenPairs.length === 0, `broken pairsWith: ${brokenPairs.slice(0, 10).join("; ")}`);
-assert(badAccessUrls.length === 0, `non-http access/docs: ${JSON.stringify(badAccessUrls.slice(0, 5))}`);
-assert(badGuideUrls.length === 0, `bad guide urls: ${JSON.stringify(badGuideUrls.slice(0, 5))}`);
+assert(
+  brokenPairs.length === 0,
+  `broken pairsWith: ${brokenPairs.slice(0, 10).join("; ")}`,
+);
+assert(
+  badAccessUrls.length === 0,
+  `non-http access/docs: ${JSON.stringify(badAccessUrls.slice(0, 5))}`,
+);
+assert(
+  badGuideUrls.length === 0,
+  `bad guide urls: ${JSON.stringify(badGuideUrls.slice(0, 5))}`,
+);
 
 for (const s of seriesList) {
   for (const w of s.waves || []) {
@@ -189,7 +238,10 @@ assert(
     !detailPage.includes("docsUrl && !paperDoi"),
   "dataset page must not hide Documentation when paperDoi is set",
 );
-assert(detailPage.includes("Documentation"), "dataset page has Documentation CTA label");
+assert(
+  detailPage.includes("Documentation"),
+  "dataset page has Documentation CTA label",
+);
 assert(detailPage.includes("Open paper"), "dataset page has Open paper CTA");
 assert(detailPage.includes("Repository"), "dataset page has Repository CTA");
 assert(
@@ -218,7 +270,8 @@ const aboutText = readFileSync(
   "utf8",
 );
 assert(
-  aboutText.includes('href="/map"') && aboutText.includes("neural ecosystem map"),
+  aboutText.includes('href="/map"') &&
+    aboutText.includes("neural ecosystem map"),
   "About how-to-use map link should point at /map",
 );
 

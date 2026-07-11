@@ -5,7 +5,7 @@
  * Run: npx tsx scripts/page-content-audit.mjs
  * Env: SCRATCH=... (defaults to implementer scratch)
  */
-import { writeFileSync, mkdirSync, readFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { datasets } from "../src/data/datasets.ts";
 import { resolveGuides } from "../src/lib/guides.ts";
@@ -58,26 +58,32 @@ function auditDataset(d) {
   for (const f of REQUIRED_ARRAY_FIELDS) {
     const arr = d[f];
     if (!Array.isArray(arr) || arr.length === 0) failedFields.push(f);
-    else if (arr.some((x) => isEmptyString(x))) failedFields.push(`${f}[empty-item]`);
+    else if (arr.some((x) => isEmptyString(x)))
+      failedFields.push(`${f}[empty-item]`);
   }
 
   for (const f of ["bestFor", "limitations", "exampleUses"]) {
     const s = String(d[f] ?? "").trim();
-    if (s && s.length < THIN_MIN) thinFields.push({ field: f, length: s.length, value: s });
+    if (s && s.length < THIN_MIN)
+      thinFields.push({ field: f, length: s.length, value: s });
   }
 
   const guides = resolveGuides(d);
   if (guides.length < 1) failedFields.push("guides");
 
   const vars = resolveVariables(d);
-  if (!vars.entries || vars.entries.length < 1) failedFields.push("variables.entries");
+  if (!vars.entries || vars.entries.length < 1)
+    failedFields.push("variables.entries");
   if (isEmptyString(vars.source)) failedFields.push("variables.source");
-  if (vars.entries?.some((e) => isEmptyString(e.name) || isEmptyString(e.label))) {
+  if (
+    vars.entries?.some((e) => isEmptyString(e.name) || isEmptyString(e.label))
+  ) {
     failedFields.push("variables.name/label");
   }
 
   const hasAccessLink = !!(d.accessUrl || d.docsUrl || d.dataDoi);
-  const accessOk = hasAccessLink || (guides.length >= 1 && !isEmptyString(d.host));
+  const accessOk =
+    hasAccessLink || (guides.length >= 1 && !isEmptyString(d.host));
 
   return {
     slug: d.slug,
@@ -97,6 +103,27 @@ function auditDataset(d) {
 }
 
 const rows = datasets.map(auditDataset);
+const slugCounts = new Map();
+const titleCounts = new Map();
+for (const d of datasets) {
+  slugCounts.set(d.slug, (slugCounts.get(d.slug) || 0) + 1);
+  titleCounts.set(
+    String(d.title || "")
+      .trim()
+      .toLowerCase(),
+    (titleCounts.get(
+      String(d.title || "")
+        .trim()
+        .toLowerCase(),
+    ) || 0) + 1,
+  );
+}
+const duplicateSlugs = [...slugCounts.entries()]
+  .filter(([, count]) => count > 1)
+  .map(([slug]) => slug);
+const duplicateTitles = [...titleCounts.entries()]
+  .filter(([title, count]) => title && count > 1)
+  .map(([title]) => title);
 const hardFails = rows.filter((r) => r.hardFail);
 const noAccessLink = rows.filter((r) => !r.hasAccessLink);
 const thinRows = rows.filter((r) => r.thinFields.length > 0);
@@ -104,7 +131,8 @@ const residualSkips = noAccessLink
   .filter((r) => r.accessOk && !r.hardFail)
   .map((r) => ({
     slug: r.slug,
-    reason: "No public accessUrl/docsUrl/dataDoi after catalog; host + guides retained",
+    reason:
+      "No public accessUrl/docsUrl/dataDoi after catalog; host + guides retained",
     host: r.host,
     guideCount: r.guideCount,
   }));
@@ -113,6 +141,10 @@ const accessHardFails = noAccessLink.filter((r) => !r.accessOk || r.hardFail);
 const report = {
   generatedAt: new Date().toISOString(),
   total: datasets.length,
+  duplicates: {
+    slugs: duplicateSlugs,
+    titles: duplicateTitles,
+  },
   hardFailCount: hardFails.length,
   hardFails: hardFails.map((r) => ({
     slug: r.slug,
@@ -131,7 +163,10 @@ const report = {
   rows,
 };
 
-writeFileSync(`${SCRATCH}/page-content-audit.json`, JSON.stringify(report, null, 2));
+writeFileSync(
+  `${SCRATCH}/page-content-audit.json`,
+  JSON.stringify(report, null, 2),
+);
 writeFileSync(
   `${SCRATCH}/access-links.json`,
   JSON.stringify(
@@ -181,17 +216,41 @@ for (const c of domainClusters) {
 // Page modules exist and have primary copy markers
 const root = process.cwd();
 const pageFiles = [
-  { path: "src/app/(marketing)/page.tsx", markers: ["LandingExperience", "export"] },
-  { path: "src/app/(marketing)/map/page.tsx", markers: ["MapExperience", "export"] },
-  { path: "src/app/(catalog)/explore/page.tsx", markers: ["ExploreClient", "export"] },
-  { path: "src/components/ExploreClient.tsx", markers: ["Explore", "filter", "search"] },
-  { path: "src/app/(catalog)/clusters/page.tsx", markers: ["cluster", "export"] },
+  {
+    path: "src/app/(marketing)/page.tsx",
+    markers: ["LandingExperience", "export"],
+  },
+  {
+    path: "src/app/(marketing)/map/page.tsx",
+    markers: ["MapExperience", "export"],
+  },
+  {
+    path: "src/app/(catalog)/explore/page.tsx",
+    markers: ["ExploreClient", "export"],
+  },
+  {
+    path: "src/components/ExploreClient.tsx",
+    markers: ["Explore", "filter", "search"],
+  },
+  {
+    path: "src/app/(catalog)/clusters/page.tsx",
+    markers: ["cluster", "export"],
+  },
   { path: "src/app/(catalog)/series/page.tsx", markers: ["series", "export"] },
-  { path: "src/app/(catalog)/series/[slug]/page.tsx", markers: ["description", "export"] },
+  {
+    path: "src/app/(catalog)/series/[slug]/page.tsx",
+    markers: ["description", "export"],
+  },
   { path: "src/app/(catalog)/academic/page.tsx", markers: ["export"] },
-  { path: "src/app/(catalog)/about/page.tsx", markers: ["About", "What each record", "Caveats"] },
+  {
+    path: "src/app/(catalog)/about/page.tsx",
+    markers: ["About", "What each record", "Caveats"],
+  },
   { path: "src/app/privacy/page.tsx", markers: ["Privacy", "export"] },
-  { path: "src/app/(catalog)/datasets/[slug]/page.tsx", markers: ["bestFor", "limitations", "resolveGuides", "resolveVariables"] },
+  {
+    path: "src/app/(catalog)/datasets/[slug]/page.tsx",
+    markers: ["bestFor", "limitations", "resolveGuides", "resolveVariables"],
+  },
 ];
 
 for (const pf of pageFiles) {
@@ -204,35 +263,56 @@ for (const pf of pageFiles) {
   const text = readFileSync(full, "utf8");
   const missing = pf.markers.filter((m) => !text.includes(m));
   // empty title/lede strings in source
-  const emptyTitle = /title:\s*["']\s*["']/.test(text) || /page-title[^>]*>\s*</.test(text);
+  const emptyTitle =
+    /title:\s*["']\s*["']/.test(text) || /page-title[^>]*>\s*</.test(text);
   const emptyLede = /page-lede[^>]*>\s*</.test(text);
   check(
     `page:${pf.path}`,
     missing.length === 0 && !emptyTitle && !emptyLede,
-    missing.length ? `missing markers: ${missing.join(",")}` : emptyTitle || emptyLede ? "empty title/lede" : "ok",
+    missing.length
+      ? `missing markers: ${missing.join(",")}`
+      : emptyTitle || emptyLede
+        ? "empty title/lede"
+        : "ok",
   );
 }
 
 // Landing / Explore / Map content strings in components
-const landing = readFileSync(join(root, "src/components/LandingExperience.tsx"), "utf8");
+const landing = readFileSync(
+  join(root, "src/components/LandingExperience.tsx"),
+  "utf8",
+);
 check(
   "landing:primary-copy",
   landing.length > 500 && /Explore|dataset|map/i.test(landing),
   `chars=${landing.length}`,
 );
-const explore = readFileSync(join(root, "src/components/ExploreClient.tsx"), "utf8");
+const explore = readFileSync(
+  join(root, "src/components/ExploreClient.tsx"),
+  "utf8",
+);
 check(
   "explore:title-filters",
   /Explore|search|filter/i.test(explore) && explore.length > 400,
   `chars=${explore.length}`,
 );
-const mapExp = readFileSync(join(root, "src/components/MapExperience.tsx"), "utf8");
+const mapExp = readFileSync(
+  join(root, "src/components/MapExperience.tsx"),
+  "utf8",
+);
 check("map:experience", mapExp.length > 200, `chars=${mapExp.length}`);
 const privacy = readFileSync(join(root, "src/app/privacy/page.tsx"), "utf8");
-check("privacy:body", privacy.length > 300 && !/TODO|TBD|FIXME/.test(privacy), `chars=${privacy.length}`);
+check(
+  "privacy:body",
+  privacy.length > 300 && !/TODO|TBD|FIXME/.test(privacy),
+  `chars=${privacy.length}`,
+);
 
 const routesTxt = routeChecks
-  .map((c) => `${c.ok ? "PASS" : "FAIL"}  ${c.name}${c.detail ? " — " + c.detail : ""}`)
+  .map(
+    (c) =>
+      `${c.ok ? "PASS" : "FAIL"}  ${c.name}${c.detail ? " — " + c.detail : ""}`,
+  )
   .join("\n");
 const routesSummary = {
   total: routeChecks.length,
@@ -255,12 +335,16 @@ const summary = {
   hardFailSlugs: hardFails.map((r) => r.slug),
   noAccessSlugs: noAccessLink.map((r) => r.slug),
   thinSlugs: thinRows.map((r) => r.slug),
+  duplicateSlugs,
+  duplicateTitles,
 };
 
 console.log(JSON.stringify(summary, null, 2));
 
 const exitCode =
   report.hardFailCount === 0 &&
+  duplicateSlugs.length === 0 &&
+  duplicateTitles.length === 0 &&
   accessHardFails.length === 0 &&
   routesSummary.fail === 0
     ? 0

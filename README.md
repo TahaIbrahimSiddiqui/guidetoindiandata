@@ -71,16 +71,18 @@ GitHub Actions runs **Bi-monthly catalog refresh** on the 1st of odd months (Jan
 | Pull request | Opens a PR with `content/automation/*` reports (and summary edits if apply is on) |
 | Site update | Merging the PR to `main` triggers the existing Pages deploy workflow |
 
-### Secrets to add (repo → Settings → Secrets and variables → Actions)
+### Secrets (repo → Settings → Secrets and variables → Actions)
 
-| Secret | Required | Notes |
-|--------|----------|--------|
-| `GEMINI_API_KEY` (or `GOOGLE_API_KEY` / `AI_API_KEY`) | for AI | [Google AI Studio](https://aistudio.google.com/apikey) Gemini API key |
-| `AI_MODEL` | no | Default **`gemini-2.5-pro`** with **Google Search** grounding |
-| `AI_PROVIDER` | no | Default `google` |
-| `AI_BASE_URL` | no | Only if using an OpenAI-compatible provider |
+| Secret | Notes |
+|--------|--------|
+| `AI_API_KEY` | **Dartmouth Chat** API key — [chat.dartmouth.edu](https://chat.dartmouth.edu) → Profile → Settings → Account → API Key |
+| `AI_BASE_URL` | Optional; default `https://chat.dartmouth.edu/api` |
 
-The bi-monthly job uses **Gemini Pro + Google Search** to verify hosts/access tips and improve thin catalog copy, then opens a PR.
+Docs: [Using the Dartmouth Chat API](https://rc.dartmouth.edu/ai/online-resources/using-the-api/)
+
+The bi-monthly job calls Dartmouth’s OpenAI-compatible Chat Completions API (`POST /chat/completions`), auto-picks a pro-class model from `GET /models`, drafts catalog copy, and opens a PR.
+
+List models: Actions → **List AI models**.
 
 Manual apply of AI summaries: run workflow with **apply_ai_summaries = true** (still goes through a PR).
 
@@ -88,9 +90,10 @@ Local:
 
 ```bash
 npm run refresh:bimonthly
-# Gemini + Google Search (default):
-# $env:AI_API_KEY="your-gemini-key"; $env:AI_PROVIDER="google"; $env:AI_MODEL="gemini-2.5-pro"
+# Dartmouth (default):
+# $env:AI_API_KEY="your-dartmouth-key"; $env:AI_PROVIDER="dartmouth"
 npm run refresh:ai
+npx tsx scripts/list-ai-models.mjs
 ```
 
 ## License

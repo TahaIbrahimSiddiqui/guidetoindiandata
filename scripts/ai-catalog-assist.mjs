@@ -1,18 +1,21 @@
 /**
  * Optional AI assist for bi-monthly catalog refresh.
  *
- * Default: Google Gemini Pro + Google Search grounding
- * (generativelanguage.googleapis.com).
+ * Default provider: Dartmouth Chat API (OpenAI Chat Completions compatible)
+ *   Base: https://chat.dartmouth.edu/api
+ *   POST /chat/completions
+ *   Auth: Authorization: bearer <key>
+ *   Docs: https://rc.dartmouth.edu/ai/online-resources/using-the-api/
+ *   Models: GET /models  (or hover model names in chat.dartmouth.edu)
  *
  * Env:
- *   AI_API_KEY | GEMINI_API_KEY | GOOGLE_API_KEY  (required for AI)
- *   AI_PROVIDER   google | openai   (default: google)
- *   AI_MODEL      default gemini-2.5-pro (latest stable pro with Search)
- *   AI_BASE_URL   optional override (OpenAI-compatible path if provider=openai)
- *   AI_GOOGLE_SEARCH  "true" (default) | "false" — enable Search grounding
- *   AI_MAX_ITEMS  default 12
- *   AI_BATCH_SIZE default 4 (datasets per Gemini call)
- *   AI_APPLY      write summaries into datasetSummaries.ts
+ *   AI_API_KEY | DARTMOUTH_API_KEY  (required)
+ *   AI_PROVIDER  dartmouth | google | openai  (default: dartmouth)
+ *   AI_MODEL     optional; auto-picks latest pro-class model from /models if unset
+ *   AI_BASE_URL  default https://chat.dartmouth.edu/api for dartmouth
+ *   AI_MAX_ITEMS default 12
+ *   AI_BATCH_SIZE default 4
+ *   AI_APPLY     write summaries into datasetSummaries.ts
  *
  * Run: npx tsx scripts/ai-catalog-assist.mjs
  */
@@ -25,24 +28,13 @@ const OUT_DIR = join(ROOT, "content", "automation");
 
 const KEY =
   process.env.AI_API_KEY ||
+  process.env.DARTMOUTH_API_KEY ||
   process.env.GEMINI_API_KEY ||
   process.env.GOOGLE_API_KEY ||
   process.env.OPENAI_API_KEY ||
   "";
 
-const PROVIDER = (
-  process.env.AI_PROVIDER ||
-  (process.env.AI_BASE_URL ? "openai" : "google")
-).toLowerCase();
-
-const MODEL =
-  process.env.AI_MODEL ||
-  (PROVIDER === "google" ? "gemini-2.5-pro" : "gpt-4o-mini");
-
-const GOOGLE_SEARCH =
-  process.env.AI_GOOGLE_SEARCH !== "0" &&
-  process.env.AI_GOOGLE_SEARCH !== "false" &&
-  process.env.AI_GOOGLE_SEARCH !== "no";
+const PROVIDER = (process.env.AI_PROVIDER || "dartmouth").toLowerCase();
 
 const MAX = Math.max(1, Number(process.env.AI_MAX_ITEMS || 12));
 const BATCH = Math.max(1, Number(process.env.AI_BATCH_SIZE || 4));
@@ -50,6 +42,10 @@ const APPLY =
   process.env.AI_APPLY === "1" ||
   process.env.AI_APPLY === "true" ||
   process.env.AI_APPLY === "yes";
+
+const DARTMOUTH_BASE = (
+  process.env.AI_BASE_URL || "https://chat.dartmouth.edu/api"
+).replace(/\/$/, "");
 
 mkdirSync(OUT_DIR, { recursive: true });
 
@@ -69,8 +65,6 @@ function needsSummaryHelp(d) {
 function systemPrompt() {
   return `You maintain the Indian Data Guide catalog (public research catalog of India statistical and administrative datasets).
 
-Use Google Search (when available) to verify current official access pages, host institutions, and access friction for each dataset. Prefer .gov.in, Dataverse DOIs, and well-known academic hosts.
-
 Return JSON only with this shape:
 {
   "proposals": [
@@ -79,16 +73,14 @@ Return JSON only with this shape:
       "summary": "1-2 sentences: what researchers use this for (specific India context)",
       "bestFor": "one sentence (≥24 chars)",
       "limitations": "one honest sentence (≥24 chars)",
-      "notes": "optional: verified access tip or URL status",
-      "suggestedAccessUrl": "optional https URL only if search confirms a better official portal"
+      "notes": "optional: access tip"
     }
   ]
 }
 
 Rules:
 - Never invent DOIs or claim open access when accessType is registration/DUA/paid/request-only.
-- Keep India-specific, plain language, no marketing fluff.
-- Only include suggestedAccessUrl when you are confident from search results.
+- Keep India-specific, plain language.
 - Include every input slug in proposals.`;
 }
 
@@ -107,71 +99,110 @@ function extractJson(text) {
   }
 }
 
-/** Google Gemini generateContent + optional Google Search grounding */
-async function geminiGenerate(userText) {
-  const model = MODEL;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(KEY)}`;
-
-  const body = {
-    systemInstruction: {
-      parts: [{ text: systemPrompt() }],
-    },
-    contents: [
-      {
-        role: "user",
-        parts: [{ text: userText }],
-      },
-    ],
-    generationConfig: {
-      temperature: 0.3,
-      // JSON mode; if the API rejects with tools, we retry without mime type.
-      responseMimeType: "application/json",
-    },
-  };
-
-  if (GOOGLE_SEARCH) {
-    body.tools = [{ google_search: {} }];
+function pickPreferredModel(ids) {
+  const prefer = [
+    /claude.*opus.*4/i,
+    /claude.*sonnet.*4/i,
+    /claude-4/i,
+    /claude.*3-7.*sonnet/i,
+    /claude.*3-5.*sonnet/i,
+    /gpt-5(?!.*mini)/i,
+    /gpt-4\.1(?!.*mini)/i,
+    /gpt-4o(?!-mini)/i,
+    /gemini.*2\.5.*pro/i,
+    /gemini.*pro/i,
+    /claude.*3-5.*haiku/i,
+    /gpt-4o-mini/i,
+  ];
+  for (const re of prefer) {
+    const hit = ids.find((id) => re.test(id));
+    if (hit) return hit;
   }
-
-  async function post(payload) {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(180000),
-    });
-    const text = await res.text();
-    return { res, text };
-  }
-
-  let { res, text } = await post(body);
-
-  // Some model/tool combos reject responseMimeType with google_search — retry.
-  if (!res.ok && GOOGLE_SEARCH && /responseMimeType|mime|tool/i.test(text)) {
-    const retry = structuredClone(body);
-    delete retry.generationConfig.responseMimeType;
-    retry.contents[0].parts[0].text +=
-      "\n\nRespond with a single JSON object only, no markdown.";
-    ({ res, text } = await post(retry));
-  }
-
-  if (!res.ok) {
-    throw new Error(`Gemini API ${res.status}: ${text.slice(0, 600)}`);
-  }
-
-  const data = JSON.parse(text);
-  const parts = data.candidates?.[0]?.content?.parts || [];
-  const content = parts.map((p) => p.text || "").join("\n");
-  const grounding =
-    data.candidates?.[0]?.groundingMetadata ||
-    data.candidates?.[0]?.grounding_metadata ||
-    null;
-
-  return { parsed: extractJson(content), grounding, raw: data };
+  return ids[0] || null;
 }
 
-/** OpenAI-compatible fallback (no Google Search) */
-async function openaiChat(userText) {
+async function listDartmouthModels() {
+  const res = await fetch(`${DARTMOUTH_BASE}/models`, {
+    headers: {
+      Authorization: `bearer ${KEY}`,
+      Accept: "application/json",
+    },
+    signal: AbortSignal.timeout(60000),
+  });
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`Dartmouth /models ${res.status}: ${text.slice(0, 400)}`);
+  }
+  const data = JSON.parse(text);
+  return (data.data || [])
+    .map((m) => m.id)
+    .filter(Boolean);
+}
+
+async function resolveModel() {
+  if (process.env.AI_MODEL) return process.env.AI_MODEL;
+  if (PROVIDER === "dartmouth") {
+    const ids = await listDartmouthModels();
+    const pick = pickPreferredModel(ids);
+    if (!pick) throw new Error("No models returned from Dartmouth /models");
+    return pick;
+  }
+  if (PROVIDER === "google") return "gemini-2.5-pro";
+  return "gpt-4o-mini";
+}
+
+/** Dartmouth Chat Completions (OpenAI-compatible path) */
+async function dartmouthChat(model, userText) {
+  const res = await fetch(`${DARTMOUTH_BASE}/chat/completions`, {
+    method: "POST",
+    headers: {
+      Authorization: `bearer ${KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model,
+      stream: false,
+      temperature: 0.3,
+      messages: [
+        { role: "system", content: systemPrompt() },
+        { role: "user", content: userText },
+      ],
+    }),
+    signal: AbortSignal.timeout(180000),
+  });
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`Dartmouth chat ${res.status}: ${text.slice(0, 600)}`);
+  }
+  const data = JSON.parse(text);
+  const content = data.choices?.[0]?.message?.content;
+  return extractJson(content);
+}
+
+async function geminiGenerate(model, userText) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(KEY)}`;
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt() }] },
+    contents: [{ role: "user", parts: [{ text: userText }] }],
+    generationConfig: { temperature: 0.3, responseMimeType: "application/json" },
+    tools: [{ google_search: {} }],
+  };
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(180000),
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Gemini ${res.status}: ${text.slice(0, 500)}`);
+  const data = JSON.parse(text);
+  const content = (data.candidates?.[0]?.content?.parts || [])
+    .map((p) => p.text || "")
+    .join("\n");
+  return extractJson(content);
+}
+
+async function openaiChat(model, userText) {
   const base = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(
     /\/$/,
     "",
@@ -179,11 +210,11 @@ async function openaiChat(userText) {
   const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${KEY}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       temperature: 0.3,
       response_format: { type: "json_object" },
       messages: [
@@ -194,15 +225,17 @@ async function openaiChat(userText) {
     signal: AbortSignal.timeout(180000),
   });
   const text = await res.text();
-  if (!res.ok) throw new Error(`OpenAI-compatible API ${res.status}: ${text.slice(0, 500)}`);
+  if (!res.ok) throw new Error(`OpenAI-compat ${res.status}: ${text.slice(0, 500)}`);
   const data = JSON.parse(text);
-  const content = data.choices?.[0]?.message?.content;
-  return { parsed: extractJson(content), grounding: null, raw: data };
+  return extractJson(data.choices?.[0]?.message?.content);
 }
 
-async function generate(userText) {
-  if (PROVIDER === "openai") return openaiChat(userText);
-  return geminiGenerate(userText);
+async function generate(model, userText) {
+  if (PROVIDER === "google" || PROVIDER === "gemini") {
+    return geminiGenerate(model, userText);
+  }
+  if (PROVIDER === "openai") return openaiChat(model, userText);
+  return dartmouthChat(model, userText);
 }
 
 function pickCandidates() {
@@ -252,10 +285,7 @@ function applySummaries(proposals) {
     } else {
       const marker = "\n};\n\nexport function getDatasetSummary";
       if (!src.includes(marker)) continue;
-      src = src.replace(
-        marker,
-        `\n  ${key}:\n    "${escaped}",${marker}`,
-      );
+      src = src.replace(marker, `\n  ${key}:\n    "${escaped}",${marker}`);
       applied++;
     }
   }
@@ -267,21 +297,19 @@ async function main() {
   const report = {
     ranAt: new Date().toISOString(),
     provider: PROVIDER,
-    model: MODEL,
-    googleSearch: PROVIDER === "google" && GOOGLE_SEARCH,
+    model: null,
+    baseUrl: PROVIDER === "dartmouth" ? DARTMOUTH_BASE : process.env.AI_BASE_URL || null,
     apply: APPLY,
     skipped: false,
     candidates: 0,
     proposals: [],
-    groundingNotes: [],
     applied: 0,
     error: null,
   };
 
   if (!KEY) {
     report.skipped = true;
-    report.error =
-      "AI_API_KEY / GEMINI_API_KEY / GOOGLE_API_KEY not set — audit-only bi-monthly run.";
+    report.error = "AI_API_KEY not set — audit-only bi-monthly run.";
     writeFileSync(
       join(OUT_DIR, `ai-assist-${stamp()}.json`),
       JSON.stringify(report, null, 2),
@@ -298,29 +326,23 @@ async function main() {
       join(OUT_DIR, `ai-assist-${stamp()}.json`),
       JSON.stringify(report, null, 2),
     );
-    console.log(JSON.stringify({ ok: true, candidates: 0, provider: PROVIDER, model: MODEL }));
+    console.log(JSON.stringify({ ok: true, candidates: 0, provider: PROVIDER }));
     process.exit(0);
   }
 
   try {
+    const model = await resolveModel();
+    report.model = model;
+
     const allProposals = [];
     for (const batch of chunk(candidates, BATCH)) {
       const userText = JSON.stringify({
-        task: "Improve thin or generic catalog copy; use Google Search to verify access hosts when possible",
+        task: "Improve thin or generic catalog copy for Indian datasets",
         items: batch,
       });
-      const { parsed, grounding } = await generate(userText);
+      const parsed = await generate(model, userText);
       const proposals = Array.isArray(parsed.proposals) ? parsed.proposals : [];
       allProposals.push(...proposals);
-      if (grounding) {
-        report.groundingNotes.push({
-          batchSlugs: batch.map((b) => b.slug),
-          webSearchQueries: grounding.webSearchQueries || grounding.web_search_queries || null,
-          groundingChunks: (grounding.groundingChunks || grounding.grounding_chunks || [])
-            .slice(0, 8)
-            .map((c) => c.web?.uri || c.web?.title || c),
-        });
-      }
     }
 
     report.proposals = allProposals;
@@ -329,8 +351,8 @@ async function main() {
       `# Bi-monthly AI catalog assist — ${stamp()}`,
       "",
       `- Provider: \`${PROVIDER}\``,
-      `- Model: \`${MODEL}\``,
-      `- Google Search grounding: ${report.googleSearch ? "on" : "off"}`,
+      `- Model: \`${model}\``,
+      `- Base: \`${report.baseUrl || "n/a"}\``,
       `- Candidates: ${candidates.length}`,
       `- Proposals: ${allProposals.length}`,
       `- Apply mode: ${APPLY}`,
@@ -344,15 +366,6 @@ async function main() {
       if (p.bestFor) md.push(`- **bestFor:** ${p.bestFor}`);
       if (p.limitations) md.push(`- **limitations:** ${p.limitations}`);
       if (p.notes) md.push(`- **notes:** ${p.notes}`);
-      if (p.suggestedAccessUrl) md.push(`- **suggestedAccessUrl:** ${p.suggestedAccessUrl}`);
-      md.push("");
-    }
-    if (report.groundingNotes.length) {
-      md.push("## Search grounding (sample)", "");
-      for (const g of report.groundingNotes) {
-        md.push(`- Batch \`${(g.batchSlugs || []).join(", ")}\``);
-        if (g.webSearchQueries) md.push(`  - Queries: ${JSON.stringify(g.webSearchQueries)}`);
-      }
       md.push("");
     }
 
@@ -374,8 +387,7 @@ async function main() {
       JSON.stringify({
         ok: true,
         provider: PROVIDER,
-        model: MODEL,
-        googleSearch: report.googleSearch,
+        model,
         candidates: candidates.length,
         proposals: allProposals.length,
         applied: report.applied,

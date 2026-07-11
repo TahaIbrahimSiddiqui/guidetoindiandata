@@ -1,8 +1,14 @@
-# One-shot / on-demand: list Gemini models available to the repo API key.
-name: List Gemini models
+# On-demand: list models available to the repo AI_API_KEY
+# Default: Dartmouth Chat API (https://chat.dartmouth.edu/api/models)
+name: List AI models
 
 on:
   workflow_dispatch:
+    inputs:
+      provider:
+        description: "dartmouth | google | openai"
+        required: false
+        default: "dartmouth"
 
 permissions:
   contents: read
@@ -23,15 +29,17 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: List models via Gemini API
+      - name: List models
         env:
-          AI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY || secrets.AI_API_KEY }}
-        run: npx tsx scripts/list-gemini-models.mjs
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_PROVIDER: ${{ github.event.inputs.provider || 'dartmouth' }}
+          AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
+        run: npx tsx scripts/list-ai-models.mjs
 
       - name: Upload result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gemini-models-${{ github.run_id }}
-          path: content/automation/gemini-models-available.json
+          name: ai-models-${{ github.run_id }}
+          path: content/automation/ai-models-available.json
           if-no-files-found: warn

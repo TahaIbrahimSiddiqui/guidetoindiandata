@@ -41,16 +41,15 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Run bi-monthly refresh (audit + Gemini Pro + Google Search)
+      - name: Run bi-monthly refresh (audit + Dartmouth Chat AI)
         env:
           SCRATCH: ${{ github.workspace }}/content/automation/.scratch
-          # Prefer dedicated Gemini secret; fall back to AI_API_KEY
-          AI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GOOGLE_API_KEY || secrets.AI_API_KEY }}
-          AI_PROVIDER: google
-          # Latest stable Pro model with Google Search grounding
-          AI_MODEL: ${{ vars.AI_MODEL || 'gemini-2.5-pro' }}
-          AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
-          AI_GOOGLE_SEARCH: "true"
+          # Dartmouth Chat API key (https://rc.dartmouth.edu/ai/online-resources/using-the-api/)
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_PROVIDER: dartmouth
+          # Optional override; if empty, auto-picks latest pro-class model from /models
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          AI_BASE_URL: ${{ secrets.AI_BASE_URL || 'https://chat.dartmouth.edu/api' }}
           AI_MAX_ITEMS: ${{ github.event.inputs.max_ai_items || '12' }}
           AI_BATCH_SIZE: "4"
           AI_APPLY: ${{ github.event.inputs.apply_ai_summaries || 'false' }}
@@ -77,7 +76,8 @@ jobs:
             Automated bi-monthly catalog maintenance.
 
             - Full content/link audit via `scripts/page-content-audit.mjs`
-            - AI assist: **Gemini Pro + Google Search grounding** when a Gemini/Google key is set
+            - AI assist via **Dartmouth Chat API** (`https://chat.dartmouth.edu/api`) when `AI_API_KEY` is set
+            - Auto-selects a pro-class model from `GET /models` unless `AI_MODEL` var is set
             - Report under `content/automation/`
 
             ### Review
@@ -85,15 +85,16 @@ jobs:
             2. If AI applied summaries, skim `src/data/datasetSummaries.ts` diffs
             3. Merge to deploy via the existing Pages deploy workflow
 
-            ### Secrets (repo Settings → Secrets and variables → Actions)
-            | Secret | Required | Purpose |
-            |--------|----------|---------|
-            | `GEMINI_API_KEY` or `GOOGLE_API_KEY` or `AI_API_KEY` | for AI | Google AI Studio / Gemini API key |
-            | `AI_MODEL` | no | Default **`gemini-2.5-pro`** (override e.g. `gemini-2.5-flash`) |
-            | `AI_PROVIDER` | no | Default `google` (`openai` for OpenAI-compatible) |
-            | `AI_BASE_URL` | no | Only for OpenAI-compatible providers |
+            ### Secrets / docs
+            | Secret | Purpose |
+            |--------|---------|
+            | `AI_API_KEY` | Dartmouth Chat API key (Profile → Settings → Account → API Key) |
+            | `AI_BASE_URL` | Optional; default `https://chat.dartmouth.edu/api` |
+
+            Docs: https://rc.dartmouth.edu/ai/online-resources/using-the-api/
 
             Manual run: Actions → **Bi-monthly catalog refresh** → Run workflow.
+            List models: Actions → **List AI models**.
           branch: chore/bimonthly-refresh-${{ github.run_id }}
           delete-branch: true
           add-paths: |

@@ -316,6 +316,44 @@ export const DATASET_SUMMARIES: Record<string, string> = {
     "india-maps-data is used for ready GeoJSON/TopoJSON state and district boundaries in web maps.",
   "gh-village-boundaries":
     "indian_village_boundaries is used for village-level polygon boundaries in rural GIS analysis.",
+
+  // ── 2026 expansion: state / academic / TCPD / hubs ──────────────
+  "india-state-district-evolution-1872-2025":
+    "ISDED is used to track how Indian states and districts changed boundaries from the colonial era through 2025 for long panel joins.",
+  "british-provinces-districts":
+    "This dataset is used to reconstruct British provinces and districts and link them to modern administrative units.",
+  "princely-states-1939":
+    "The 1939 princely-states inventory is used to study indirect rule, salute states, and pre-integration political geography.",
+  "chair-district-pm25-2008-2020":
+    "CHAIR district PM2.5 is used for annual modeled particulate exposure at district scale for health and environment research.",
+  "telehealth-bihar-saran-baseline":
+    "This Bihar (Saran) baseline is used to study rural telehealth access, providers, and households in an experimental sample.",
+  "karnataka-agrobiodiversity-bijapur":
+    "The Karnataka ABD survey is used to measure on-farm and wild species diversity, diets, and seed systems in Bijapur villages.",
+  "fpwatch-india-2016":
+    "FP Watch India 2016 is used to study family-planning product availability and outlet readiness in Bihar and Uttar Pradesh.",
+  "jharkhand-birth-spacing-2008":
+    "This Jharkhand endline is used to evaluate rural birth-spacing programme outcomes in selected districts.",
+  "lse-indian-states-eopp":
+    "LSE EOPP Indian States Data are used for classic 16-state panels on land reform, media, labour regulation, and public finance.",
+  "india-agriculture-climate-district":
+    "The Sanghi district agriculture–climate panel is used to study climate sensitivity of Indian crop production and prices.",
+  "gh-tcpd-ppi":
+    "TCPD-PPI is used to assign stable party IDs across renames for Indian national and assembly election research.",
+  "gh-tcpd-ied-1951-62":
+    "TCPD early election files are used for constituency results in the first decade of independent India.",
+  "gh-tcpd-rajya-sabha":
+    "TCPD Rajya Sabha data are used to study upper-house membership, parties, and state representation over time.",
+  "gh-tcpd-judiciary":
+    "TCPD judiciary releases are used for structured court and case-related research complementary to NJDG dashboards.",
+  "gh-indian-cadastrals":
+    "indian_cadastrals is used for multi-state parcel and cadastral geometries in land and local GIS work.",
+  "kerala-ogd-portal":
+    "Kerala OGD is used as the state open-data hub for department-published tables, APIs, and civic datasets.",
+  "data-gov-in-hub":
+    "data.gov.in is used as India’s national open-data catalogue entry point across ministries and linked state portals.",
+  "niti-for-states-data":
+    "NITI for States is used to browse comparative state–district development indicators assembled for policy users.",
 };
 
 export function getDatasetSummary(slug: string): string | undefined {

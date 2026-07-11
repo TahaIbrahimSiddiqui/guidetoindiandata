@@ -193,6 +193,12 @@ assert(detailPage.includes("Documentation"), "dataset page has Documentation CTA
 assert(detailPage.includes("Open paper"), "dataset page has Open paper CTA");
 assert(detailPage.includes("Repository"), "dataset page has Repository CTA");
 assert(
+  detailPage.includes("owner/repo") ||
+    detailPage.includes("/^[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+$/") ||
+    detailPage.includes("[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+"),
+  "dataset page must only link Repository for owner/repo or http(s) URLs",
+);
+assert(
   detailPage.includes("dataDoi") && detailPage.includes("Open access portal"),
   "dataset page has access/DOI CTA paths",
 );

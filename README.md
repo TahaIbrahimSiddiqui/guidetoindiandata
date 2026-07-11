@@ -1,6 +1,6 @@
 # Indian Data Guide
 
-Public website cataloging **70+ Indian datasets** across health, education, labor, agriculture, governance, climate, and geospatial sources—based on `content/guide_research.md`.
+Public website cataloging **160+ Indian datasets** (government, academic/Dataverse, and GitHub) across health, education, labor, agriculture, governance, climate, and geospatial sources—based on `content/guide_research.md` and later catalog expansions.
 
 **Live site:** [https://TahaIbrahimSiddiqui.github.io/guidetoindiandata/](https://TahaIbrahimSiddiqui.github.io/guidetoindiandata/)
 

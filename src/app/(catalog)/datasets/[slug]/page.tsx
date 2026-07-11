@@ -578,22 +578,24 @@ export default async function DatasetPage({ params }: Props) {
             </a>
           </Button>
         )}
-        {dataset.repository && (
-          <Button asChild variant="outline" size="lg" className="h-11">
-            <a
-              href={
-                /^https?:\/\//i.test(dataset.repository)
-                  ? dataset.repository
-                  : `https://github.com/${dataset.repository}`
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Repository
-              <ExternalLink className="size-4" aria-hidden />
-            </a>
-          </Button>
-        )}
+        {(() => {
+          const repo = dataset.repository?.trim();
+          if (!repo) return null;
+          const href = /^https?:\/\//i.test(repo)
+            ? repo
+            : /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)
+              ? `https://github.com/${repo}`
+              : null;
+          if (!href) return null;
+          return (
+            <Button asChild variant="outline" size="lg" className="h-11">
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                Repository
+                <ExternalLink className="size-4" aria-hidden />
+              </a>
+            </Button>
+          );
+        })()}
         {!dataset.accessUrl && !dataset.docsUrl && !dataset.dataDoi && (
           <p className="text-sm text-muted-foreground">
             Access via {dataset.host} — search the official portal for current

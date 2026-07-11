@@ -25,6 +25,18 @@ import type { AccessType } from "@/types/dataset";
 
 const QUICK_THEMES = domainClusters.slice(0, 8);
 
+/** Latest expansion batch — keep in sync when shipping new catalog waves. */
+const RECENT_SLUGS = [
+  "chair-district-pm25-2008-2020",
+  "india-state-district-evolution-1872-2025",
+  "lse-indian-states-eopp",
+  "telehealth-bihar-saran-baseline",
+  "gh-tcpd-ppi",
+  "gh-indian-cadastrals",
+  "kerala-ogd-portal",
+  "niti-for-states-data",
+] as const;
+
 export function ExploreClient() {
   const params = useSearchParams();
 
@@ -60,6 +72,13 @@ export function ExploreClient() {
     }),
     [],
   );
+  const recentDatasets = useMemo(
+    () =>
+      RECENT_SLUGS.map((slug) => datasets.find((d) => d.slug === slug)).filter(
+        (d): d is (typeof datasets)[number] => Boolean(d),
+      ),
+    [],
+  );
 
   return (
     <div className="min-w-0">
@@ -72,6 +91,9 @@ export function ExploreClient() {
               Search first, then narrow by access friction, geography, source
               layer, and host. Each record keeps the practical notes close:
               best uses, limitations, variables, and related data.
+            </p>
+            <p className="mt-3 font-mono text-sm tabular-nums text-[#C4A574]">
+              {datasets.length} datasets in the live catalog
             </p>
           </div>
           <div className="grid grid-cols-3 gap-2 lg:grid-cols-1">
@@ -95,6 +117,36 @@ export function ExploreClient() {
           </div>
         </div>
       </header>
+
+      {recentDatasets.length > 0 && (
+        <section className="mb-8" aria-labelledby="recently-added">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h2
+              id="recently-added"
+              className="text-[11px] font-semibold tracking-[0.16em] text-accent-foreground uppercase"
+            >
+              Recently added
+            </h2>
+            <Link
+              href="/academic"
+              className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#C4A574] link-underline"
+            >
+              Academic &amp; GitHub shelves →
+            </Link>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {recentDatasets.map((d) => (
+              <Link
+                key={d.slug}
+                href={`/datasets/${d.slug}`}
+                className="quick-chip"
+              >
+                {d.shortTitle}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mb-8" aria-labelledby="popular-themes">
         <div className="mb-3 flex items-center gap-2">

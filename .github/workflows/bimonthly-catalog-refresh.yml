@@ -1,11 +1,12 @@
-# Bi-monthly catalog maintenance: audit + optional AI assist + PR.
+# Biweekly catalog maintenance: audit + optional AI assist + PR.
 # Deploy still runs from deploy.yml on push to main (after you merge the PR).
-name: Bi-monthly catalog refresh
+name: Biweekly catalog refresh
 
 on:
   schedule:
-    # 06:00 UTC on the 1st of every other month (Jan, Mar, May, Jul, Sep, Nov)
-    - cron: "0 6 1 1,3,5,7,9,11 *"
+    # GitHub cron cannot express a true every-two-weeks cadence directly.
+    # Wake weekly at 06:00 UTC on Monday; the cadence step skips off weeks.
+    - cron: "0 6 * * 1"
   workflow_dispatch:
     inputs:
       apply_ai_summaries:
@@ -22,26 +23,58 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: bimonthly-catalog-refresh
+  group: biweekly-catalog-refresh
   cancel-in-progress: false
+
+env:
+  BIWEEKLY_ANCHOR_DATE: "2026-07-13"
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
+      - name: Check biweekly cadence
+        id: cadence
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          anchor="${BIWEEKLY_ANCHOR_DATE}"
+          today="$(date -u +%F)"
+          day_of_week="$(date -u +%u)"
+          week_start="$(date -u -d "$today -$((day_of_week - 1)) days" +%F)"
+          anchor_day_of_week="$(date -u -d "$anchor" +%u)"
+          anchor_week_start="$(date -u -d "$anchor -$((anchor_day_of_week - 1)) days" +%F)"
+          elapsed_days=$(( ( $(date -u -d "$week_start" +%s) - $(date -u -d "$anchor_week_start" +%s) ) / 86400 ))
+
+          if [ $((elapsed_days % 14)) -eq 0 ]; then
+            echo "run_refresh=true" >> "$GITHUB_OUTPUT"
+            echo "Running biweekly refresh for week starting $week_start."
+          else
+            echo "run_refresh=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping off-week refresh for week starting $week_start."
+          fi
+
       - name: Checkout
+        if: steps.cadence.outputs.run_refresh == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node
+        if: steps.cadence.outputs.run_refresh == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
 
       - name: Install
+        if: steps.cadence.outputs.run_refresh == 'true'
         run: npm ci
 
-      - name: Run bi-monthly refresh (audit + Dartmouth Chat AI)
+      - name: Run biweekly refresh (audit + Dartmouth Chat AI)
+        if: steps.cadence.outputs.run_refresh == 'true'
         env:
           SCRATCH: ${{ github.workspace }}/content/automation/.scratch
           # Dartmouth Chat API key (https://rc.dartmouth.edu/ai/online-resources/using-the-api/)
@@ -58,10 +91,10 @@ jobs:
         run: npx tsx scripts/bimonthly-catalog-refresh.mjs
 
       - name: Upload automation artifacts
-        if: always()
+        if: always() && steps.cadence.outputs.run_refresh == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: bimonthly-automation-${{ github.run_id }}
+          name: biweekly-automation-${{ github.run_id }}
           path: |
             content/automation/**
           if-no-files-found: warn
@@ -71,14 +104,15 @@ jobs:
       #   - Allow GitHub Actions to create and approve pull requests
       - name: Create pull request if there are changes
         id: cpr
+        if: steps.cadence.outputs.run_refresh == 'true'
         continue-on-error: true
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: bi-monthly catalog refresh"
-          title: "chore: bi-monthly catalog refresh (${{ github.run_id }})"
+          commit-message: "chore: biweekly catalog refresh"
+          title: "chore: biweekly catalog refresh (${{ github.run_id }})"
           body: |
-            Automated bi-monthly catalog maintenance.
+            Automated biweekly catalog maintenance.
 
             - Full content/link audit via `scripts/page-content-audit.mjs`
             - AI assist via **Dartmouth Chat API** (`https://chat.dartmouth.edu/api`) when `AI_API_KEY` is set
@@ -98,16 +132,16 @@ jobs:
 
             Docs: https://rc.dartmouth.edu/ai/online-resources/using-the-api/
 
-            Manual run: Actions → **Bi-monthly catalog refresh** → Run workflow.
+            Manual run: Actions → **Biweekly catalog refresh** → Run workflow.
             List models: Actions → **List AI models**.
-          branch: chore/bimonthly-refresh-${{ github.run_id }}
+          branch: chore/biweekly-refresh-${{ github.run_id }}
           delete-branch: true
           add-paths: |
             content/automation/**
             src/data/datasetSummaries.ts
 
       - name: PR creation status
-        if: always()
+        if: always() && steps.cadence.outputs.run_refresh == 'true'
         run: |
           echo "pull-request-number=${{ steps.cpr.outputs.pull-request-number }}"
           echo "pull-request-url=${{ steps.cpr.outputs.pull-request-url }}"

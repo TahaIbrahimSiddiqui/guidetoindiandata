@@ -4,7 +4,7 @@ import { normalizeClusterId } from "@/data/clusters";
 /**
  * Map free-text category tags → theme hubs (many-to-many).
  */
-export const CATEGORY_TO_THEME: Record<string, ClusterId> = {
+const CATEGORY_TO_THEME: Record<string, ClusterId> = {
   health: "health-nutrition",
   demographics: "population-demography",
   nutrition: "health-nutrition",

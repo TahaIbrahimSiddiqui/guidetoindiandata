@@ -300,7 +300,7 @@ function applySummaries(proposals) {
       src = src.replace(re, `${key}:\n    "${escaped}"`);
       applied++;
     } else {
-      const marker = "\n};\n\nexport function getDatasetSummary";
+      const marker = "\n};\n// END_DATASET_SUMMARIES";
       if (!src.includes(marker)) continue;
       src = src.replace(marker, `\n  ${key}:\n    "${escaped}",${marker}`);
       applied++;

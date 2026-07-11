@@ -8,7 +8,7 @@ import {
 import { getSeriesForDataset, seriesList } from "@/data/series";
 import type { ClusterId } from "@/types/dataset";
 
-export type GraphNodeKind = "theme" | "source";
+type GraphNodeKind = "theme" | "source";
 
 export type GraphNodeDef = {
   id: string;
@@ -36,7 +36,7 @@ export type GraphEdgeDef = {
  * Source layers (GitHub, replication archives, catalogs) — not domain themes.
  * Never rendered as theme circles on the universe graph.
  */
-export const SOURCE_LAYER_IDS = new Set<string>([
+const SOURCE_LAYER_IDS = new Set<string>([
   "github-community",
   "research-replication",
   "data-catalogs",
@@ -55,7 +55,7 @@ function domainThemesOnly(ids: ClusterId[]): ClusterId[] {
   return uniqThemes(ids.filter((id) => !SOURCE_LAYER_IDS.has(id)));
 }
 
-export function getThemesForSeries(seriesSlug: string): ClusterId[] {
+function getThemesForSeries(seriesSlug: string): ClusterId[] {
   const series = seriesList.find((s) => s.slug === seriesSlug);
   if (!series) return [];
   const fromOverride = SERIES_THEME_OVERRIDES[seriesSlug] ?? [];
@@ -79,7 +79,7 @@ export function getThemesForDataset(datasetSlug: string): ClusterId[] {
   const fromOverride = DATASET_THEME_OVERRIDES[datasetSlug] ?? [];
   // Do not treat GitHub / replication / catalogs as theme circles —
   // only real domain themes from overrides, categories, and cluster when domain.
-  let themes = domainThemesOnly([
+  const themes = domainThemesOnly([
     ...fromOverride,
     normalizeClusterId(d.cluster),
     ...themesFromCategoryList(d.categories),
@@ -259,19 +259,4 @@ export function getFocusSet(
     focus.add(other);
   }
   return focus;
-}
-
-/** True if source's home (orbital) theme is this theme id string without t: prefix. */
-export function isHomeOrbit(source: GraphNodeDef, themeId: string): boolean {
-  const home = source.homeThemeId ?? source.themeIds[0];
-  return Boolean(home && home === themeId);
-}
-
-export function getThemeNodes() {
-  return domainClusters.map((c) => ({
-    id: c.id as ClusterId,
-    label: c.shortName,
-    fullLabel: c.name,
-    color: c.color,
-  }));
 }

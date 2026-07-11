@@ -355,7 +355,4 @@ export const DATASET_SUMMARIES: Record<string, string> = {
   "niti-for-states-data":
     "NITI for States is used to browse comparative state–district development indicators assembled for policy users.",
 };
-
-export function getDatasetSummary(slug: string): string | undefined {
-  return DATASET_SUMMARIES[slug];
-}
+// END_DATASET_SUMMARIES

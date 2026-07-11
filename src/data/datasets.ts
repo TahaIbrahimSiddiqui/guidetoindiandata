@@ -3566,16 +3566,3 @@ export function getRelatedDatasets(dataset: Dataset): Dataset[] {
     .map((slug) => getDatasetBySlug(slug))
     .filter((d): d is Dataset => Boolean(d));
 }
-
-export function getFeaturedDatasets(): Dataset[] {
-  return datasets.filter((d) => d.flags?.includes("good-starting"));
-}
-
-export const ACCESS_LABELS: Record<Dataset["accessType"], string> = {
-  "open-download": "Open download",
-  "public-dashboard": "Public dashboard",
-  registration: "Registration required",
-  "data-use-agreement": "Data-use agreement",
-  "request-only": "Request-only",
-  "paid-subscription": "Paid subscription",
-};

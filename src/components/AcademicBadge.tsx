@@ -23,7 +23,7 @@ const STYLES: Record<BadgeType, string> = {
   "historical-archive": "border-amber-500/40 bg-amber-500/10 text-amber-200",
 };
 
-export function AcademicBadge({
+function AcademicBadge({
   badge,
   className = "",
 }: {

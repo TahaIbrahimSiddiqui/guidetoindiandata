@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "scripts/**/*.{ts,tsx,js,jsx,mjs,cjs}"
+  ],
+  "project": [
+    "src/**/*.{ts,tsx,js,jsx}",
+    "scripts/**/*.{ts,tsx,js,jsx,mjs,cjs}"
+  ],
+  "ignoreDependencies": [
+    "tw-animate-css",
+    "shadcn",
+    "tsx",
+    "tailwindcss"
+  ],
+  "ignoreBinaries": ["rg"]
+}

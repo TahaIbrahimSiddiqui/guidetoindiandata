@@ -567,10 +567,6 @@ export function getWaveForDataset(datasetSlug: string) {
   return undefined;
 }
 
-export function getPinnedSeries(): DataSeries[] {
-  return seriesList.filter((s) => s.pinned);
-}
-
 export function seriesByFamily(family: DataSeries["family"]): DataSeries[] {
   return seriesList.filter((s) => s.family === family);
 }

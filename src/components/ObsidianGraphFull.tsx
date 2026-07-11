@@ -284,7 +284,6 @@ export function ObsidianGraphFull({
         const count = list.length;
         // Multiple shells so large constellations stay readable
         const shellSize = Math.max(4, Math.ceil(Math.sqrt(count * 1.6)));
-        const shells = Math.max(1, Math.ceil(count / shellSize));
 
         list.forEach((n, j) => {
           const shell = Math.floor(j / shellSize);

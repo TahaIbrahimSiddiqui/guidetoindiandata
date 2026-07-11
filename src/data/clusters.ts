@@ -170,7 +170,7 @@ export const clusters: Cluster[] = [
 ];
 
 /** Map legacy 6-cluster IDs → primary new theme. */
-export const LEGACY_CLUSTER_MAP: Record<string, ClusterId> = {
+const LEGACY_CLUSTER_MAP: Record<string, ClusterId> = {
   "health-demography": "health-nutrition",
   education: "education",
   "labor-firms": "labour-employment",

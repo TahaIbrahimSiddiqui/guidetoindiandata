@@ -6,9 +6,9 @@ export type AccessType =
   | "request-only"
   | "paid-subscription";
 
-export type SizeTier = "Medium" | "Large" | "Very large";
+type SizeTier = "Medium" | "Large" | "Very large";
 
-export type DatasetFlag = "good-starting" | "best-district";
+type DatasetFlag = "good-starting" | "best-district";
 
 export type SourceKind =
   | "government"
@@ -126,14 +126,14 @@ export type Dataset = {
 /** Catalog input before summary is attached from datasetSummaries.ts */
 export type DatasetDraft = Omit<Dataset, "summary"> & { summary?: string };
 
-export type SeriesFamily = "nfhs" | "nss" | "dlhs" | "other" | "academic";
+type SeriesFamily = "nfhs" | "nss" | "dlhs" | "other" | "academic";
 
-export type DesignRevision = {
+type DesignRevision = {
   yearLabel: string;
   summary: string;
 };
 
-export type SeriesWave = {
+type SeriesWave = {
   yearLabel: string;
   yearStart: number;
   yearEnd?: number;

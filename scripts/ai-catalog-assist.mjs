@@ -100,25 +100,30 @@ function extractJson(text) {
 }
 
 function pickPreferredModel(ids) {
+  const list = [...(ids || [])];
+  // Prefer highest Claude Opus 4.x (latest pro via Dartmouth Chat)
+  const opus = list
+    .filter((id) => /claude.*opus-4/i.test(id))
+    .sort()
+    .reverse();
+  if (opus[0]) return opus[0];
+  const sonnet = list
+    .filter((id) => /claude.*sonnet-4/i.test(id))
+    .sort()
+    .reverse();
+  if (sonnet[0]) return sonnet[0];
   const prefer = [
-    /claude.*opus.*4/i,
-    /claude.*sonnet.*4/i,
-    /claude-4/i,
-    /claude.*3-7.*sonnet/i,
-    /claude.*3-5.*sonnet/i,
-    /gpt-5(?!.*mini)/i,
-    /gpt-4\.1(?!.*mini)/i,
+    /openai\.gpt-5(?!.*mini)/i,
+    /vertex_ai\.gemini-3\.1-pro/i,
+    /vertex_ai\.gemini-2\.5-pro/i,
     /gpt-4o(?!-mini)/i,
-    /gemini.*2\.5.*pro/i,
-    /gemini.*pro/i,
-    /claude.*3-5.*haiku/i,
-    /gpt-4o-mini/i,
+    /claude.*haiku/i,
   ];
   for (const re of prefer) {
-    const hit = ids.find((id) => re.test(id));
+    const hit = list.find((id) => re.test(id));
     if (hit) return hit;
   }
-  return ids[0] || null;
+  return list[0] || null;
 }
 
 async function listDartmouthModels() {

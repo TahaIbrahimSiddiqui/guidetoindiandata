@@ -485,6 +485,95 @@ export const GUIDES_BY_SLUG: Record<string, GuideLink[]> = {
   "tafssa-nalanda-2023": [
     g("Dataverse dataset", "https://doi.org/10.7910/DVN/5MAC6B", "portal"),
   ],
+  "india-state-district-evolution-1872-2025": [
+    g("Harvard Dataverse (ISDED)", "https://doi.org/10.7910/DVN/D1AGUR", "portal"),
+    g("India State Stories", "https://www.indiastatestory.in/", "report"),
+  ],
+  "british-provinces-districts": [
+    g("Harvard Dataverse", "https://doi.org/10.7910/DVN/ZVPZAN", "portal"),
+  ],
+  "princely-states-1939": [
+    g("Harvard Dataverse", "https://doi.org/10.7910/DVN/2ES4C1", "portal"),
+  ],
+  "chair-district-pm25-2008-2020": [
+    g("CHAIR district PM2.5 Dataverse", "https://doi.org/10.7910/DVN/FIDQSM", "portal"),
+    g(
+      "CHAIR India dashboard",
+      "https://bucas.maps.arcgis.com/apps/instant/portfolio/index.html?appid=54f77c498a6447bcafdb750f8a838402",
+      "portal",
+    ),
+    g("PNAS Nexus methods paper", "https://doi.org/10.1093/pnasnexus/pgae088", "report"),
+  ],
+  "telehealth-bihar-saran-baseline": [
+    g("Baseline household/provider Dataverse", "https://doi.org/10.7910/DVN/CDTRBO", "portal"),
+  ],
+  "karnataka-agrobiodiversity-bijapur": [
+    g("Dataverse deposit", "https://doi.org/10.7910/DVN/OZWE7N", "portal"),
+  ],
+  "fpwatch-india-2016": [
+    g("FPwatch India 2016 Dataverse", "https://doi.org/10.7910/DVN/5YN6HL", "portal"),
+  ],
+  "jharkhand-birth-spacing-2008": [
+    g("PSI Jharkhand endline Dataverse", "https://doi.org/10.7910/DVN/V2MB4N", "portal"),
+  ],
+  "lse-indian-states-eopp": [
+    g(
+      "STICERD Indian States Data downloads",
+      "https://sticerd.lse.ac.uk/_new/Data/indian-states-data/",
+      "portal",
+    ),
+    g(
+      "Land reform paper (QJE)",
+      "https://sticerd.lse.ac.uk/dps/de/dedps13.pdf",
+      "report",
+    ),
+  ],
+  "india-agriculture-climate-district": [
+    g(
+      "India Agriculture and Climate Data Set page",
+      "https://ipl.econ.duke.edu/dthomas/dev_data/datafiles/india_agric_climate.htm",
+      "portal",
+    ),
+  ],
+  "gh-tcpd-ppi": [
+    g("TCPD-PPI GitHub", "https://github.com/tcpd/ppi", "portal"),
+    g("Lok Dhaba (related elections)", "https://lokdhaba.ashoka.edu.in/", "portal"),
+  ],
+  "gh-tcpd-ied-1951-62": [
+    g(
+      "TCPD IED 1951–62 GitHub",
+      "https://github.com/tcpd/IndianElectionsDataset_1951-to-1962",
+      "portal",
+    ),
+  ],
+  "gh-tcpd-rajya-sabha": [
+    g("TCPD Rajya Sabha GitHub", "https://github.com/tcpd/rs-data-release", "portal"),
+  ],
+  "gh-tcpd-judiciary": [
+    g("TCPD Judiciary GitHub", "https://github.com/tcpd/Judiciary-Data", "portal"),
+    g("NJDG (official courts grid)", "https://njdg.ecourts.gov.in/", "portal"),
+  ],
+  "gh-indian-cadastrals": [
+    g(
+      "indian_cadastrals repository",
+      "https://github.com/ramSeraph/indian_cadastrals",
+      "portal",
+    ),
+  ],
+  "kerala-ogd-portal": [
+    g("Kerala OGD portal", "https://kerala.data.gov.in/", "portal"),
+    g(
+      "Kerala IT Mission OGD project note",
+      "https://itmission.kerala.gov.in/projects/open-government-data-portal",
+      "official",
+    ),
+  ],
+  "data-gov-in-hub": [
+    g("data.gov.in", "https://data.gov.in/", "portal"),
+  ],
+  "niti-for-states-data": [
+    g("NITI for States data landing", "https://nitiforstates.gov.in/data-landing", "portal"),
+  ],
   "replication-bhavnani-lee-2018": [
     g("Replication Dataverse", "https://doi.org/10.7910/DVN/TWDSBW", "portal"),
     g("Journal article", "https://doi.org/10.1086/694101", "report"),

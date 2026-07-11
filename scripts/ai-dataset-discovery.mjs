@@ -169,6 +169,7 @@ function extractLinks(html, baseUrl) {
     } catch {
       continue;
     }
+    if (!isUsableEvidenceUrl(url)) continue;
     const key = `${label.toLowerCase()}|${url.toLowerCase()}`;
     if (seen.has(key)) continue;
     seen.add(key);
@@ -457,6 +458,27 @@ function urlKey(value) {
   }
 }
 
+function isStaticAssetUrl(value) {
+  const key = urlKey(value);
+  if (!key) return true;
+  try {
+    const u = new URL(key);
+    const path = u.pathname.toLowerCase();
+    return (
+      /\.(css|js|mjs|map|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot)$/i.test(
+        path,
+      ) || /\/(css|js|fontawesome|fonts?|images?|assets?|themes?)\//i.test(path)
+    );
+  } catch {
+    return true;
+  }
+}
+
+function isUsableEvidenceUrl(value) {
+  const key = urlKey(value);
+  return Boolean(key && !isStaticAssetUrl(key));
+}
+
 function isBroadCatalogUrl(value) {
   const key = urlKey(value);
   if (!key) return false;
@@ -523,7 +545,11 @@ function findEvidence(candidate, sources) {
     const hits = candidateWords.filter((word) =>
       sourceText.includes(word),
     ).length;
-    if (hits >= Math.min(3, candidateWords.length)) {
+    if (
+      hits >= Math.min(3, candidateWords.length) &&
+      isUsableEvidenceUrl(source.finalUrl) &&
+      !isBroadCatalogUrl(source.finalUrl)
+    ) {
       best = {
         score: Math.max(best.score, hits / Math.max(candidateWords.length, 1)),
         url: best.url || source.finalUrl,
@@ -532,6 +558,9 @@ function findEvidence(candidate, sources) {
     }
 
     for (const link of source.links || []) {
+      if (!isUsableEvidenceUrl(link.url) || isBroadCatalogUrl(link.url)) {
+        continue;
+      }
       const score = jaccard(
         candidateWords,
         titleWords(`${link.label} ${link.url}`),

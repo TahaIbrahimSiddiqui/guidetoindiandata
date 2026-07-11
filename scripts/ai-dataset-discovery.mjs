@@ -48,6 +48,8 @@ const MIN_CONFIDENCE = Math.min(
 
 const DEFAULT_SOURCE_URLS = [
   "https://microdata.gov.in/NADA/index.php/catalog",
+  "https://microdata.gov.in/NADA/index.php/catalog/OTH",
+  "https://microdata.gov.in/NADA/index.php/catalog/PL",
   "https://www.mospi.gov.in/",
   "https://data.gov.in/catalogs",
   "https://www.rbi.org.in/Scripts/Statistics.aspx",

@@ -11,7 +11,7 @@ Automated maintenance for the Indian Data Guide.
 | Missing access links | n/a |
 | Thin editorial fields | n/a |
 | Routes fails | n/a |
-| AI key present | no |
+| AI key present | yes |
 | Audit exit | 0 |
 | Audit test exit | 0 |
 | AI assist exit | 0 |
@@ -54,6 +54,6 @@ PASS page-content-audit.test.mjs — 165 datasets, 13 series, 20 clusters, 5 acc
 
 ### AI
 ```
-{"ok":true,"skipped":true,"reason":"AI_API_KEY (or OPENAI_API_KEY) not set — audit-only bi-monthly run."}
+Dartmouth chat 400: {"detail":"litellm.BadRequestError: AnthropicException - {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"`temperature` is deprecated for this model.\"},\"request_id\":\"req_011Ccut9RCrS9SBzSNLhugu9\"}. Received Model Group=anthropic.claude-opus-4-8\nAvailable Model Group Fallbacks=None"}
 
 ```

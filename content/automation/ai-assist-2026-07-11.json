@@ -1,11 +1,20 @@
 {
-  "ranAt": "2026-07-11T07:23:28.992Z",
-  "model": "gpt-4o-mini",
-  "baseUrl": "https://api.openai.com/v1",
+  "ranAt": "2026-07-11T09:08:37.965Z",
+  "provider": "dartmouth",
+  "model": "anthropic.claude-opus-4-8",
+  "baseUrl": "https://chat.dartmouth.edu/api",
   "apply": false,
-  "skipped": true,
-  "candidates": 0,
-  "proposals": [],
+  "skipped": false,
+  "candidates": 1,
+  "proposals": [
+    {
+      "slug": "dgca-monthly-traffic",
+      "summary": "Monthly figures from India's Directorate General of Civil Aviation covering domestic passengers carried, load factors, cancellations, and market share by airline. Researchers use it to track carrier performance and city-pair demand across Indian airports.",
+      "bestFor": "Tracking domestic airline market share, passenger volumes, and city-pair demand trends in India",
+      "limitations": "Data is released as monthly PDF packs that require manual extraction, and international traffic detail is limited.",
+      "notes": "Freely downloadable from the DGCA site; expect to scrape or hand-key figures from monthly PDFs for time-series work."
+    }
+  ],
   "applied": 0,
-  "error": "AI_API_KEY (or OPENAI_API_KEY) not set — audit-only bi-monthly run."
+  "error": null
 }

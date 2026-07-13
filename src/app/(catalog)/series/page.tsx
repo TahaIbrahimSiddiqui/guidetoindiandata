@@ -6,13 +6,15 @@ import {
   seriesList,
 } from "@/data/series";
 import type { DataSeries } from "@/types/dataset";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Series",
   description:
     "Multi-year data series: NFHS waves, NSS/NSO surveys (PLFS, HCES, …), DLHS, and more—browse by year of availability.",
-};
+  path: "/series",
+});
 
 const familyOrder: DataSeries["family"][] = [
   "nfhs",

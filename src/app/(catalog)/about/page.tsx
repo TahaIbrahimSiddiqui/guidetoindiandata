@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { InContentAd } from "@/components/ads/ContentWithAds";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About",
   description:
     "How the Indian Data Guide is structured, what the badges mean, and how to use related datasets.",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

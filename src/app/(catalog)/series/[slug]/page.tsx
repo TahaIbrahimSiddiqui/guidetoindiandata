@@ -2,6 +2,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SeriesTimeline } from "@/components/SeriesTimeline";
 import { FAMILY_LABELS, getSeriesBySlug, seriesList } from "@/data/series";
+import {
+  breadcrumbJsonLd,
+  serializeJsonLd,
+  seriesJsonLd,
+} from "@/lib/seo/jsonLd";
+import { buildPageMetadata, clampDescription } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -14,10 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const s = getSeriesBySlug(slug);
   if (!s) return { title: "Series" };
-  return {
-    title: s.shortTitle,
-    description: s.description,
-  };
+  return buildPageMetadata({
+    title: `${s.shortTitle} series India`,
+    description: clampDescription(s.description),
+    path: `/series/${s.slug}`,
+  });
 }
 
 export default async function SeriesDetailPage({ params }: Props) {
@@ -31,6 +38,24 @@ export default async function SeriesDetailPage({ params }: Props) {
 
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(seriesJsonLd(series)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(
+            breadcrumbJsonLd([
+              { name: "Map", path: "/map" },
+              { name: "Series", path: "/series" },
+              { name: series.shortTitle, path: `/series/${series.slug}` },
+            ]),
+          ),
+        }}
+      />
       <nav
         aria-label="Breadcrumb"
         className="mb-3 flex flex-wrap items-center gap-2 text-sm text-obsidian-muted"

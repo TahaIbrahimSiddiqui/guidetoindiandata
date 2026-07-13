@@ -36,6 +36,18 @@ import { getCluster } from "@/data/clusters";
 import { datasets, getDatasetBySlug } from "@/data/datasets";
 import { getWaveForDataset } from "@/data/series";
 import { guideKindLabel, resolveGuides } from "@/lib/guides";
+import {
+  breadcrumbJsonLd,
+  datasetJsonLd,
+  faqJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo/jsonLd";
+import {
+  datasetFaqs,
+  datasetSeoDescription,
+  datasetSeoTitle,
+} from "@/lib/seo/datasetMeta";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import { resolveVariables } from "@/lib/variables";
 import type { Metadata } from "next";
 
@@ -49,10 +61,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const d = getDatasetBySlug(slug);
   if (!d) return { title: "Dataset" };
-  return {
-    title: d.shortTitle,
-    description: d.summary || d.bestFor,
-  };
+  return buildPageMetadata({
+    title: datasetSeoTitle(d),
+    description: datasetSeoDescription(d),
+    path: `/datasets/${d.slug}`,
+  });
 }
 
 export default async function DatasetPage({ params }: Props) {
@@ -65,9 +78,51 @@ export default async function DatasetPage({ params }: Props) {
   const variableInfo = resolveVariables(dataset);
   const guides = resolveGuides(dataset);
   const isLive = /live-fetch/i.test(variableInfo.source);
+  const faqs = datasetFaqs(dataset);
+  const faqSchema = faqJsonLd(faqs);
+
+  const breadcrumbItems = [
+    { name: "Map", path: "/map" },
+    ...(seriesMeta
+      ? [
+          {
+            name: seriesMeta.series.shortTitle,
+            path: `/series/${seriesMeta.series.slug}`,
+          },
+        ]
+      : cluster
+        ? [{ name: cluster.shortName, path: "/clusters" }]
+        : []),
+    { name: dataset.shortTitle, path: `/datasets/${dataset.slug}` },
+  ];
 
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(
+            datasetJsonLd(dataset, {
+              seriesSlug: seriesMeta?.series.slug,
+              seriesTitle: seriesMeta?.series.title,
+            }),
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(breadcrumbJsonLd(breadcrumbItems)),
+        }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(faqSchema),
+          }}
+        />
+      )}
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
@@ -266,6 +321,31 @@ export default async function DatasetPage({ params }: Props) {
           </p>
         </div>
       </section>
+
+      {/* FAQ — catalog only; powers FAQPage JSON-LD without marketing clutter */}
+      {faqs.length > 0 && (
+        <section id="faq" className="mt-10 scroll-mt-24">
+          <h2 className="section-title">Quick answers</h2>
+          <p className="mt-1.5 max-w-2xl text-sm text-obsidian-muted">
+            Short research-facing answers derived from this catalog record.
+          </p>
+          <dl className="mt-5 space-y-3">
+            {faqs.map((item) => (
+              <div
+                key={item.question}
+                className="rounded-xl border border-obsidian-border bg-obsidian-panel/40 px-4 py-3.5 sm:px-5"
+              >
+                <dt className="text-sm font-medium text-obsidian-text">
+                  {item.question}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-obsidian-muted">
+                  {item.answer}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
       {/* Survey family background / previous rounds */}
       {dataset.background && (

@@ -1,12 +1,14 @@
 import { Suspense } from "react";
 import { ExploreClient } from "@/components/ExploreClient";
+import { datasets } from "@/data/datasets";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Explore datasets",
-  description:
-    "Search and filter 70+ Indian datasets by category, access type, geography, and institution.",
-};
+  description: `Search and filter ${datasets.length}+ Indian datasets by category, access type, geography, and institution.`,
+  path: "/explore",
+});
 
 export default function ExplorePage() {
   return (

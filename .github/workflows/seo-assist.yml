@@ -1,0 +1,89 @@
+# Agentic SEO: audit + optional AI metadata proposals (PR-gated).
+# Never edits landing or solar map components — only datasetSeo / reports.
+name: SEO assist
+
+on:
+  schedule:
+    # Monthly on the 8th at 07:00 UTC (offset from catalog refresh)
+    - cron: "0 7 8 * *"
+  workflow_dispatch:
+    inputs:
+      apply_seo:
+        description: "Write SEO proposals into src/data/datasetSeo.ts (true/false)"
+        required: false
+        default: "false"
+      max_items:
+        description: "Max datasets for SEO rewrite"
+        required: false
+        default: "16"
+      priority:
+        description: "thin (weak meta first) or all"
+        required: false
+        default: "thin"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: seo-assist
+  cancel-in-progress: false
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: SEO audit (static checks)
+        run: npm run seo:audit
+
+      - name: AI SEO assist
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_PROVIDER: dartmouth
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          AI_BASE_URL: ${{ secrets.AI_BASE_URL || 'https://chat.dartmouth.edu/api' }}
+          AI_MAX_ITEMS: ${{ github.event.inputs.max_items || '16' }}
+          AI_BATCH_SIZE: "4"
+          AI_APPLY: ${{ github.event.inputs.apply_seo || 'false' }}
+          SEO_PRIORITY: ${{ github.event.inputs.priority || 'thin' }}
+        run: npm run seo:assist
+
+      - name: Upload SEO artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-assist-${{ github.run_id }}
+          path: |
+            content/automation/seo-*
+          if-no-files-found: warn
+
+      - name: Create pull request if there are changes
+        continue-on-error: true
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: agentic SEO assist"
+          title: "chore: agentic SEO assist (${{ github.run_id }})"
+          body: |
+            Automated SEO assist for catalog pages only.
+
+            - `npm run seo:audit` (marketing clutter guard + thin meta)
+            - `npm run seo:assist` via Dartmouth Chat when `AI_API_KEY` is set
+            - Apply into `src/data/datasetSeo.ts` only if workflow input `apply_seo=true`
+            - **Does not** edit landing (`/`) or solar map (`/map`) experiences
+
+            Review metadata/FAQ copy before merge.
+          branch: chore/seo-assist-${{ github.run_id }}
+          delete-branch: true

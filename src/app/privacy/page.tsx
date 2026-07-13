@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Privacy & advertising",
-};
+  description:
+    "How the Indian Data Guide handles privacy, cookies, and advertising on catalog pages.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

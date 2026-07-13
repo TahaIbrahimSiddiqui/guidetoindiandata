@@ -8,11 +8,36 @@ Public website cataloging **160+ Indian datasets** (government, academic/Dataver
 
 ## Features
 
-- **Landing page** with an interactive Obsidian-style universe graph of data clusters (no ads)
+- **Landing page** with a cinematic entry into the catalog (no ads, no SEO body clutter)
+- **Solar system map** (`/map`) interactive theme/dataset canvas (experience-first; head-only SEO)
 - **Explore** search and filters (category, access, geography, cluster, institution)
-- **Dataset records** with access badges, best-for / limitations, variables, related datasets
-- **Clusters** view of the six ecosystem groups
-- **Ad inventory** on all non-landing pages (placeholders until AdSense IDs are set)
+- **Dataset records** with access badges, best-for / limitations, variables, FAQ, related datasets
+- **Clusters** view of domain themes
+- **Technical SEO**: sitemap, robots, Open Graph, JSON-LD (Dataset / FAQ / breadcrumbs)
+- **Ad inventory** on catalog pages only (placeholders until AdSense IDs are set)
+
+## Agentic SEO
+
+Ranking work targets **catalog pages** (`/datasets/*`, `/series/*`, explore, themes). Landing and solar map stay clean—only metadata in the document head.
+
+| Command | Purpose |
+|---------|---------|
+| `npm run seo:audit` | Local checks (thin copy, duplicate titles, marketing clutter guard) |
+| `npm run seo:assist` | AI proposals → `content/automation/seo-assist-*.md` (needs `AI_API_KEY`) |
+
+Apply SEO overrides into `src/data/datasetSeo.ts` only with review:
+
+```bash
+# Dry-run report only
+npm run seo:assist
+
+# Write proposals into datasetSeo.ts (still review before commit)
+$env:AI_APPLY="true"; npm run seo:assist
+```
+
+After deploy, submit `https://tahaibrahim.in/guidetoindiandata/sitemap.xml` in Google Search Console.
+
+GitHub Action **SEO assist** (`.github/workflows/seo-assist.yml`) runs monthly and on demand; set `apply_seo=true` only when you want a PR that writes `datasetSeo.ts`.
 
 ## Quick start
 

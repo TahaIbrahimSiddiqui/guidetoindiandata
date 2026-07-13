@@ -3,13 +3,15 @@ import { DatasetCard } from "@/components/DatasetCard";
 import { InContentAd } from "@/components/ads/ContentWithAds";
 import { datasets } from "@/data/datasets";
 import type { Dataset, SourceKind } from "@/types/dataset";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Academic & Dataverse",
   description:
     "Harvard Dataverse India datasets, energy-access surveys, and peer-reviewed replication packages.",
-};
+  path: "/academic",
+});
 
 function byKind(kinds: SourceKind[]) {
   return datasets.filter((d) => kinds.includes(d.sourceKind as SourceKind));

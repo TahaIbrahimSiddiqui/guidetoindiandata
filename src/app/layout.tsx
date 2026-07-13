@@ -4,6 +4,8 @@ import {
   Crimson_Pro,
   IBM_Plex_Mono,
 } from "next/font/google";
+import { websiteJsonLd, serializeJsonLd } from "@/lib/seo/jsonLd";
+import { rootMetadata } from "@/lib/seo/metadata";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -27,15 +29,7 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://tahaibrahim.in"),
-  title: {
-    default: "Indian Data Guide",
-    template: "%s · Indian Data Guide",
-  },
-  description:
-    "India’s research data, mapped as a solar system—click a theme sun, open a dataset, and get honest access, guides, and variables.",
-};
+export const metadata: Metadata = rootMetadata();
 
 export const viewport = {
   width: "device-width",
@@ -60,6 +54,12 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-dvh bg-black font-sans text-foreground">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(websiteJsonLd()),
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(() => {

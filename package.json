@@ -13,6 +13,8 @@
     "digest:journals": "tsx scripts/monthly-journal-digest.mjs",
     "refresh:bimonthly": "tsx scripts/bimonthly-catalog-refresh.mjs",
     "refresh:ai": "tsx scripts/ai-catalog-assist.mjs",
+    "seo:assist": "tsx scripts/ai-seo-assist.mjs",
+    "seo:audit": "tsx scripts/seo-audit.mjs",
     "ai:models": "tsx scripts/list-ai-models.mjs"
   },
   "dependencies": {

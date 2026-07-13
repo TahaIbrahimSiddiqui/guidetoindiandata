@@ -3,13 +3,15 @@ import { InContentAd } from "@/components/ads/ContentWithAds";
 import { normalizeClusterId } from "@/data/clusters";
 import { datasets } from "@/data/datasets";
 import { domainClusters } from "@/lib/graphData";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Themes",
   description:
     "Domain themes that organize India's survey and administrative data systems. GitHub, replications, and catalogs are source layers—not themes.",
-};
+  path: "/clusters",
+});
 
 export default function ClustersPage() {
   return (

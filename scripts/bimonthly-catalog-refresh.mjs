@@ -41,6 +41,10 @@ function run(cmd, args, env = {}) {
 // 1) Optional discovery, then copy assist.
 const discovery = run("npx", ["tsx", "scripts/ai-dataset-discovery.mjs"]);
 const ai = run("npx", ["tsx", "scripts/ai-catalog-assist.mjs"]);
+// SEO metadata proposals (reports only unless AI_APPLY + SEO assist apply flags).
+// Does not touch landing / solar map — only datasetSeo + content/automation.
+const seo = run("npx", ["tsx", "scripts/ai-seo-assist.mjs"]);
+const seoAudit = run("npx", ["tsx", "scripts/seo-audit.mjs"]);
 
 // 2) Audit after any automated edits so invalid additions cannot open a PR.
 const audit = run("npx", ["tsx", "scripts/page-content-audit.mjs"]);
@@ -82,6 +86,11 @@ const report = {
       tail: (test.stdout + test.stderr).slice(-800),
     },
     ai: { status: ai.status, tail: (ai.stdout + ai.stderr).slice(-800) },
+    seo: { status: seo.status, tail: (seo.stdout + seo.stderr).slice(-800) },
+    seoAudit: {
+      status: seoAudit.status,
+      tail: (seoAudit.stdout + seoAudit.stderr).slice(-800),
+    },
   },
   aiKeyPresent: Boolean(process.env.AI_API_KEY || process.env.OPENAI_API_KEY),
 };

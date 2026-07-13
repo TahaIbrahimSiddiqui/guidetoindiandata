@@ -6,6 +6,10 @@ export const ADS_ENABLED =
 
 export const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "";
 
+export function isAdsenseSlotId(slotId: string) {
+  return /^\d{6,}$/.test(slotId.trim());
+}
+
 export const AD_SLOT_IDS = {
   topBanner: process.env.NEXT_PUBLIC_ADS_SLOT_TOP ?? "top-banner",
   sidebar: process.env.NEXT_PUBLIC_ADS_SLOT_SIDEBAR ?? "sidebar",

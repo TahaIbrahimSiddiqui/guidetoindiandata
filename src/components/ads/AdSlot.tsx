@@ -5,6 +5,7 @@ import {
   ADS_ENABLED,
   ADSENSE_CLIENT,
   AD_FORMAT_STYLES,
+  isAdsenseSlotId,
   type AdFormat,
 } from "@/lib/ads";
 
@@ -28,7 +29,9 @@ export function AdSlot({
 }: AdSlotProps) {
   const ref = useRef<HTMLModElement>(null);
   const { minHeight, label } = AD_FORMAT_STYLES[format];
-  const canRenderNetwork = ADS_ENABLED && Boolean(ADSENSE_CLIENT);
+  const normalizedSlotId = slotId.trim();
+  const canRenderNetwork =
+    ADS_ENABLED && Boolean(ADSENSE_CLIENT) && isAdsenseSlotId(normalizedSlotId);
   const displayMinHeight = canRenderNetwork
     ? minHeight
     : DISABLED_AD_HEIGHTS[format];
@@ -55,7 +58,7 @@ export function AdSlot({
           className="adsbygoogle block"
           style={{ display: "block", minHeight }}
           data-ad-client={ADSENSE_CLIENT}
-          data-ad-slot={slotId}
+          data-ad-slot={normalizedSlotId}
           data-ad-format={format === "fluid" ? "fluid" : "auto"}
           data-full-width-responsive="true"
         />

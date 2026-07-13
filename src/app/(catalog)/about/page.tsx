@@ -33,12 +33,12 @@ export default function AboutPage() {
         </p>
         <p className="mt-2">
           <a
-            href="https://tahaibrahimsiddiqui.github.io/personal_website/index.html"
+            href="https://tahaibrahim.in/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium text-[#C4A574] link-underline transition hover:text-[#F3E4C9]"
           >
-            tahaibrahimsiddiqui.github.io/personal_website
+            tahaibrahim.in
           </a>
         </p>
         <p className="mt-3 text-sm leading-relaxed text-[#D3D4C0]/95">
@@ -55,7 +55,7 @@ export default function AboutPage() {
         <p className="mt-4 text-sm text-[#C8C9BC]/90">
           More on the maintainer:{" "}
           <a
-            href="https://tahaibrahimsiddiqui.github.io/personal_website/index.html"
+            href="https://tahaibrahim.in/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#C4A574] link-underline"

@@ -28,6 +28,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tahaibrahim.in"),
   title: {
     default: "Indian Data Guide",
     template: "%s · Indian Data Guide",
@@ -59,6 +60,15 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-dvh bg-black font-sans text-foreground">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+  if (location.hostname.toLowerCase() !== "tahaibrahimsiddiqui.github.io") return;
+  const target = "https://tahaibrahim.in" + location.pathname + location.search + location.hash;
+  location.replace(target);
+})();`,
+          }}
+        />
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>

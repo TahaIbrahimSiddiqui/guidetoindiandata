@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-/** Project site: https://TahaIbrahimSiddiqui.github.io/guidetoindiandata/ */
+/** Project site: https://tahaibrahim.in/guidetoindiandata/ */
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/guidetoindiandata";
 
 const nextConfig: NextConfig = {

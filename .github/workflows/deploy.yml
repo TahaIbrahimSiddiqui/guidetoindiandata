@@ -34,6 +34,12 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /guidetoindiandata
+          NEXT_PUBLIC_ADS_ENABLED: ${{ vars.NEXT_PUBLIC_ADS_ENABLED || secrets.NEXT_PUBLIC_ADS_ENABLED || 'false' }}
+          NEXT_PUBLIC_ADSENSE_CLIENT: ${{ vars.NEXT_PUBLIC_ADSENSE_CLIENT || secrets.NEXT_PUBLIC_ADSENSE_CLIENT }}
+          NEXT_PUBLIC_ADS_SLOT_TOP: ${{ vars.NEXT_PUBLIC_ADS_SLOT_TOP || secrets.NEXT_PUBLIC_ADS_SLOT_TOP }}
+          NEXT_PUBLIC_ADS_SLOT_SIDEBAR: ${{ vars.NEXT_PUBLIC_ADS_SLOT_SIDEBAR || secrets.NEXT_PUBLIC_ADS_SLOT_SIDEBAR }}
+          NEXT_PUBLIC_ADS_SLOT_IN_CONTENT: ${{ vars.NEXT_PUBLIC_ADS_SLOT_IN_CONTENT || secrets.NEXT_PUBLIC_ADS_SLOT_IN_CONTENT }}
+          NEXT_PUBLIC_ADS_SLOT_BOTTOM: ${{ vars.NEXT_PUBLIC_ADS_SLOT_BOTTOM || secrets.NEXT_PUBLIC_ADS_SLOT_BOTTOM }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

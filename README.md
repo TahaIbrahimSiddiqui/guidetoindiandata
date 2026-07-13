@@ -42,6 +42,8 @@ Copy `.env.example` to `.env.local` and set:
 | `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` |
 | `NEXT_PUBLIC_ADS_SLOT_*` | Optional slot IDs |
 
+For GitHub Pages, set the same names under **Settings → Secrets and variables → Actions → Variables**. The deploy workflow also accepts them as repository secrets if you prefer.
+
 With ads disabled, subtle placeholders keep layout stable without dominating the catalog.
 
 ## Stack

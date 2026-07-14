@@ -97,9 +97,15 @@ export function MapExperience() {
         <div className="pointer-events-auto flex shrink-0 flex-wrap items-center justify-end gap-2">
           <Link
             href="/about"
-            className="inline-flex min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:px-3.5"
+            className="hidden min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:inline-flex sm:px-3.5"
           >
             About
+          </Link>
+          <Link
+            href="/support"
+            className="inline-flex min-h-11 items-center rounded-full border border-[#C4A574]/25 bg-black/65 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#F3E4C9] backdrop-blur-md transition hover:bg-[#C4A574]/15 sm:px-3.5"
+          >
+            Support
           </Link>
           <button
             type="button"

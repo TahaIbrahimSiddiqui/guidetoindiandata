@@ -196,6 +196,12 @@ export function LandingExperience({ stats }: Props) {
             >
               About
             </Link>
+            <Link
+              href="/support"
+              className="inline-flex min-h-11 items-center rounded-md px-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] transition hover:text-[#F3E4C9] sm:px-3"
+            >
+              Support
+            </Link>
             <Button
               asChild
               size="sm"
@@ -461,6 +467,14 @@ export function LandingExperience({ stats }: Props) {
             >
               <Link href="/about">About</Link>
             </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-12 border-white/15 bg-transparent uppercase tracking-[0.14em] text-[#F3E4C9] hover:bg-white/5"
+            >
+              <Link href="/support">Support</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -470,6 +484,10 @@ export function LandingExperience({ stats }: Props) {
           Independent public catalog · Not an official ministry portal ·{" "}
           <Link href="/about" className="text-[#C4A574] hover:text-[#F3E4C9]">
             About Taha Ibrahim Siddiqui
+          </Link>{" "}
+          ·{" "}
+          <Link href="/support" className="text-[#C4A574] hover:text-[#F3E4C9]">
+            Support
           </Link>
         </p>
       </footer>

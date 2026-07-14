@@ -9,6 +9,7 @@ import {
   Orbit,
   Sparkles,
 } from "lucide-react";
+import { MapSiteSearch } from "@/components/MapSiteSearch";
 import { ObsidianGraphFull } from "@/components/ObsidianGraphFull";
 
 /**
@@ -66,32 +67,34 @@ export function MapExperience() {
       </div>
 
       {/* Top chrome — compact on mobile; safe-area for notches */}
-      <header
-        className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between gap-2 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:gap-3 sm:p-5"
-      >
-        <div className="pointer-events-auto flex max-w-[55%] flex-wrap items-center gap-2">
-          <Link
-            href="/"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:px-3.5"
-          >
-            <ArrowLeft className="size-3.5" aria-hidden />
-            <span className="sm:hidden">Home</span>
-            <span className="hidden sm:inline">Landing</span>
-          </Link>
-          {!isNarrow && (
-            <span className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.08] bg-black/55 px-3.5 py-2 backdrop-blur-md">
-              <span
-                className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]"
-                aria-hidden
-              />
-              <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
-                Guide to Indian Data
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-40 flex items-start justify-between gap-2 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:gap-3 sm:p-5">
+        {/* Top-left: Landing / brand + site search */}
+        <div className="pointer-events-auto flex min-w-0 max-w-[min(100%,22rem)] flex-col items-stretch gap-2 sm:max-w-[24rem]">
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:px-3.5"
+            >
+              <ArrowLeft className="size-3.5" aria-hidden />
+              <span className="sm:hidden">Home</span>
+              <span className="hidden sm:inline">Landing</span>
+            </Link>
+            {!isNarrow && (
+              <span className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.08] bg-black/55 px-3.5 py-2 backdrop-blur-md">
+                <span
+                  className="inline-block h-1.5 w-1.5 rotate-45 bg-[#8B5E3C]"
+                  aria-hidden
+                />
+                <span className="font-display text-sm font-semibold tracking-tight text-[#F3E4C9]">
+                  Guide to Indian Data
+                </span>
               </span>
-            </span>
-          )}
+            )}
+          </div>
+          <MapSiteSearch className="w-full max-w-none" />
         </div>
 
-        <div className="pointer-events-auto flex flex-wrap items-center justify-end gap-2">
+        <div className="pointer-events-auto flex shrink-0 flex-wrap items-center justify-end gap-2">
           <Link
             href="/about"
             className="inline-flex min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:px-3.5"

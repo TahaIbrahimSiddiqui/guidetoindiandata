@@ -10,12 +10,6 @@ export function ContentWithAds({
 }) {
   return (
     <div className="mx-auto w-full max-w-[1400px] px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
-      <AdSlot
-        slotId={AD_SLOT_IDS.topBanner}
-        format="leaderboard"
-        className="mb-8 w-full"
-      />
-
       <div
         className={`grid gap-10 xl:gap-12 ${
           showSidebar ? "lg:grid-cols-[minmax(0,1fr)_280px]" : ""

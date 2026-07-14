@@ -240,7 +240,7 @@ export function LandingExperience({ stats }: Props) {
                 muted
                 loop
                 playsInline
-                preload={isTouch ? "metadata" : "auto"}
+                preload="metadata"
               />
             </div>
           )}

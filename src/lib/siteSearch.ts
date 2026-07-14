@@ -208,6 +208,14 @@ function buildIndex(): SiteSearchDoc[] {
       aliases: ["about", "help"],
     },
     {
+      id: "page:support",
+      title: "Support",
+      subtitle: "Buy Taha a coffee or chai",
+      href: "/support",
+      body: "support donate coffee chai ko-fi kofi upi public data goods",
+      aliases: ["support", "donate", "coffee", "chai", "upi", "ko-fi"],
+    },
+    {
       id: "page:map",
       title: "Solar system map",
       subtitle: "Interactive theme and dataset universe",

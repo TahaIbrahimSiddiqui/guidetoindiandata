@@ -23,6 +23,7 @@ const nav = [
   { href: "/series", label: "Series" },
   { href: "/academic", label: "Academic" },
   { href: "/about", label: "About" },
+  { href: "/support", label: "Support" },
 ];
 
 export function SiteHeader() {

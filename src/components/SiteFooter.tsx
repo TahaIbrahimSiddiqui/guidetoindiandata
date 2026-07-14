@@ -8,6 +8,7 @@ const footerNav = [
       { href: "/map", label: "Solar system map" },
       { href: "/explore", label: "Explore" },
       { href: "/about", label: "About" },
+      { href: "/support", label: "Support" },
     ],
   },
   {

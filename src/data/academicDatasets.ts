@@ -122,6 +122,116 @@ export const academicDatasets: DatasetDraft[] = [
     publicationYear: 2015,
     repository: "Harvard Dataverse / ICPSR",
   },
+  {
+    slug: "india-electoral-rolls-deleted-voters-2024-26",
+    title:
+      "India's Electoral Rolls (2024-25) and Deleted Voter Records (SIR Draft, 2025-26)",
+    shortTitle: "Electoral Rolls & Deleted Voters",
+    abbreviations: ["India Electoral Rolls", "SIR deleted voters"],
+    categories: ["elections", "voter rolls", "politics"],
+    technicalTags: [
+      "voter-level",
+      "electoral rolls",
+      "restricted access",
+      "part-level",
+      "research archive",
+    ],
+    host: "Harvard Dataverse",
+    institution: "Sharik Laliwala, University of California, Berkeley",
+    accessUrl: doiUrl("10.7910/DVN/YNEY6G"),
+    docsUrl: "https://github.com/sharik19/India-Electoral-Rolls",
+    accessType: "data-use-agreement",
+    sizeTier: "Very large",
+    formats: ["CSV", "JSON", "metadata", "compressed archives"],
+    updateFrequency: "Research deposit; latest Dataverse version released 2026",
+    geographyLevel: [
+      "India",
+      "state",
+      "assembly constituency",
+      "polling part",
+      "individual voter",
+    ],
+    timeCoverage: "2024-25 electoral rolls and 2025-26 SIR draft deleted-voter records",
+    keyVariables: [
+      "individual voter records",
+      "polling part identifiers",
+      "assembly constituency identifiers",
+      "electoral roll metadata",
+      "deleted voter records",
+      "SIR draft list fields",
+    ],
+    variables: [
+      {
+        name: "voter records",
+        label: "Parsed individual-level electoral roll entries",
+        group: "Electors",
+      },
+      {
+        name: "polling part",
+        label: "Part-level electoral roll files and identifiers",
+        group: "Geography",
+      },
+      {
+        name: "assembly constituency",
+        label: "AC-level grouping for roll and deleted-voter files",
+        group: "Geography",
+      },
+      {
+        name: "roll metadata",
+        label: "State-level metadata for each electoral roll or part",
+        group: "Documentation",
+      },
+      {
+        name: "deleted voters",
+        label: "Parsed deleted-voter records from the SIR draft list",
+        group: "Revision records",
+      },
+    ],
+    variablesSource:
+      "Harvard Dataverse file descriptions and project GitHub codebook",
+    variablesUrl: "https://github.com/sharik19/India-Electoral-Rolls",
+    guides: [
+      {
+        title: "Harvard Dataverse dataset landing page",
+        url: doiUrl("10.7910/DVN/YNEY6G"),
+        kind: "official",
+      },
+      {
+        title: "Access request Google Form",
+        url: "https://forms.gle/nsZqvkBTYyzyRmm66",
+        kind: "user-guide",
+      },
+      {
+        title: "GitHub documentation and codebook",
+        url: "https://github.com/sharik19/India-Electoral-Rolls",
+        kind: "codebook",
+      },
+    ],
+    summary:
+      "This restricted-access Dataverse deposit provides parsed Indian electoral rolls and SIR draft deleted-voter records for research on voter registration and electoral administration.",
+    bestFor:
+      "Voter-roll and electoral-administration research that needs part-level or individual-level parsed records with documented access controls",
+    limitations:
+      "Files are restricted because they contain de-identified human-subjects voter records; access requires a request form, IRB approval or exemption, and data-protection commitments",
+    pairsWith: [
+      "eci-general-election-reports",
+      "eci-assembly-election-reports",
+      "lok-dhaba",
+      "myneta",
+    ],
+    exampleUses:
+      "Studying voter-roll coverage, deleted-voter records, electoral-roll revision, and administrative variation across constituencies",
+    flags: ["good-starting"],
+    cluster: "politics-governance",
+    sourceKind: "academic-project",
+    academicBadges: ["core-reference", "mixed-restricted"],
+    dataDoi: "10.7910/DVN/YNEY6G",
+    authors: "Sharik Laliwala",
+    publicationYear: 2025,
+    repository: "Harvard Dataverse",
+    recommendedCitation:
+      "Laliwala, S. 2025. India's Electoral Rolls (2024-25) and Deleted Voter Records (SIR Draft, 2025-26). Harvard Dataverse. DOI 10.7910/DVN/YNEY6G.",
+  },
 
   // ── Energy survey stack ────────────────────────────────────────
   {

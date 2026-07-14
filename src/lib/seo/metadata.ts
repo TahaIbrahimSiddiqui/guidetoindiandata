@@ -16,6 +16,13 @@ type PageMetaInput = {
   noIndex?: boolean;
 };
 
+const DEFAULT_SHARE_IMAGE = {
+  url: absoluteUrl("/og/indian-data-guide.png"),
+  width: 1200,
+  height: 630,
+  alt: "Indian Data Guide: find the right Indian research data",
+};
+
 /**
  * Build consistent Metadata for catalog and marketing pages.
  * Titles use the root template (`%s · Indian Data Guide`) unless absolute.
@@ -43,11 +50,13 @@ export function buildPageMetadata({
       siteName: SITE_NAME,
       title: `${title} · ${SITE_NAME}`,
       description: desc,
+      images: [DEFAULT_SHARE_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} · ${SITE_NAME}`,
       description: desc,
+      images: [DEFAULT_SHARE_IMAGE],
     },
     ...(noIndex
       ? { robots: { index: false, follow: false } }
@@ -75,11 +84,13 @@ export function rootMetadata(): Metadata {
       siteName: SITE_NAME,
       title: SITE_NAME,
       description: SITE_DESCRIPTION,
+      images: [DEFAULT_SHARE_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title: SITE_NAME,
       description: SITE_DESCRIPTION,
+      images: [DEFAULT_SHARE_IMAGE],
     },
     robots: {
       index: true,

@@ -107,6 +107,12 @@ export function MapExperience() {
           >
             Support
           </Link>
+          <Link
+            href="/adminlineage-ai"
+            className="hidden min-h-11 items-center rounded-full border border-white/[0.1] bg-black/65 px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] backdrop-blur-md transition hover:border-[#C4A574]/35 hover:text-[#F3E4C9] sm:inline-flex sm:px-3.5"
+          >
+            AdminLineageAI
+          </Link>
           <button
             type="button"
             onClick={() => setGuideOpen((v) => !v)}

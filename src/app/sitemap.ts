@@ -51,6 +51,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: absoluteUrl("/adminlineage-ai"),
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.65,
+    },
+    {
       url: absoluteUrl("/about"),
       lastModified: now,
       changeFrequency: "yearly",

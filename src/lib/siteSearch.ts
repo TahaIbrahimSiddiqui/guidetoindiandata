@@ -200,6 +200,20 @@ function buildIndex(): SiteSearchDoc[] {
       aliases: ["academic", "dataverse", "replication"],
     },
     {
+      id: "page:adminlineage-ai",
+      title: "AdminLineageAI",
+      subtitle: "AI-assisted administrative crosswalk package",
+      href: "/adminlineage-ai",
+      body: "adminlineage admin lineage administrative crosswalks python package pypi github gemini districts subdistricts states evolution key",
+      aliases: [
+        "adminlineage",
+        "adminlineageai",
+        "admin lineage",
+        "crosswalk",
+        "package",
+      ],
+    },
+    {
       id: "page:about",
       title: "About this guide",
       subtitle: "How the catalog is structured",

@@ -17,6 +17,7 @@ const footerNav = [
       { href: "/clusters", label: "Themes" },
       { href: "/series", label: "Series" },
       { href: "/academic", label: "Academic & Dataverse" },
+      { href: "/adminlineage-ai", label: "AdminLineageAI" },
     ],
   },
   {

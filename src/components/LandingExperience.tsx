@@ -202,6 +202,12 @@ export function LandingExperience({ stats }: Props) {
             >
               Support
             </Link>
+            <Link
+              href="/adminlineage-ai"
+              className="hidden min-h-11 items-center rounded-md px-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] transition hover:text-[#F3E4C9] sm:inline-flex sm:px-3"
+            >
+              AdminLineageAI
+            </Link>
             <Button
               asChild
               size="sm"
@@ -475,6 +481,14 @@ export function LandingExperience({ stats }: Props) {
             >
               <Link href="/support">Support</Link>
             </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="h-12 border-white/15 bg-transparent uppercase tracking-[0.14em] text-[#F3E4C9] hover:bg-white/5"
+            >
+              <Link href="/adminlineage-ai">AdminLineageAI</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -488,6 +502,14 @@ export function LandingExperience({ stats }: Props) {
           ·{" "}
           <Link href="/support" className="text-[#C4A574] hover:text-[#F3E4C9]">
             Support
+          </Link>
+          {" "}
+          ·{" "}
+          <Link
+            href="/adminlineage-ai"
+            className="text-[#C4A574] hover:text-[#F3E4C9]"
+          >
+            AdminLineageAI
           </Link>
         </p>
       </footer>

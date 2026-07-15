@@ -22,6 +22,7 @@ const nav = [
   { href: "/clusters", label: "Themes" },
   { href: "/series", label: "Series" },
   { href: "/academic", label: "Academic" },
+  { href: "/adminlineage-ai", label: "AdminLineageAI" },
   { href: "/about", label: "About" },
   { href: "/support", label: "Support" },
 ];

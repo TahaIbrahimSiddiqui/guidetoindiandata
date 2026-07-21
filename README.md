@@ -55,7 +55,8 @@ npm start
 
 ## Ads / monetization
 
-Landing (`/`) never loads ad units.
+Landing (`/`) never renders ad units, but the root layout emits the AdSense
+verification/Auto Ads loader in `<head>` when ads are enabled.
 
 Catalog routes (`/explore`, `/datasets/*`, `/clusters`, `/about`) use reserved slots via `ContentWithAds`.
 
@@ -63,7 +64,7 @@ Copy `.env.example` to `.env.local` and set:
 
 | Variable | Purpose |
 |----------|---------|
-| `NEXT_PUBLIC_ADS_ENABLED` | `true` to load AdSense |
+| `NEXT_PUBLIC_ADS_ENABLED` | `true` to load AdSense in the document head |
 | `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` |
 | `NEXT_PUBLIC_ADS_SLOT_*` | Optional slot IDs |
 

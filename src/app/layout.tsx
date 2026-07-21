@@ -5,6 +5,7 @@ import {
   IBM_Plex_Mono,
 } from "next/font/google";
 import { websiteJsonLd, serializeJsonLd } from "@/lib/seo/jsonLd";
+import { ADS_ENABLED, ADSENSE_CLIENT } from "@/lib/ads";
 import { rootMetadata } from "@/lib/seo/metadata";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -28,6 +29,8 @@ const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
 });
+
+const shouldLoadAdsense = ADS_ENABLED && Boolean(ADSENSE_CLIENT);
 
 export const metadata: Metadata = rootMetadata();
 
@@ -53,6 +56,15 @@ export default function RootLayout({
         mono.variable,
       )}
     >
+      <head>
+        {shouldLoadAdsense ? (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+            crossOrigin="anonymous"
+          />
+        ) : null}
+      </head>
       <body className="min-h-dvh bg-black font-sans text-foreground">
         <script
           type="application/ld+json"

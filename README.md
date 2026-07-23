@@ -55,8 +55,8 @@ npm start
 
 ## Ads / monetization
 
-Landing (`/`) never renders ad units, but the root layout emits the AdSense
-verification/Auto Ads loader in `<head>` when ads are enabled.
+Landing (`/`) never renders ad units, but the root layout always emits the
+AdSense verification/Auto Ads loader in `<head>`.
 
 Catalog routes (`/explore`, `/datasets/*`, `/clusters`, `/about`) use reserved slots via `ContentWithAds`.
 
@@ -64,8 +64,8 @@ Copy `.env.example` to `.env.local` and set:
 
 | Variable | Purpose |
 |----------|---------|
-| `NEXT_PUBLIC_ADS_ENABLED` | `true` to load AdSense in the document head |
-| `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-…` |
+| `NEXT_PUBLIC_ADS_ENABLED` | `true` to render catalog ad units |
+| `NEXT_PUBLIC_ADSENSE_CLIENT` | Optional override; defaults to `ca-pub-5636736680811463` |
 | `NEXT_PUBLIC_ADS_SLOT_*` | Optional slot IDs |
 
 For GitHub Pages, set the same names under **Settings → Secrets and variables → Actions → Variables**. The deploy workflow also accepts them as repository secrets if you prefer.

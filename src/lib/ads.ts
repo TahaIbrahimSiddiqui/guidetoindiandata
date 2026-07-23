@@ -4,14 +4,19 @@ export const ADS_ENABLED =
   process.env.NEXT_PUBLIC_ADS_ENABLED === "true" ||
   process.env.NEXT_PUBLIC_ADS_ENABLED === "1";
 
-export const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "";
-
-export function isAdsenseSlotId(slotId: string) {
-  return /^\d{6,}$/.test(slotId.trim());
-}
+const DEFAULT_ADSENSE_CLIENT = "ca-pub-5636736680811463";
 
 function envOrDefault(value: string | undefined, fallback: string) {
   return value?.trim() || fallback;
+}
+
+export const ADSENSE_CLIENT = envOrDefault(
+  process.env.NEXT_PUBLIC_ADSENSE_CLIENT,
+  DEFAULT_ADSENSE_CLIENT,
+);
+
+export function isAdsenseSlotId(slotId: string) {
+  return /^\d{6,}$/.test(slotId.trim());
 }
 
 export const AD_SLOT_IDS = {

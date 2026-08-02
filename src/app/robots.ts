@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 
 /**
  * robots.txt for static export. Full crawl allowed; sitemap includes basePath.
- * Marketing pages stay indexable as entry points (thin UX pages are fine).
+ * All public catalog and editorial pages stay indexable as entry points.
  */
 export default function robots(): MetadataRoute.Robots {
   return {

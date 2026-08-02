@@ -174,6 +174,10 @@ export default function AboutPage() {
         <Link href="/privacy" className="text-[#C4A574] link-underline">
           Privacy & advertising
         </Link>
+        {", and read the full "}
+        <Link href="/methodology" className="text-[#C4A574] link-underline">
+          editorial methodology
+        </Link>
         .
       </p>
     </div>

@@ -17,12 +17,12 @@ import { cn } from "@/lib/utils";
 /** Primary destinations — every major catalog route is one click away. */
 const nav = [
   { href: "/", label: "Landing" },
-  { href: "/map", label: "Map" },
   { href: "/explore", label: "Explore" },
   { href: "/clusters", label: "Themes" },
   { href: "/series", label: "Series" },
   { href: "/academic", label: "Academic" },
   { href: "/adminlineage-ai", label: "AdminLineageAI" },
+  { href: "/methodology", label: "Method" },
   { href: "/about", label: "About" },
   { href: "/support", label: "Support" },
 ];

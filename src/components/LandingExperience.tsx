@@ -2,9 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  ArrowDown,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
   MousePointer2,
   Orbit,
 } from "lucide-react";
@@ -17,7 +22,6 @@ const LANDING_VIDEO = `${BASE}/videos/indian-street-market-background-web-1080p-
 
 /** Desktop affordance lines — any of these enters the solar map. */
 const ACTION_LINES_DESKTOP = [
-  "Scroll down",
   "Click anywhere on the hero",
   "Press Enter or Space",
   "Use the button below",
@@ -31,13 +35,14 @@ const ACTION_LINES_TOUCH = [
 
 type Props = {
   stats: CatalogStats;
+  children: ReactNode;
 };
 
 /**
  * Hero with staggered text entrance + timer-style count-up stats
  * pinned in the first viewport (no scroll required to see counters).
  */
-export function LandingExperience({ stats }: Props) {
+export function LandingExperience({ stats, children }: Props) {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [reduced, setReduced] = useState(false);
@@ -48,8 +53,6 @@ export function LandingExperience({ stats }: Props) {
   const [actionVisible, setActionVisible] = useState(true);
   /** Staggered reveal of hero text blocks */
   const [revealStep, setRevealStep] = useState(0);
-  /** Start count-up after text has begun */
-  const [countReady, setCountReady] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -71,21 +74,18 @@ export function LandingExperience({ stats }: Props) {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // Cascade text in, then kick off counters
+  // Cascade the hero text in while keeping substantive content in static HTML.
   useEffect(() => {
     if (reduced) {
       setRevealStep(6);
-      setCountReady(true);
       return;
     }
     const delays = [80, 220, 420, 620, 820, 980];
     const timers = delays.map((ms, i) =>
       window.setTimeout(() => setRevealStep(i + 1), ms),
     );
-    const countT = window.setTimeout(() => setCountReady(true), 1100);
     return () => {
       timers.forEach(clearTimeout);
-      window.clearTimeout(countT);
     };
   }, [reduced]);
 
@@ -148,21 +148,6 @@ export function LandingExperience({ stats }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [enterMap]);
 
-  // Wheel: scroll down opens the map. Scroll up does nothing (no transition).
-  useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      if (phase === "zooming") return;
-      // Ignore scroll up and horizontal trackpad pans
-      if (e.deltaY <= 0) return;
-      if (window.scrollY <= 8 && e.deltaY > 12) {
-        e.preventDefault();
-        enterMap();
-      }
-    };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [enterMap, phase]);
-
   const zooming = phase === "zooming";
   const actionLines = isTouch ? ACTION_LINES_TOUCH : ACTION_LINES_DESKTOP;
   const actionLine = actionLines[actionIdx % actionLines.length];
@@ -191,16 +176,16 @@ export function LandingExperience({ stats }: Props) {
           </Link>
           <nav className="flex shrink-0 items-center gap-1 sm:gap-2" aria-label="Main">
             <Link
-              href="/about"
+              href="/explore"
               className="inline-flex min-h-11 items-center rounded-md px-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] transition hover:text-[#F3E4C9] sm:px-3"
             >
-              About
+              Explore
             </Link>
             <Link
-              href="/support"
+              href="/methodology"
               className="inline-flex min-h-11 items-center rounded-md px-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#C8C9BC] transition hover:text-[#F3E4C9] sm:px-3"
             >
-              Support
+              Method
             </Link>
             <Link
               href="/adminlineage-ai"
@@ -224,7 +209,7 @@ export function LandingExperience({ stats }: Props) {
 
       {/* ── Hero: full first screen including stats ───── */}
       <section
-        className="relative flex h-dvh flex-col overflow-y-auto overscroll-contain pt-[calc(3.5rem+env(safe-area-inset-top))] sm:pt-[calc(4rem+env(safe-area-inset-top))]"
+        className="relative flex min-h-dvh flex-col overflow-hidden pt-[calc(3.5rem+env(safe-area-inset-top))] sm:pt-[calc(4rem+env(safe-area-inset-top))]"
         onClick={(e) => {
           const t = e.target as HTMLElement;
           if (t.closest("a, button")) return;
@@ -339,11 +324,11 @@ export function LandingExperience({ stats }: Props) {
                 </span>
               </Button>
               <Link
-                href="/about"
+                href="/explore"
                 onClick={(e) => e.stopPropagation()}
                 className="inline-flex min-h-11 items-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C4A574] transition hover:text-[#F3E4C9]"
               >
-                About the maintainer →
+                Browse the catalog →
               </Link>
             </div>
 
@@ -358,11 +343,7 @@ export function LandingExperience({ stats }: Props) {
               aria-live="polite"
             >
               <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[#C4A574]">
-                {!isTouch && actionIdx === 0 ? (
-                  <ArrowDown className="size-3.5" aria-hidden />
-                ) : (
-                  <MousePointer2 className="size-3.5" aria-hidden />
-                )}
+                <MousePointer2 className="size-3.5" aria-hidden />
               </span>
               <span>
                 <span className="text-[#F3E4C9]">{actionLine}</span>
@@ -386,30 +367,18 @@ export function LandingExperience({ stats }: Props) {
               <CountUpStat
                 target={stats.datasetCount}
                 label="datasets"
-                ready={countReady}
-                reduced={reduced}
-                delayMs={0}
               />
               <CountUpStat
                 target={stats.thematicAreaCount}
                 label="thematic areas"
-                ready={countReady}
-                reduced={reduced}
-                delayMs={120}
               />
               <CountUpStat
                 target={stats.providerCount}
                 label="data providers"
-                ready={countReady}
-                reduced={reduced}
-                delayMs={240}
               />
               <StatStatic
                 value={stats.lastUpdatedLabel}
                 label="last updated"
-                ready={countReady}
-                reduced={reduced}
-                delayMs={360}
               />
             </div>
           </div>
@@ -430,7 +399,7 @@ export function LandingExperience({ stats }: Props) {
               {
                 n: "01",
                 t: "Open the solar map",
-                d: "Enter via the button, scroll down on the hero, a click on the hero, or keyboard. Scroll up does not open the map.",
+                d: "Enter through the hero button, a click on the image, or the keyboard. Scroll down to browse the catalog and editorial guide.",
               },
               {
                 n: "02",
@@ -493,6 +462,8 @@ export function LandingExperience({ stats }: Props) {
         </div>
       </section>
 
+      {children}
+
       <footer className="border-t border-white/[0.06] px-5 py-8 text-center sm:px-8">
         <p className="text-[10px] uppercase tracking-[0.16em] text-white/35">
           Independent public catalog · Not an official ministry portal ·{" "}
@@ -502,6 +473,14 @@ export function LandingExperience({ stats }: Props) {
           ·{" "}
           <Link href="/support" className="text-[#C4A574] hover:text-[#F3E4C9]">
             Support
+          </Link>
+          {" "}
+          ·{" "}
+          <Link
+            href="/methodology"
+            className="text-[#C4A574] hover:text-[#F3E4C9]"
+          >
+            Methodology
           </Link>
           {" "}
           ·{" "}
@@ -575,69 +554,20 @@ function AnimatedHeadline({
   );
 }
 
-/** Ease-out cubic for timer feel */
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
 function CountUpStat({
   target,
   label,
-  ready,
-  reduced,
-  delayMs,
 }: {
   target: number;
   label: string;
-  ready: boolean;
-  reduced: boolean;
-  delayMs: number;
 }) {
-  const [value, setValue] = useState(0);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    if (!ready) return;
-    if (reduced) {
-      setValue(target);
-      setStarted(true);
-      return;
-    }
-    let cancelled = false;
-    let raf = 0;
-    const startDelay = window.setTimeout(() => {
-      setStarted(true);
-      const duration = 1400 + Math.min(800, target * 4);
-      const t0 = performance.now();
-      const tick = (now: number) => {
-        if (cancelled) return;
-        const p = Math.min(1, (now - t0) / duration);
-        setValue(Math.round(easeOutCubic(p) * target));
-        if (p < 1) raf = requestAnimationFrame(tick);
-        else setValue(target);
-      };
-      raf = requestAnimationFrame(tick);
-    }, delayMs);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(startDelay);
-      cancelAnimationFrame(raf);
-    };
-  }, [ready, reduced, target, delayMs]);
-
   return (
-    <div
-      className={`px-4 py-4 sm:px-8 sm:py-6 transition-all duration-500 ${
-        started || reduced
-          ? "translate-y-0 opacity-100"
-          : "translate-y-3 opacity-0"
-      }`}
-    >
+    <div className="px-4 py-4 sm:px-8 sm:py-6">
       <p
         className="font-display text-2xl font-semibold tabular-nums text-[#F3E4C9] sm:text-3xl"
         aria-label={`${target} ${label}`}
       >
-        {value.toLocaleString("en-US")}
+        {target.toLocaleString("en-US")}
       </p>
       <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[#C8C9BC]/85">
         {label}
@@ -649,34 +579,12 @@ function CountUpStat({
 function StatStatic({
   value,
   label,
-  ready,
-  reduced,
-  delayMs,
 }: {
   value: string;
   label: string;
-  ready: boolean;
-  reduced: boolean;
-  delayMs: number;
 }) {
-  const [show, setShow] = useState(reduced);
-
-  useEffect(() => {
-    if (!ready) return;
-    if (reduced) {
-      setShow(true);
-      return;
-    }
-    const t = window.setTimeout(() => setShow(true), delayMs);
-    return () => window.clearTimeout(t);
-  }, [ready, reduced, delayMs]);
-
   return (
-    <div
-      className={`px-4 py-4 sm:px-8 sm:py-6 transition-all duration-500 ${
-        show ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
-      }`}
-    >
+    <div className="px-4 py-4 sm:px-8 sm:py-6">
       <p className="font-display text-lg font-semibold text-[#F3E4C9] sm:text-xl">
         {value}
       </p>

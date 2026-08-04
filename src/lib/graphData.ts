@@ -44,7 +44,7 @@ const SOURCE_LAYER_IDS = new Set<string>([
 
 export const domainClusters = clusters.filter(
   (c) => !SOURCE_LAYER_IDS.has(c.id),
-);
+).sort((a, b) => a.shortName.localeCompare(b.shortName, "en"));
 
 function uniqThemes(ids: ClusterId[]): ClusterId[] {
   return Array.from(new Set(ids.map(normalizeClusterId)));

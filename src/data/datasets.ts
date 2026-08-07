@@ -307,10 +307,155 @@ const governmentDatasets: DatasetDraft[] = [
     ],
     bestFor: "High-frequency routine health reporting and facility service use",
     limitations: "Administrative quality varies; not a probability sample",
-    pairsWith: ["nfhs-5", "srs-statistical-reports", "crs-vital-statistics"],
+    pairsWith: [
+      "nfhs-5",
+      "srs-statistical-reports",
+      "crs-vital-statistics",
+      "idsp-weekly-outbreaks",
+    ],
     exampleUses: "Monthly immunization and delivery monitoring",
     flags: ["good-starting"],
     cluster: "health-demography",
+  },
+  {
+    slug: "idsp-weekly-outbreaks",
+    title:
+      "Integrated Disease Surveillance Programme (IDSP) Weekly Outbreak Reports",
+    shortTitle: "IDSP Outbreak Reports",
+    abbreviations: ["IDSP", "IDSP-IHIP", "IHIP"],
+    categories: [
+      "health",
+      "disease surveillance",
+      "outbreaks",
+      "epidemiology",
+    ],
+    technicalTags: [
+      "weekly reports",
+      "district-level",
+      "administrative data",
+      "outbreak events",
+      "PDF",
+    ],
+    host: "Integrated Disease Surveillance Programme / IHIP",
+    institution: "NCDC / Ministry of Health & Family Welfare",
+    accessUrl:
+      "https://idsp.mohfw.gov.in/index4.php?lang=1&level=0&lid=3689&linkid=406",
+    docsUrl:
+      "https://idsp.mohfw.gov.in/index4.php?lang=1&level=0&lid=3685&linkid=403&theme=Blue",
+    accessType: "open-download",
+    sizeTier: "Large",
+    formats: ["PDF", "web dashboard"],
+    updateFrequency: "Weekly public outbreak reports; near-real-time IHIP reporting",
+    geographyLevel: [
+      "India",
+      "state / UT",
+      "district",
+      "reported subdistricts and localities",
+    ],
+    timeCoverage:
+      "Public weekly outbreak series from 2008 onward; IHIP operational from 2021",
+    keyVariables: [
+      "outbreak unique ID",
+      "state / UT and district",
+      "disease / illness",
+      "cases and deaths",
+      "outbreak start date",
+      "reporting date",
+      "current status",
+      "investigation and action notes",
+    ],
+    variables: [
+      {
+        name: "Unique ID",
+        label: "State, district, year, week, and outbreak sequence code",
+        group: "Identifiers",
+      },
+      {
+        name: "State/UT",
+        label: "Reporting state or Union Territory",
+        group: "Geography",
+      },
+      {
+        name: "District",
+        label: "Reporting district",
+        group: "Geography",
+      },
+      {
+        name: "Disease/Illness",
+        label: "Reported disease alert or outbreak classification",
+        group: "Condition",
+      },
+      {
+        name: "No. of Cases",
+        label: "Cases associated with the reported outbreak",
+        group: "Burden",
+      },
+      {
+        name: "No. of Deaths",
+        label: "Deaths reported for the outbreak",
+        group: "Burden",
+      },
+      {
+        name: "Date of Start of Outbreak",
+        label: "Reported onset date of the outbreak",
+        group: "Time",
+      },
+      {
+        name: "Date of Reporting",
+        label: "Date the outbreak was reported",
+        group: "Time",
+      },
+      {
+        name: "Current Status",
+        label: "Status such as under surveillance or under control",
+        group: "Response",
+      },
+      {
+        name: "Comments/Action Taken",
+        label: "Locality, symptoms, laboratory findings, investigation, and response narrative",
+        group: "Response",
+      },
+    ],
+    variablesSource:
+      "NCDC IDSP Weekly Outbreak Report table headings and reporting documentation",
+    variablesUrl:
+      "https://idsp.mohfw.gov.in/index4.php?lang=1&level=0&lid=3689&linkid=406",
+    guides: [
+      {
+        title: "IDSP weekly outbreak report archive",
+        url: "https://idsp.mohfw.gov.in/index4.php?lang=1&level=0&lid=3689&linkid=406",
+        kind: "official",
+      },
+      {
+        title: "About IDSP outbreak surveillance",
+        url: "https://idsp.mohfw.gov.in/index4.php?lang=1&level=0&lid=3685&linkid=403&theme=Blue",
+        kind: "official",
+      },
+      {
+        title: "Integrated Health Information Platform",
+        url: "https://ihip.mohfw.gov.in/idsp/",
+        kind: "portal",
+      },
+      {
+        title: "IDSP-IHIP manuals and reporting forms",
+        url: "https://idsp.mohfw.gov.in/index1.php?lang=1&level=1&lid=59&sublinkid=33",
+        kind: "user-guide",
+      },
+    ],
+    summary:
+      "IDSP weekly reports provide district-wise disease outbreak alerts with case and death counts, dates, status, laboratory findings, and public-health response notes from India’s national surveillance programme.",
+    bestFor:
+      "Building district-week outbreak event panels and studying disease seasonality, reporting delays, laboratory confirmation, and public-health response",
+    limitations:
+      "The public archive is PDF- and dashboard-first, not an unrestricted patient-level extract; reporting completeness varies across states and weeks, narratives require careful parsing, and initial case or death totals may be revised",
+    background:
+      "IDSP was launched in 2004 to strengthen decentralized surveillance and early outbreak response. The Central Surveillance Unit compiles weekly reports from States and Union Territories, while the IHIP platform introduced in 2021 supports near-real-time case-based reporting and outbreak management.",
+    pairsWith: ["hmis", "covid-r-estimates-india", "em-dat-india"],
+    exampleUses:
+      "District-week outbreak databases for dengue, malaria, acute diarrhoeal disease, food poisoning, hepatitis, measles, and other epidemic-prone conditions",
+    flags: ["good-starting", "best-district"],
+    cluster: "health-demography",
+    sourceKind: "government",
   },
   {
     slug: "srs-statistical-reports",
@@ -1434,7 +1579,12 @@ const governmentDatasets: DatasetDraft[] = [
     keyVariables: ["electors", "turnout", "candidates", "votes", "winners"],
     bestFor: "Official parliamentary election results archive",
     limitations: "Report packaging differs by year",
-    pairsWith: ["myneta", "lok-dhaba", "eci-assembly-election-reports"],
+    pairsWith: [
+      "myneta",
+      "lok-dhaba",
+      "eci-assembly-election-reports",
+      "sage-global-elections-india-2019",
+    ],
     exampleUses: "Turnout and party performance history",
     flags: ["good-starting"],
     cluster: "governance-justice",

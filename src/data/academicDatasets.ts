@@ -232,6 +232,150 @@ export const academicDatasets: DatasetDraft[] = [
     recommendedCitation:
       "Laliwala, S. 2025. India's Electoral Rolls (2024-25) and Deleted Voter Records (SIR Draft, 2025-26). Harvard Dataverse. DOI 10.7910/DVN/YNEY6G.",
   },
+  {
+    slug: "sage-global-elections-india-2019",
+    title: "Small-Area Global Elections (SAGE) Dataset — India 2019",
+    shortTitle: "SAGE India 2019",
+    abbreviations: ["SAGE", "Small-Area Global Elections"],
+    categories: ["elections", "geospatial", "comparative politics"],
+    technicalTags: [
+      "polling-station-level",
+      "geocoded",
+      "Parquet",
+      "GeoParquet",
+      "cross-national",
+    ],
+    host: "Harvard Dataverse / SAGE",
+    institution: "Noah Dasanaike / Harvard University",
+    accessUrl: doiUrl("10.7910/DVN/YGJR1L"),
+    docsUrl: "https://noahdasanaike.github.io/sage.html",
+    accessType: "open-download",
+    sizeTier: "Large",
+    formats: ["Parquet", "GeoParquet", "R sf"],
+    updateFrequency:
+      "Periodic releases as countries, election years, and corrections are added",
+    geographyLevel: [
+      "India",
+      "state",
+      "parliamentary constituency",
+      "polling station",
+      "coordinates and derived polygons",
+    ],
+    timeCoverage:
+      "India: 2019 Lok Sabha election; global archive: 1948–2026",
+    keyVariables: [
+      "polling-station geography",
+      "party and candidate",
+      "votes and total votes",
+      "registered and eligible voters",
+      "turnout",
+      "latitude and longitude",
+      "Party Facts identifiers",
+      "geometry quality fields",
+    ],
+    variables: [
+      {
+        name: "country / iso3",
+        label: "Country name and ISO3 code",
+        group: "Geography",
+      },
+      {
+        name: "NAME1 ... NAMEk",
+        label: "Hierarchical administrative and electoral-unit names",
+        group: "Geography",
+      },
+      {
+        name: "year / election_type",
+        label: "Election year and standardized election type",
+        group: "Election",
+      },
+      {
+        name: "party / candidate",
+        label: "Harmonized party and available candidate names",
+        group: "Contestants",
+      },
+      {
+        name: "votes / total_votes",
+        label: "Contestant votes and total votes at the electoral unit",
+        group: "Results",
+      },
+      {
+        name: "reg / turnout_reg",
+        label: "Registered voters and registered-voter turnout",
+        group: "Turnout",
+      },
+      {
+        name: "evp / turnout_evp",
+        label: "Eligible voting population and corresponding turnout",
+        group: "Turnout",
+      },
+      {
+        name: "latitude / longitude",
+        label: "Geocoded electoral-unit coordinates",
+        group: "Geometry",
+      },
+      {
+        name: "geometry_type / geometry_level",
+        label: "Geometry construction method and spatial level",
+        group: "Geometry",
+      },
+      {
+        name: "partyfacts_id / match_confidence",
+        label: "Cross-national Party Facts match and confidence",
+        group: "Harmonization",
+      },
+      {
+        name: "geocode_duplicates",
+        label: "Count of units sharing the same coordinate",
+        group: "Quality",
+      },
+    ],
+    variablesSource: "SAGE codebook and project repository schema",
+    variablesUrl: "https://storage.googleapis.com/sage-archive/codebook.pdf",
+    guides: [
+      {
+        title: "SAGE project page and country downloads",
+        url: "https://noahdasanaike.github.io/sage.html",
+        kind: "official",
+      },
+      {
+        title: "SAGE codebook",
+        url: "https://storage.googleapis.com/sage-archive/codebook.pdf",
+        kind: "codebook",
+      },
+      {
+        title: "R and Python package documentation",
+        url: "https://github.com/noahdasanaike/sage",
+        kind: "user-guide",
+      },
+    ],
+    summary:
+      "SAGE provides standardized, geocoded 2019 Lok Sabha returns at polling-station level for India, with party, candidate, vote, turnout, coordinate, and polygon fields inside a comparable global election archive.",
+    bestFor:
+      "Fine-grained spatial analysis of the 2019 Lok Sabha election and comparison with small-area election returns from other countries",
+    limitations:
+      "India coverage currently contains only the 2019 Lok Sabha election; SAGE reports about 867,000 units and 0.944 geographic coverage, so validate unmatched or duplicated geocodes and treat the harmonized polygons as research geometry rather than official ECI boundaries",
+    background:
+      "SAGE harmonizes lower-house parliamentary and presidential returns at the smallest geography published by each electoral authority. The wider archive covers more than 600 country-elections across 131 countries; the India slice is a single 2019 legislative election with polling-station results and available candidate names.",
+    pairsWith: [
+      "eci-general-election-reports",
+      "lok-dhaba",
+      "gh-india-votes-data",
+      "gh-datameet-maps",
+    ],
+    exampleUses:
+      "Polling-station vote maps, local turnout analysis, spatial electoral polarization, and cross-national small-area election comparisons",
+    flags: ["good-starting"],
+    cluster: "politics-governance",
+    sourceKind: "academic-project",
+    academicBadges: ["core-reference"],
+    dataDoi: "10.7910/DVN/YGJR1L",
+    authors: "Noah Dasanaike",
+    publicationYear: 2026,
+    repository: "Harvard Dataverse",
+    recommendedCitation:
+      "Dasanaike, N. 2026. The Small-Area Global Elections (SAGE) Dataset. Harvard Dataverse. DOI 10.7910/DVN/YGJR1L.",
+  },
 
   // ── Energy survey stack ────────────────────────────────────────
   {

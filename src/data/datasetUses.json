@@ -1,0 +1,2094 @@
+{
+  "version": 1,
+  "works": {
+    "doi:10.1016/j.lansea.2025.100601": {
+      "id": "doi:10.1016/j.lansea.2025.100601",
+      "title": "Zoonotic disease outbreaks reported under India's Integrated Disease Surveillance Programme, 2018–2023: a cross-sectional analysis of national surveillance data",
+      "authors": [
+        "Mogan Kaviprawin",
+        "Mohankumar Raju",
+        "Manikandanesan Sakthivel",
+        "Archana Ramalingam"
+      ],
+      "publisher": "The Lancet Regional Health - Southeast Asia",
+      "year": 2025,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1016/j.lansea.2025.100601",
+      "doi": "10.1016/j.lansea.2025.100601"
+    },
+    "doi:10.1016/j.microb.2025.100567": {
+      "id": "doi:10.1016/j.microb.2025.100567",
+      "title": "Spatio-temporal patterns and spatial autocorrelation of chandipura virus outbreaks in India (2009–2023): A one health perspective",
+      "authors": [
+        "Dinesh Asokan",
+        "Ajith Ramalingam",
+        "Talha Nadeem",
+        "Anjali Mall",
+        "Geeta Pardeshi"
+      ],
+      "publisher": "The Microbe",
+      "year": 2025,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1016/j.microb.2025.100567",
+      "doi": "10.1016/j.microb.2025.100567"
+    },
+    "doi:10.1080/29947677.2025.2466531": {
+      "id": "doi:10.1080/29947677.2025.2466531",
+      "title": "Disease Outbreaks in India (2017–2023): Key Inferences from an Analysis of Weekly Records for Effective Outbreak Management and Response",
+      "authors": [
+        "Giribabu Dandabathula",
+        "Pankaj Bhardwaj",
+        "Venkata Ramana Muvva",
+        "Subham Roy",
+        "Aleena Biju Thekkedath",
+        "Gaurav Kumar",
+        "Navisha Shukla",
+        "Apurba Kumar Bera",
+        "Sushil Kumar Srivastav"
+      ],
+      "publisher": "Outbreak Management and Response",
+      "year": 2025,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1080/29947677.2025.2466531",
+      "doi": "10.1080/29947677.2025.2466531"
+    },
+    "doi:10.1136/bmjph-2025-003908": {
+      "id": "doi:10.1136/bmjph-2025-003908",
+      "title": "Spatio-temporal analysis of dengue outbreaks in India (2021–2025): evidence from the secondary analysis of Integrated Disease Surveillance Programme",
+      "authors": [
+        "Shrinivasa B Marinaik",
+        "Vani H Chalageri",
+        "Preethi R Reval",
+        "VidyaShree Manjunath",
+        "Harshitha Jithendra",
+        "Avinash Manjunath",
+        "Kajol Bankoti",
+        "Gunjan Negi",
+        "Viprasha Tomer",
+        "Anup Anvikar"
+      ],
+      "publisher": "BMJ Public Health",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1136/bmjph-2025-003908",
+      "doi": "10.1136/bmjph-2025-003908"
+    },
+    "doi:10.1186/s12879-026-14250-1": {
+      "id": "doi:10.1186/s12879-026-14250-1",
+      "title": "Analysis of measles outbreaks reported to Integrated Disease Surveillance Programme (IDSP), India, 2019–2023",
+      "authors": [
+        "Gopi Kumbha",
+        "Sushma Choudhary",
+        "Mohan Kumar Raju",
+        "Meera Dhuria",
+        "Archana Ramalingam"
+      ],
+      "publisher": "BMC Infectious Diseases",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1186/s12879-026-14250-1",
+      "doi": "10.1186/s12879-026-14250-1"
+    },
+    "doi:10.3390/ijerph17249378": {
+      "id": "doi:10.3390/ijerph17249378",
+      "title": "Cholera Risk: A Machine Learning Approach Applied to Essential Climate Variables",
+      "authors": [
+        "Amy Marie Campbell",
+        "Marie-Fanny Racault",
+        "Stephen Goult",
+        "Angus Laurenson"
+      ],
+      "publisher": "International Journal of Environmental Research and Public Health",
+      "year": 2020,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.3390/ijerph17249378",
+      "doi": "10.3390/ijerph17249378"
+    },
+    "doi:10.64898/2026.08.13.26360363": {
+      "id": "doi:10.64898/2026.08.13.26360363",
+      "title": "A Digital-Ready Framework for Ongoing Performance Evaluation of India’s Integrated Disease Surveillance Program (IDSP) using Weekly Outbreak Reports: A Study from Bihar, 2016-2018",
+      "authors": [
+        "Dhananjay Kumar Srivastava",
+        "S.D. Gupta",
+        "Nidhi Yadav"
+      ],
+      "publisher": "medRxiv",
+      "year": 2026,
+      "kind": "working-paper",
+      "url": "https://doi.org/10.64898/2026.08.13.26360363",
+      "doi": "10.64898/2026.08.13.26360363"
+    },
+    "doi:10.1038/s41597-026-07869-x": {
+      "id": "doi:10.1038/s41597-026-07869-x",
+      "title": "The Small-Area Global Elections (SAGE) Dataset",
+      "authors": [
+        "Noah Dasanaike"
+      ],
+      "publisher": "Scientific Data",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1038/s41597-026-07869-x",
+      "doi": "10.1038/s41597-026-07869-x"
+    },
+    "doi:10.1007/s10389-023-01960-y": {
+      "id": "doi:10.1007/s10389-023-01960-y",
+      "title": "Does health insurance coverage improve maternal healthcare services utilization in India? Evidence from National Family Health Survey-5, 2019–21",
+      "authors": [
+        "Ravi Durga Prasad",
+        "Koustav Ghosh",
+        "Neha Shri"
+      ],
+      "publisher": "Journal of Public Health",
+      "year": 2023,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1007/s10389-023-01960-y",
+      "doi": "10.1007/s10389-023-01960-y",
+      "citationCount": 3
+    },
+    "doi:10.1007/s13300-023-01424-2": {
+      "id": "doi:10.1007/s13300-023-01424-2",
+      "title": "Childhood Obesity and Essential Micronutrients: Insights from India’s Comprehensive National Nutrition Survey (2016–18)",
+      "authors": [
+        "Madhur Verma",
+        "Aditi Aditi",
+        "Nitin Kapoor",
+        "Priyanka Sharma",
+        "Monica Kakkar",
+        "Rakesh Kakkar",
+        "Sanjay Kalra"
+      ],
+      "publisher": "Diabetes Therapy",
+      "year": 2023,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1007/s13300-023-01424-2",
+      "doi": "10.1007/s13300-023-01424-2",
+      "citationCount": 9
+    },
+    "doi:10.1016/j.cegh.2020.04.005": {
+      "id": "doi:10.1016/j.cegh.2020.04.005",
+      "title": "Sex composition and son preference in India and major states: Evidence from the National Family Health Survey-4 (2015-16)",
+      "authors": [
+        "Ajit Kumar Yadav",
+        "Ankit Anand",
+        "Ruby Alambusha",
+        "Suresh Jungari"
+      ],
+      "publisher": "Clinical Epidemiology and Global Health",
+      "year": 2020,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1016/j.cegh.2020.04.005",
+      "doi": "10.1016/j.cegh.2020.04.005",
+      "citationCount": 18
+    },
+    "doi:10.1016/j.dsx.2024.103085": {
+      "id": "doi:10.1016/j.dsx.2024.103085",
+      "title": "District-level epidemiology and sociodemographic determinants of noncommunicable diseases - results the National Family Health Survey −5 (2019–21)",
+      "authors": [
+        "Vaitheeswaran Kulothungan",
+        "Leena Mascarenhas",
+        "Priyanka Das",
+        "Prashant Mathur"
+      ],
+      "publisher": "Diabetes & Metabolic Syndrome Clinical Research & Reviews",
+      "year": 2024,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1016/j.dsx.2024.103085",
+      "doi": "10.1016/j.dsx.2024.103085",
+      "citationCount": 2
+    },
+    "doi:10.1016/j.enpol.2017.03.048": {
+      "id": "doi:10.1016/j.enpol.2017.03.048",
+      "title": "Geographic and socio-economic barriers to rural electrification: New evidence from Indian villages",
+      "authors": [
+        "Eugenie Dugoua",
+        "Ruinan Liu",
+        "Johannes Urpelainen"
+      ],
+      "publisher": "Energy Policy",
+      "year": 2017,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1016/j.enpol.2017.03.048",
+      "doi": "10.1016/j.enpol.2017.03.048",
+      "citationCount": 41
+    },
+    "doi:10.1016/j.puhe.2021.03.001": {
+      "id": "doi:10.1016/j.puhe.2021.03.001",
+      "title": "District-level epidemiology, hot spots and sociodemographic determinants of tobacco use in Indian men and women: analysis of national family health survey-4 (2015–16)",
+      "authors": [
+        "B. Karuppusamy",
+        "Winnie Paulson",
+        "Savitha Chellappan",
+        "Sujit Kumar Behera",
+        "Praveen Balabaskaran Nina"
+      ],
+      "publisher": "Public Health",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1016/j.puhe.2021.03.001",
+      "doi": "10.1016/j.puhe.2021.03.001",
+      "citationCount": 12
+    },
+    "doi:10.1017/s0003055418000199": {
+      "id": "doi:10.1017/s0003055418000199",
+      "title": "Independent Candidates and Political Representation in India",
+      "authors": [
+        "SACHA KAPOOR",
+        "ARVIND MAGESAN"
+      ],
+      "publisher": "American Political Science Review",
+      "year": 2018,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1017/s0003055418000199",
+      "doi": "10.1017/s0003055418000199",
+      "citationCount": 12
+    },
+    "doi:10.1017/s0143814x20000045": {
+      "id": "doi:10.1017/s0143814x20000045",
+      "title": "Inequality in policy implementation: caste and electrification in rural India",
+      "authors": [
+        "Michaël Aklin",
+        "Chao-Yo Cheng",
+        "Johannes Urpelainen"
+      ],
+      "publisher": "Journal of Public Policy",
+      "year": 2020,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1017/s0143814x20000045",
+      "doi": "10.1017/s0143814x20000045",
+      "citationCount": 22
+    },
+    "doi:10.1086/694101": {
+      "id": "doi:10.1086/694101",
+      "title": "Local Embeddedness and Bureaucratic Performance: Evidence from India",
+      "authors": [
+        "Rikhil R. Bhavnani",
+        "Alexander Lee"
+      ],
+      "publisher": "The Journal of Politics",
+      "year": 2018,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1086/694101",
+      "doi": "10.1086/694101",
+      "citationCount": 77
+    },
+    "doi:10.1086/739115": {
+      "id": "doi:10.1086/739115",
+      "title": "Hot Weather, Undernutrition, and Adaptation in Rural India",
+      "authors": [
+        "Paul Stainier",
+        "Manisha Shah",
+        "Alan Barreca"
+      ],
+      "publisher": "Journal of the Association of Environmental and Resource Economists",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1086/739115",
+      "doi": "10.1086/739115",
+      "citationCount": 0
+    },
+    "doi:10.1086/742218": {
+      "id": "doi:10.1086/742218",
+      "title": "Noise and Learning: Evidence from India",
+      "authors": [
+        "Arzi Adbi",
+        "Sumit Agarwal",
+        "Pulak Ghosh"
+      ],
+      "publisher": "Journal of the Association of Environmental and Resource Economists",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1086/742218",
+      "doi": "10.1086/742218",
+      "citationCount": 0
+    },
+    "doi:10.1093/ajcn/nqab066": {
+      "id": "doi:10.1093/ajcn/nqab066",
+      "title": "Prevalence of low serum zinc concentrations in Indian children and adolescents: findings from the Comprehensive National Nutrition Survey 2016–18",
+      "authors": [
+        "Raghu Pullakhandam",
+        "Praween Agrawal",
+        "Rajini Peter",
+        "Santu Ghosh",
+        "G. Bhanuprakash Reddy",
+        "Bharati Kulkarni",
+        "Tinku Thomas",
+        "Anura V. Kurpad",
+        "Harshpal Singh Sachdev",
+        "Akash Porwal",
+        "Nizamuddin Khan",
+        "Sowmya Ramesh",
+        "Rajib Acharya",
+        "Avina Sarna",
+        "Umesh Kapil",
+        "Hemalatha Rajkumar",
+        "Arjan de Wagt",
+        "Sila Deb",
+        "Robert Johnston"
+      ],
+      "publisher": "American Journal of Clinical Nutrition",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1093/ajcn/nqab066",
+      "doi": "10.1093/ajcn/nqab066",
+      "citationCount": 31
+    },
+    "doi:10.1093/haschl/qxaf239": {
+      "id": "doi:10.1093/haschl/qxaf239",
+      "title": "TRIPS, pharmaceutical patents, and generic competition in India",
+      "authors": [
+        "Margaret K Kyle",
+        "Bhaven N Sampat",
+        "Kenneth C Shadlen"
+      ],
+      "publisher": "Health Affairs Scholar",
+      "year": 2025,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1093/haschl/qxaf239",
+      "doi": "10.1093/haschl/qxaf239",
+      "citationCount": 0
+    },
+    "doi:10.1093/jn/nxab145": {
+      "id": "doi:10.1093/jn/nxab145",
+      "title": "Prevalence of Iron Deficiency and its Sociodemographic Patterning in Indian Children and Adolescents: Findings from the Comprehensive National Nutrition Survey 2016–18",
+      "authors": [
+        "Bharati Kulkarni",
+        "Rajini Peter",
+        "Santu Ghosh",
+        "Raghu Pullakhandam",
+        "Tinku Thomas",
+        "G. Bhanuprakash Reddy",
+        "Hemalatha Rajkumar",
+        "Umesh Kapil",
+        "Sila Deb",
+        "Robert Johnston",
+        "Praween Agrawal",
+        "Arjan de Wagt",
+        "Anura V. Kurpad",
+        "Harshpal Singh Sachdev"
+      ],
+      "publisher": "Journal of Nutrition",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1093/jn/nxab145",
+      "doi": "10.1093/jn/nxab145",
+      "citationCount": 31
+    },
+    "doi:10.1093/pnasnexus/pgae088": {
+      "id": "doi:10.1093/pnasnexus/pgae088",
+      "title": "Nationwide estimation of daily ambient PM2.5 from 2008 to 2020 at 1 km2 in India using an ensemble approach",
+      "authors": [
+        "Siddhartha Mandal",
+        "Ajit Rajiva",
+        "Itai Kloog",
+        "Jyothi S Menon",
+        "Kevin J Lane",
+        "Heresh Amini",
+        "Gagandeep K Walia",
+        "Shweta Dixit",
+        "Amruta Nori-Sarma",
+        "Anubrati Dutta",
+        "Praggya Sharma",
+        "Suganthi Jaganathan",
+        "Kishore K Madhipatla",
+        "Gregory A Wellenius",
+        "Jeroen de Bont",
+        "Chandra Venkataraman",
+        "Dorairaj Prabhakaran",
+        "Poornima Prabhakaran",
+        "Petter Ljungman",
+        "Joel Schwartz"
+      ],
+      "publisher": "PNAS Nexus",
+      "year": 2024,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1093/pnasnexus/pgae088",
+      "doi": "10.1093/pnasnexus/pgae088",
+      "citationCount": 19
+    },
+    "doi:10.1162/003355300554809": {
+      "id": "doi:10.1162/003355300554809",
+      "title": "Land Reform, Poverty Reduction, and Growth: Evidence from India",
+      "authors": [
+        "T. Besley",
+        "R. Burgess"
+      ],
+      "publisher": "The Quarterly Journal of Economics",
+      "year": 2000,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1162/003355300554809",
+      "doi": "10.1162/003355300554809",
+      "citationCount": 316
+    },
+    "doi:10.1186/s12939-021-01512-4": {
+      "id": "doi:10.1186/s12939-021-01512-4",
+      "title": "Socio-economic inequality in anthropometric failure among children aged under 5 years in India: evidence from the Comprehensive National Nutrition Survey 2016–18",
+      "authors": [
+        "Akash Porwal",
+        "Rajib Acharya",
+        "Sana Ashraf",
+        "Praween Agarwal",
+        "Sowmya Ramesh",
+        "Nizamuddin Khan",
+        "Avina Sarna",
+        "Robert Johnston"
+      ],
+      "publisher": "International Journal for Equity in Health",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1186/s12939-021-01512-4",
+      "doi": "10.1186/s12939-021-01512-4",
+      "citationCount": 38
+    },
+    "doi:10.1257/aeri.20180030": {
+      "id": "doi:10.1257/aeri.20180030",
+      "title": "Debt Traps? Market Vendors and Moneylender Debt in India and the Philippines",
+      "authors": [
+        "Dean Karlan",
+        "Sendhil Mullainathan",
+        "Benjamin N. Roth"
+      ],
+      "publisher": "American Economic Review: Insights",
+      "year": 2019,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1257/aeri.20180030",
+      "doi": "10.1257/aeri.20180030",
+      "citationCount": 14
+    },
+    "doi:10.1371/journal.pgph.0002095": {
+      "id": "doi:10.1371/journal.pgph.0002095",
+      "title": "Prevalence and determinants of anemia due to micronutrient deficiencies among children aged 12–59 months in India–Evidence from Comprehensive National Nutrition Survey, 2016–18",
+      "authors": [
+        "Kapil Yadav",
+        "Gomathi Ramaswamy",
+        "Surabhi Puri",
+        "Kashish Vohra",
+        "Thejas Achary",
+        "Abhishek Jaiswal",
+        "Ravneet Kaur",
+        "Mohan Bairwa",
+        "Archana Singh",
+        "Vani Sethi"
+      ],
+      "publisher": "PLOS Global Public Health",
+      "year": 2024,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1371/journal.pgph.0002095",
+      "doi": "10.1371/journal.pgph.0002095",
+      "citationCount": 7
+    },
+    "doi:10.1371/journal.pone.0244562": {
+      "id": "doi:10.1371/journal.pone.0244562",
+      "title": "Maternal determinants of low birth weight among Indian children: Evidence from the National Family Health Survey-4, 2015-16",
+      "authors": [
+        "Ankita Zaveri",
+        "Pintu Paul",
+        "Jay Saha",
+        "Bikash Barman",
+        "Pradip Chouhan"
+      ],
+      "publisher": "PLoS ONE",
+      "year": 2020,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1371/journal.pone.0244562",
+      "doi": "10.1371/journal.pone.0244562",
+      "citationCount": 71
+    },
+    "doi:10.1371/journal.pone.0269844": {
+      "id": "doi:10.1371/journal.pone.0269844",
+      "title": "Factors associated with delay in treatment-seeking behaviour for fever cases among caregivers of under-five children in India: Evidence from the National Family Health Survey-4, 2015–16",
+      "authors": [
+        "Dhiman Debsarma",
+        "Jayanti Saha",
+        "Sagar Ghosh"
+      ],
+      "publisher": "PLoS ONE",
+      "year": 2022,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.1371/journal.pone.0269844",
+      "doi": "10.1371/journal.pone.0269844",
+      "citationCount": 13
+    },
+    "doi:10.21203/rs.3.rs-384339/v1": {
+      "id": "doi:10.21203/rs.3.rs-384339/v1",
+      "title": "Socio-economic inequality in anthropometry failure in children under 5 years in India: Evidence from the Comprehensive National Nutrition Survey 2016–18",
+      "authors": [
+        "Akash Porwal",
+        "Rajib Acharya",
+        "Sana Ashraf",
+        "Praween Agarwal",
+        "Sowmya Ramesh",
+        "Nizamuddin Khan",
+        "Avina Sarna",
+        "Robert Johnston"
+      ],
+      "publisher": "Research Square",
+      "year": 2021,
+      "kind": "working-paper",
+      "url": "https://doi.org/10.21203/rs.3.rs-384339/v1",
+      "doi": "10.21203/rs.3.rs-384339/v1",
+      "citationCount": 0
+    },
+    "doi:10.21276/apjhs.2017.4.2.25": {
+      "id": "doi:10.21276/apjhs.2017.4.2.25",
+      "title": "Spatial Pattern of Maternal Health in Northeastern States, India-evidence from national family health survey 4 (2015-16)",
+      "authors": [
+        "Kh. Jitenkumar Singh",
+        "Swati Kadian",
+        "Amandeep Kaur",
+        "Kiran Saini",
+        "Payal Kuchhal",
+        "Diksha Kashyap",
+        "Damini Yadav",
+        "Apoorva Nambiar",
+        "M.Sc. Student, IIPS, Mumbai, India"
+      ],
+      "publisher": "Asian Pacific Journal of Health Sciences",
+      "year": 2017,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.21276/apjhs.2017.4.2.25",
+      "doi": "10.21276/apjhs.2017.4.2.25",
+      "citationCount": 6
+    },
+    "doi:10.23880/phoa-16000223": {
+      "id": "doi:10.23880/phoa-16000223",
+      "title": "Impact of Alcoholism and Other Factors on Violence against Women in the State of Bihar, India - Data from NFHS (National Family Health Survey -5-2019-21)",
+      "authors": [
+        "Piyush Kumar"
+      ],
+      "publisher": "Public Health Open Access",
+      "year": 2022,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.23880/phoa-16000223",
+      "doi": "10.23880/phoa-16000223",
+      "citationCount": 5
+    },
+    "doi:10.29121/granthaalayah.v9.i11.2021.4382": {
+      "id": "doi:10.29121/granthaalayah.v9.i11.2021.4382",
+      "title": "PREVALENCE, PATTERN, AND DETERMINANT OF SEX PREFERENCE IN INDIA: EVIDENCE FROM INDIA HUMAN DEVELOPMENT SURVEY-II (2011-12)",
+      "authors": [
+        "Manoj Dakua",
+        "Bappa Sarkar"
+      ],
+      "publisher": "International Journal of Research -GRANTHAALAYAH",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.29121/granthaalayah.v9.i11.2021.4382",
+      "doi": "10.29121/granthaalayah.v9.i11.2021.4382",
+      "citationCount": 0
+    },
+    "doi:10.31219/osf.io/5z2dq": {
+      "id": "doi:10.31219/osf.io/5z2dq",
+      "title": "Impact of Alcoholism and other factors on violence against women in the state of Bihar, India, - Data from NFHS (National Family Health Survey -5-2019-21)",
+      "authors": [
+        "Piyush Kumar"
+      ],
+      "year": 2022,
+      "kind": "working-paper",
+      "url": "https://doi.org/10.31219/osf.io/5z2dq",
+      "doi": "10.31219/osf.io/5z2dq",
+      "citationCount": 1
+    },
+    "doi:10.32388/haay65": {
+      "id": "doi:10.32388/haay65",
+      "title": "Impact of Alcoholism and other factors on violence against women in the state of Bihar, India, - Data from NFHS (National Family Health Survey -5-2019-21)",
+      "authors": [
+        "Piyush Kumar"
+      ],
+      "year": 2022,
+      "kind": "working-paper",
+      "url": "https://doi.org/10.32388/haay65",
+      "doi": "10.32388/haay65",
+      "citationCount": 3
+    },
+    "doi:10.33774/coe-2022-gxmpn": {
+      "id": "doi:10.33774/coe-2022-gxmpn",
+      "title": "Impact of Alcoholism and other factors on violence against women in the state of Bihar, India, - Data from NFHS (National Family Health Survey -5-2019-21)",
+      "authors": [
+        "Piyush Kumar",
+        "Advocate Anupama"
+      ],
+      "year": 2022,
+      "kind": "working-paper",
+      "url": "https://doi.org/10.33774/coe-2022-gxmpn",
+      "doi": "10.33774/coe-2022-gxmpn",
+      "citationCount": 3
+    },
+    "doi:10.3389/fpubh.2021.617311": {
+      "id": "doi:10.3389/fpubh.2021.617311",
+      "title": "Epidemiology, Hot Spots, and Sociodemographic Risk Factors of Alcohol Consumption in Indian Men and Women: Analysis of National Family Health Survey-4 (2015-16), a Nationally Representative Cross-Sectional Study",
+      "authors": [
+        "K. Balasubramani",
+        "Winnie Paulson",
+        "Savitha Chellappan",
+        "R. Ramakrishnan",
+        "Sujit Kumar Behera",
+        "Praveen Balabaskaran Nina"
+      ],
+      "publisher": "Frontiers in Public Health",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.3389/fpubh.2021.617311",
+      "doi": "10.3389/fpubh.2021.617311",
+      "citationCount": 50
+    },
+    "doi:10.3389/fpubh.2025.1495522": {
+      "id": "doi:10.3389/fpubh.2025.1495522",
+      "title": "Prevalence and factors associated with tobacco use among pregnant and breastfeeding mothers in India: insights from the National Family Health Survey-5 (2019–21)",
+      "authors": [
+        "Rachita Pradhan",
+        "Rutuparna Sibani Dandsena",
+        "Sneha Singh",
+        "Shishirendu Ghosal",
+        "Debdutta Bhattacharya",
+        "Srikanta Kanungo",
+        "Sanghamitra Pati"
+      ],
+      "publisher": "Frontiers in Public Health",
+      "year": 2025,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.3389/fpubh.2025.1495522",
+      "doi": "10.3389/fpubh.2025.1495522",
+      "citationCount": 1
+    },
+    "doi:10.3389/fsoc.2026.1862733": {
+      "id": "doi:10.3389/fsoc.2026.1862733",
+      "title": "Unequal relief from the double burden: job quality, education, and women’s time poverty in India—evidence from NSS time use survey 2024",
+      "authors": [
+        "Mayadhar Sethy",
+        "Sandhya R. Mahapatro",
+        "Udaya S. Mishra"
+      ],
+      "publisher": "Frontiers in Sociology",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.3389/fsoc.2026.1862733",
+      "doi": "10.3389/fsoc.2026.1862733",
+      "citationCount": 2
+    },
+    "doi:10.37506/yq5fq637": {
+      "id": "doi:10.37506/yq5fq637",
+      "title": "Households With Access To Clean Fuels For Cooking And Associated Factors Towards Achieving Sustainable Development Goals In India: Insights From National Family Health Survey-5 (2019-21)",
+      "authors": [
+        "Nagarjuna Motu",
+        "Visweswara Rao Guthi",
+        "Nagaraj Kondagunta",
+        "Sharanya Garg"
+      ],
+      "publisher": "Indian Journal of Public Health Research & Development",
+      "year": 2024,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.37506/yq5fq637",
+      "doi": "10.37506/yq5fq637",
+      "citationCount": 1
+    },
+    "doi:10.4103/ijnpnd.ijnpnd_69_23": {
+      "id": "doi:10.4103/ijnpnd.ijnpnd_69_23",
+      "title": "Socioeconomic and regional patterns of child nutritional inequality between tribal and non-tribal communities in India: An analysis based on National Family Health Survey 5 (2019–21)",
+      "authors": [
+        "Paramjot Panda"
+      ],
+      "publisher": "International journal of Nutrition Pharmacology Neurological Diseases",
+      "year": 2024,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.4103/ijnpnd.ijnpnd_69_23",
+      "doi": "10.4103/ijnpnd.ijnpnd_69_23",
+      "citationCount": 3
+    },
+    "doi:10.4178/epih.e2019050": {
+      "id": "doi:10.4178/epih.e2019050",
+      "title": "The double burden of malnutrition among adults in India: evidence from the National Family Health Survey-4 (2015-16)",
+      "authors": [
+        "Mili Dutta",
+        "Y. Selvamani",
+        "Pushpendra Singh",
+        "Lokender Prashad"
+      ],
+      "publisher": "Epidemiology and Health",
+      "year": 2019,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.4178/epih.e2019050",
+      "doi": "10.4178/epih.e2019050",
+      "citationCount": 83
+    },
+    "doi:10.6133/apjcn.202112_30(4).0014": {
+      "id": "doi:10.6133/apjcn.202112_30(4).0014",
+      "title": "Association of maternal height and body mass index with nutrition of children under 5 years of age in India: Evidence from Comprehensive National Nutrition Survey 2016-18.",
+      "authors": [
+        "Akash Porwal",
+        "Praween Agarwal",
+        "Sana Ashraf",
+        "Rajib Acharya",
+        "Sowmya Ramesh",
+        "Nizamuddin Khan",
+        "Robert Johnston",
+        "Avina Sarna"
+      ],
+      "publisher": "PubMed",
+      "year": 2021,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.6133/apjcn.202112_30(4).0014",
+      "doi": "10.6133/apjcn.202112_30(4).0014",
+      "citationCount": 18
+    },
+    "doi:10.64672/ijifr/26.03.13.07.025": {
+      "id": "doi:10.64672/ijifr/26.03.13.07.025",
+      "title": "Consumption Inequality and Household Welfare in India: Evidence from the Household Consumption Expenditure Survey 2023-24",
+      "authors": [
+        "Prof Dr Jaimol James"
+      ],
+      "publisher": "International Journal Of Informative and Futuristic Research",
+      "year": 2026,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.64672/ijifr/26.03.13.07.025",
+      "doi": "10.64672/ijifr/26.03.13.07.025",
+      "citationCount": 0
+    },
+    "doi:10.7759/cureus.59800": {
+      "id": "doi:10.7759/cureus.59800",
+      "title": "The Assessment of Nutritional Status of Adolescents Aged 15-18 Years Using BMI Cutoffs and BMI Z Scores: A Secondary Analysis of National Family Health Survey-5 (2019-21) Data",
+      "authors": [
+        "Abdul Jaleel",
+        "Monica Chilumula",
+        "Surya Goud Chukkala Satya",
+        "Pooja Singnale",
+        "Usha Rani Telikicherla",
+        "P. Raghavendra"
+      ],
+      "publisher": "Cureus",
+      "year": 2024,
+      "kind": "journal-article",
+      "url": "https://doi.org/10.7759/cureus.59800",
+      "doi": "10.7759/cureus.59800",
+      "citationCount": 6
+    }
+  },
+  "datasets": {
+    "access-2015": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "access-2018": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "acled-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "adsi": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "agmarknet": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "agriculture-census-2015-16": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "agriculture-census-2021-22": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "ahs-eag": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "aishe": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "aser": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "asi-2023-24": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "asti-india": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "asuse-2023-24": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "bhuvan-thematic": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "british-provinces-districts": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cea-installed-capacity": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "census-pca-2011": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "census-tables": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cepii-baci": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cgwb-groundwater": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "chair-district-pm25-2008-2020": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1093/pnasnexus/pgae088",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1093/pnasnexus/pgae088",
+          "useSummary": "This publication is directly associated with the dataset record and analyzes or introduces its data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "cmie-cphs": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cmie-prowessdx": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cnns-2016-18": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1186/s12939-021-01512-4",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1186/s12939-021-01512-4",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1093/jn/nxab145",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1093/jn/nxab145",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1093/ajcn/nqab066",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1093/ajcn/nqab066",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.6133/apjcn.202112_30(4).0014",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.6133/apjcn.202112_30(4).0014",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1007/s13300-023-01424-2",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1007/s13300-023-01424-2",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1371/journal.pgph.0002095",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1371/journal.pgph.0002095",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.21203/rs.3.rs-384339/v1",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.21203/rs.3.rs-384339/v1",
+          "useSummary": "This work explicitly identifies CNNS 2016–18 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "commerce-tradestat": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cost-of-cultivation": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "covid-r-estimates-india": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cpcb-aqi": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "cpi-combined": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "crime-in-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "crs-vital-statistics": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "data-gov-in-hub": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "dgca-monthly-traffic": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "dgcis-ftddp": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "district-census-handbook": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "district-pop-estimates-2020": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "dlhs-1": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "dlhs-2": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "dlhs-3": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "dlhs-4": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "eci-assembly-election-reports": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "eci-general-election-reports": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "economic-census": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "egram-swaraj": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "electoral-criminality-2004-2009": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "em-dat-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "enam-dashboard": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "epfo-payroll": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "epwrf-its": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "fpwatch-india-2016": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gdelt": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gender-energy-perception-2021": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "geoboundaries-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-colleges-api": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-data-for-india": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-datameet-covid19": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-datameet-election-data": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-datameet-maps": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-datameet-municipal": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-india-geodata": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-india-maps-data": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-india-votes-data": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-indian-admin-boundaries": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-indian-cadastrals": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-indian-shapefiles": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-nightlights-viirs": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-rural-facilities-pmgsy": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-tcpd-ied-1951-62": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-tcpd-judiciary": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-tcpd-ppi": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-tcpd-rajya-sabha": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-udise-schools": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gh-village-boundaries": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "gtd-terrorism": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "hces-2022-23": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "hces-2023-24": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.64672/ijifr/26.03.13.07.025",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.64672/ijifr/26.03.13.07.025",
+          "useSummary": "This work explicitly identifies HCES 2023–24 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "health-survey-andhra-2013": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "hmis": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "idsp-weekly-outbreaks": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1136/bmjph-2025-003908",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://doi.org/10.1136/bmjph-2025-003908",
+          "useSummary": "Analyzes 2021–2025 weekly IDSP dengue outbreak reports using spatial hot-spot, network, climatic-zone, and transmission-dynamics methods.",
+          "discoveredVia": [
+            "crossref",
+            "google-search"
+          ]
+        },
+        {
+          "workId": "doi:10.1186/s12879-026-14250-1",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://doi.org/10.1186/s12879-026-14250-1",
+          "useSummary": "Converts 2019–2023 weekly measles outbreak reports into a dataset for descriptive, geographic, and reporting-timeliness analysis.",
+          "discoveredVia": [
+            "crossref",
+            "google-search"
+          ]
+        },
+        {
+          "workId": "doi:10.64898/2026.08.13.26360363",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://www.medrxiv.org/content/10.64898/2026.08.13.26360363v3.full",
+          "useSummary": "Compiles 559 Bihar outbreaks from 2016–2018 weekly reports to evaluate surveillance timeliness, completeness, representativeness, sensitivity, acceptability, and flexibility.",
+          "discoveredVia": [
+            "crossref",
+            "google-search"
+          ]
+        },
+        {
+          "workId": "doi:10.1016/j.lansea.2025.100601",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://www.sciencedirect.com/science/article/pii/S2772368225000721",
+          "useSummary": "Reviews 2018–2023 zoonotic outbreak line-list data from weekly reports to measure temporal, regional, and reporting-timeliness patterns.",
+          "discoveredVia": [
+            "crossref",
+            "google-search"
+          ]
+        },
+        {
+          "workId": "doi:10.1016/j.microb.2025.100567",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://www.sciencedirect.com/science/article/pii/S2950194625003358",
+          "useSummary": "Uses 2009–2023 weekly Chandipura outbreak records for seasonal, district-level spatial autocorrelation, and ecological analysis.",
+          "discoveredVia": [
+            "crossref",
+            "google-search"
+          ]
+        },
+        {
+          "workId": "doi:10.1080/29947677.2025.2466531",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://www.tandfonline.com/doi/full/10.1080/29947677.2025.2466531",
+          "useSummary": "Analyzes 9,390 national surveillance outbreak records from 2017–2023 to identify disease trends, transmission modes, and geographic hot spots.",
+          "discoveredVia": [
+            "crossref",
+            "openalex",
+            "google-search"
+          ]
+        },
+        {
+          "workId": "doi:10.3390/ijerph17249378",
+          "relationship": "analyzes",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://doi.org/10.3390/ijerph17249378",
+          "useSummary": "Combines 2009–2019 district-level cholera outbreak reports with climate variables to model and map outbreak risk.",
+          "discoveredVia": [
+            "crossref",
+            "google-search"
+          ]
+        }
+      ]
+    },
+    "ihds-i": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "ihds-ii": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.29121/granthaalayah.v9.i11.2021.4382",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.29121/granthaalayah.v9.i11.2021.4382",
+          "useSummary": "This work explicitly identifies IHDS-II as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "iip": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "im-pds": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "imd-rainfall": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "imd-temperature": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "imf-dots": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-agriculture-climate-district": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-electoral-rolls-deleted-voters-2024-26": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-renewable-energy-2010-2025": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-state-district-evolution-1872-2025": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-treaty-nesting": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-treaty-registry": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "india-wris-reservoirs": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "indian-census-collection-1901-2026": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "input-survey-2016-17": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "input-survey-2022-23": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "ires-2020": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "jharkhand-birth-spacing-2008": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "jjm-dashboard": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "karnataka-agrobiodiversity-bijapur": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "kerala-ogd-portal": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "landsat-collection-2": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "lasi-dad": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "lasi-wave-1": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "lgd": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "lok-dhaba": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "lse-indian-states-eopp": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "mgnrega-mis": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "minor-irrigation-census-6": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "myneta": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "nas-2021": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "national-accounts-statistics": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "nfhs-1": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "nfhs-2": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "nfhs-3": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "nfhs-4": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.4178/epih.e2019050",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.4178/epih.e2019050",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1371/journal.pone.0244562",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1371/journal.pone.0244562",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.3389/fpubh.2021.617311",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.3389/fpubh.2021.617311",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1016/j.cegh.2020.04.005",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1016/j.cegh.2020.04.005",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1371/journal.pone.0269844",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1371/journal.pone.0269844",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1016/j.puhe.2021.03.001",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1016/j.puhe.2021.03.001",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.21276/apjhs.2017.4.2.25",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.21276/apjhs.2017.4.2.25",
+          "useSummary": "This work explicitly identifies NFHS-4 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "nfhs-5": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.7759/cureus.59800",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.7759/cureus.59800",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.4103/ijnpnd.ijnpnd_69_23",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.4103/ijnpnd.ijnpnd_69_23",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.23880/phoa-16000223",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.23880/phoa-16000223",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1016/j.dsx.2024.103085",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1016/j.dsx.2024.103085",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.3389/fpubh.2025.1495522",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.3389/fpubh.2025.1495522",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.1007/s10389-023-01960-y",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1007/s10389-023-01960-y",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.37506/yq5fq637",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.37506/yq5fq637",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.33774/coe-2022-gxmpn",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.33774/coe-2022-gxmpn",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.32388/haay65",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.32388/haay65",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        },
+        {
+          "workId": "doi:10.31219/osf.io/5z2dq",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.31219/osf.io/5z2dq",
+          "useSummary": "This work explicitly identifies NFHS-5 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "niti-for-states-data": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "njdg": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "npci-upi": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "npp-grid-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "nss-microdata-catalog": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "osm-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "plfs-annual-2023-24": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "plfs-quarterly-2025": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "pm-poshan": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "pmay-g": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "pmay-u": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "pmgsy-dashboard": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "pmjdy": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "poshan-tracker": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "pratham-read-india": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "princely-states-1939": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "prison-statistics-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "rbi-dbie": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "replication-adbi-agarwal-ghosh-2026": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1086/742218",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1086/742218",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-aklin-cheng-urpelainen-2021": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1017/s0143814x20000045",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1017/s0143814x20000045",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-besley-burgess-2000": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1162/003355300554809",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1162/003355300554809",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-bhavnani-lee-2018": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1086/694101",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1086/694101",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-dugoua-liu-urpelainen-2017": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1016/j.enpol.2017.03.048",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1016/j.enpol.2017.03.048",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-kapoor-magesan-2018": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1017/s0003055418000199",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1017/s0003055418000199",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-karlan-mullainathan-roth-2019": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1257/aeri.20180030",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1257/aeri.20180030",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-kyle-sampat-shadlen-2026": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1093/haschl/qxaf239",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1093/haschl/qxaf239",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "replication-stainier-shah-barreca-2026": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1086/739115",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.1086/739115",
+          "useSummary": "This is the publication associated with the replication package and analyzes the included data.",
+          "discoveredVia": [
+            "crossref",
+            "catalog-record"
+          ]
+        }
+      ]
+    },
+    "road-accidents-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "sage-global-elections-india-2019": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.1038/s41597-026-07869-x",
+          "relationship": "introduces",
+          "evidenceKind": "manual-review",
+          "evidenceUrl": "https://doi.org/10.1038/s41597-026-07869-x",
+          "useSummary": "Introduces the SAGE archive and documents its harmonized small-area election data, including the India 2019 release.",
+          "discoveredVia": [
+            "crossref",
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "sas-ag-households-2019": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "sbm-g-dashboard": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "secc-2011": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "sentinel-2-l2a": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "shrug": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "soil-health-card": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "srs-statistical-reports": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "tafssa-nalanda-2023": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "telehealth-bihar-saran-baseline": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "time-use-survey-2024": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": [
+        {
+          "workId": "doi:10.3389/fsoc.2026.1862733",
+          "relationship": "analyzes",
+          "evidenceKind": "source-record",
+          "evidenceUrl": "https://doi.org/10.3389/fsoc.2026.1862733",
+          "useSummary": "This work explicitly identifies TUS 2024 as data used in its analysis.",
+          "discoveredVia": [
+            "openalex"
+          ]
+        }
+      ]
+    },
+    "trai-subscriptions": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "ucdp-ged": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "udise-plus": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "un-comtrade": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "unctadstat": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "vahan": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "varshney-wilkinson-riots": {
+      "scholarlyCheckedAt": null,
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "wastelands-atlas-2019": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "wits-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "world-bank-wdi-india": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "wpi": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    },
+    "wto-stats": {
+      "scholarlyCheckedAt": "2026-09-06",
+      "webCheckedAt": null,
+      "uses": []
+    }
+  }
+}

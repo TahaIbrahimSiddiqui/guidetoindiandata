@@ -11,7 +11,7 @@ Public website cataloging **160+ Indian datasets** (government, academic/Dataver
 - **Landing page** with a cinematic entry into the catalog (no ads, no SEO body clutter)
 - **Solar system map** (`/map`) interactive theme/dataset canvas (experience-first; head-only SEO)
 - **Explore** search and filters (category, access, geography, cluster, institution)
-- **Dataset records** with access badges, best-for / limitations, variables, FAQ, related datasets
+- **Dataset records** with access badges, variables, related datasets, and verified research-use bibliographies
 - **Clusters** view of domain themes
 - **Technical SEO**: sitemap, robots, Open Graph, JSON-LD (Dataset / FAQ / breadcrumbs)
 - **Ad inventory** on catalog pages only (placeholders until AdSense IDs are set)
@@ -24,6 +24,7 @@ Ranking work targets **catalog pages** (`/datasets/*`, `/series/*`, explore, the
 |---------|---------|
 | `npm run seo:audit` | Local checks (thin copy, duplicate titles, marketing clutter guard) |
 | `npm run seo:assist` | AI proposals → `content/automation/seo-assist-*.md` (needs `AI_API_KEY`) |
+| `npm run discover:uses` | Find DOI-backed scholarly uses and grounded web candidates for every dataset |
 
 Apply SEO overrides into `src/data/datasetSeo.ts` only with review:
 
@@ -81,6 +82,7 @@ With ads disabled, subtle placeholders keep layout stable without dominating the
 ## Project layout
 
 - `src/data/datasets.ts` — catalog source of truth
+- `src/data/datasetUses.json` — reviewed papers, articles, and per-dataset scan status
 - `src/data/clusters.ts` — six clusters
 - `src/components/ObsidianGraphFull.tsx` — landing universe graph (Obsidian-style)
 - `src/components/ads/*` — monetization chrome
@@ -113,6 +115,33 @@ The bi-monthly job calls Dartmouth’s OpenAI-compatible Chat Completions API (`
 List models: Actions → **List AI models**.
 
 Manual apply of AI summaries: run workflow with **apply_ai_summaries = true** (still goes through a PR).
+
+## Dataset-use bibliography
+
+Every dataset page has a **Research and articles using this data** section. The
+site reads a normalized, reviewed catalog at build time; no research APIs or
+secrets are exposed in the browser.
+
+```bash
+# Dry-run discovery report only
+npm run discover:uses
+
+# Apply evidence-backed DOI/source-record matches locally
+$env:DATASET_USE_APPLY="true"; npm run discover:uses
+
+# Run the fixture-based matching and ranking tests
+npm run discover:uses:test
+```
+
+OpenAlex, DataCite, and Crossref supply scholarly metadata. Gemini Google Search
+grounding proposes blogs and explainers when `GEMINI_API_KEY` is available.
+Broad title matches remain in the workflow artifact for manual review and are
+never published as verified uses automatically.
+
+The **Monthly dataset-use bibliography** workflow scans the catalog on the 5th
+of each month and opens a review PR. Merging that PR is the publication gate.
+Set `OPENALEX_API_KEY` and `GEMINI_API_KEY` as repository secrets, and set
+`OPENALEX_MAILTO` as a repository variable.
 
 Local:
 

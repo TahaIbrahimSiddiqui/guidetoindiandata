@@ -11,6 +11,13 @@ import { resolveGuides } from "../src/lib/guides.ts";
 import { resolveVariables } from "../src/lib/variables.ts";
 import { seriesList } from "../src/data/series.ts";
 import { domainClusters } from "../src/lib/graphData.ts";
+import { getDatasetUseCatalog, getDatasetUses } from "../src/lib/datasetUses.ts";
+import {
+  DATASET_USE_DISCOVERY_SOURCES,
+  DATASET_USE_EVIDENCE_KINDS,
+  DATASET_USE_RELATIONSHIPS,
+  RESEARCH_WORK_KINDS,
+} from "../src/types/researchUse.ts";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
@@ -123,6 +130,76 @@ assert(noAccess.length === 0, `missing access links: ${noAccess.join(", ")}`);
 assert(thin.length === 0, `thin editorial fields: ${JSON.stringify(thin)}`);
 assert(datasets.length >= 100, `catalog size too small: ${datasets.length}`);
 
+// Every page has explicit research scan status, including honest empty states.
+const useCatalog = getDatasetUseCatalog();
+const datasetSlugSet = new Set(datasets.map((d) => d.slug));
+const usedWorkIds = new Set();
+const doiOwners = new Map();
+const urlOwners = new Map();
+const isDateOrNull = (value) =>
+  value === null || /^\d{4}-\d{2}-\d{2}$/.test(String(value));
+for (const d of datasets) {
+  const status = useCatalog.datasets[d.slug];
+  assert(!!status, `research uses missing scan status: ${d.slug}`);
+  if (!status) continue;
+  assert(
+    isDateOrNull(status.scholarlyCheckedAt),
+    `${d.slug} invalid scholarlyCheckedAt`,
+  );
+  assert(isDateOrNull(status.webCheckedAt), `${d.slug} invalid webCheckedAt`);
+  assert(Array.isArray(status.uses), `${d.slug} uses is not an array`);
+  assert(status.uses.length <= 12, `${d.slug} exceeds 12 research uses`);
+  assert(
+    getDatasetUses(d.slug).scholarly.length + getDatasetUses(d.slug).web.length <= 12,
+    `${d.slug} resolver exceeds 12 uses`,
+  );
+  const localIds = new Set();
+  for (const use of status.uses) {
+    assert(!localIds.has(use.workId), `${d.slug} duplicate use ${use.workId}`);
+    localIds.add(use.workId);
+    usedWorkIds.add(use.workId);
+    assert(!!useCatalog.works[use.workId], `${d.slug} missing work ${use.workId}`);
+    assert(
+      DATASET_USE_RELATIONSHIPS.includes(use.relationship),
+      `${d.slug} invalid relationship`,
+    );
+    assert(
+      DATASET_USE_EVIDENCE_KINDS.includes(use.evidenceKind),
+      `${d.slug} invalid evidence kind`,
+    );
+    assert(isHttpUrl(use.evidenceUrl), `${d.slug} invalid evidence URL`);
+    assert(!isEmpty(use.useSummary), `${d.slug} empty use summary`);
+    assert(
+      use.discoveredVia.length > 0 &&
+        use.discoveredVia.every((source) =>
+          DATASET_USE_DISCOVERY_SOURCES.includes(source),
+        ),
+      `${d.slug} invalid discovery sources`,
+    );
+  }
+}
+for (const slug of Object.keys(useCatalog.datasets)) {
+  assert(datasetSlugSet.has(slug), `orphan research status: ${slug}`);
+}
+for (const [workId, work] of Object.entries(useCatalog.works)) {
+  assert(work.id === workId, `${workId} id mismatch`);
+  assert(!isEmpty(work.title), `${workId} empty title`);
+  assert(Array.isArray(work.authors), `${workId} authors must be an array`);
+  assert(RESEARCH_WORK_KINDS.includes(work.kind), `${workId} invalid kind`);
+  assert(isHttpUrl(work.url), `${workId} invalid URL`);
+  if (work.doi) {
+    const doi = work.doi.toLowerCase().replace(/^https?:\/\/doi\.org\//, "");
+    assert(!doiOwners.has(doi), `${workId} duplicate DOI with ${doiOwners.get(doi)}`);
+    doiOwners.set(doi, workId);
+  }
+  const url = work.url.toLowerCase().replace(/\/$/, "");
+  assert(!urlOwners.has(url), `${workId} duplicate URL with ${urlOwners.get(url)}`);
+  urlOwners.set(url, workId);
+}
+for (const workId of Object.keys(useCatalog.works)) {
+  assert(usedWorkIds.has(workId), `${workId} is not linked to a dataset`);
+}
+
 // Criterion 3: series + clusters
 for (const s of seriesList) {
   assert(!isEmpty(s.title), `series ${s.slug} title`);
@@ -154,6 +231,7 @@ const pages = [
       "resolveVariables",
       "bestFor",
       "limitations",
+      "DatasetResearchUses",
       "Open access portal",
     ],
   ],

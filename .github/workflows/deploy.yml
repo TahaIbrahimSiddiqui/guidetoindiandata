@@ -30,6 +30,12 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Validate dataset-use bibliography
+        run: |
+          npm run discover:uses:test
+          npm run audit:content:test
+          npm run audit:content
+
       - name: Build static site
         run: npm run build
         env:

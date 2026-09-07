@@ -12,6 +12,13 @@ import { resolveGuides } from "../src/lib/guides.ts";
 import { resolveVariables } from "../src/lib/variables.ts";
 import { seriesList } from "../src/data/series.ts";
 import { domainClusters } from "../src/lib/graphData.ts";
+import { getDatasetUseCatalog } from "../src/lib/datasetUses.ts";
+import {
+  DATASET_USE_DISCOVERY_SOURCES,
+  DATASET_USE_EVIDENCE_KINDS,
+  DATASET_USE_RELATIONSHIPS,
+  RESEARCH_WORK_KINDS,
+} from "../src/types/researchUse.ts";
 
 const SCRATCH =
   process.env.SCRATCH ||
@@ -138,6 +145,97 @@ const residualSkips = noAccessLink
   }));
 const accessHardFails = noAccessLink.filter((r) => !r.accessOk || r.hardFail);
 
+// Research-use catalog integrity and full dataset scan-status coverage.
+const useCatalog = getDatasetUseCatalog();
+const datasetSlugSet = new Set(datasets.map((d) => d.slug));
+const useCatalogFailures = [];
+const workDoiOwners = new Map();
+const workUrlOwners = new Map();
+const validDate = (value) =>
+  value === null || /^\d{4}-\d{2}-\d{2}$/.test(String(value));
+const validHttpUrl = (value) =>
+  typeof value === "string" && /^https?:\/\//i.test(value.trim());
+
+for (const dataset of datasets) {
+  const status = useCatalog.datasets[dataset.slug];
+  if (!status) {
+    useCatalogFailures.push(`${dataset.slug}: missing scan status`);
+    continue;
+  }
+  if (!validDate(status.scholarlyCheckedAt)) {
+    useCatalogFailures.push(`${dataset.slug}: invalid scholarlyCheckedAt`);
+  }
+  if (!validDate(status.webCheckedAt)) {
+    useCatalogFailures.push(`${dataset.slug}: invalid webCheckedAt`);
+  }
+  if (!Array.isArray(status.uses) || status.uses.length > 12) {
+    useCatalogFailures.push(`${dataset.slug}: uses must contain 0-12 items`);
+    continue;
+  }
+  const seenWorkIds = new Set();
+  for (const use of status.uses) {
+    if (seenWorkIds.has(use.workId)) {
+      useCatalogFailures.push(`${dataset.slug}: duplicate work ${use.workId}`);
+    }
+    seenWorkIds.add(use.workId);
+    if (!useCatalog.works[use.workId]) {
+      useCatalogFailures.push(`${dataset.slug}: missing work ${use.workId}`);
+    }
+    if (!DATASET_USE_RELATIONSHIPS.includes(use.relationship)) {
+      useCatalogFailures.push(`${dataset.slug}: invalid relationship`);
+    }
+    if (!DATASET_USE_EVIDENCE_KINDS.includes(use.evidenceKind)) {
+      useCatalogFailures.push(`${dataset.slug}: invalid evidence kind`);
+    }
+    if (!validHttpUrl(use.evidenceUrl) || isEmptyString(use.useSummary)) {
+      useCatalogFailures.push(`${dataset.slug}: incomplete evidence for ${use.workId}`);
+    }
+    if (
+      !Array.isArray(use.discoveredVia) ||
+      use.discoveredVia.length === 0 ||
+      use.discoveredVia.some(
+        (source) => !DATASET_USE_DISCOVERY_SOURCES.includes(source),
+      )
+    ) {
+      useCatalogFailures.push(`${dataset.slug}: invalid discovery source`);
+    }
+  }
+}
+
+for (const slug of Object.keys(useCatalog.datasets)) {
+  if (!datasetSlugSet.has(slug)) {
+    useCatalogFailures.push(`${slug}: scan status has no matching dataset`);
+  }
+}
+
+for (const [workId, work] of Object.entries(useCatalog.works)) {
+  if (
+    work.id !== workId ||
+    isEmptyString(work.title) ||
+    !Array.isArray(work.authors) ||
+    !RESEARCH_WORK_KINDS.includes(work.kind) ||
+    !validHttpUrl(work.url)
+  ) {
+    useCatalogFailures.push(`${workId}: invalid work metadata`);
+  }
+  if (work.doi) {
+    const doi = String(work.doi).toLowerCase().replace(/^https?:\/\/doi\.org\//, "");
+    if (workDoiOwners.has(doi)) {
+      useCatalogFailures.push(
+        `${workId}: duplicate DOI also used by ${workDoiOwners.get(doi)}`,
+      );
+    }
+    workDoiOwners.set(doi, workId);
+  }
+  const canonicalUrl = String(work.url).toLowerCase().replace(/\/$/, "");
+  if (workUrlOwners.has(canonicalUrl)) {
+    useCatalogFailures.push(
+      `${workId}: duplicate URL also used by ${workUrlOwners.get(canonicalUrl)}`,
+    );
+  }
+  workUrlOwners.set(canonicalUrl, workId);
+}
+
 const report = {
   generatedAt: new Date().toISOString(),
   total: datasets.length,
@@ -159,6 +257,11 @@ const report = {
   thin: {
     count: thinRows.length,
     rows: thinRows.map((r) => ({ slug: r.slug, thinFields: r.thinFields })),
+  },
+  researchUses: {
+    works: Object.keys(useCatalog.works).length,
+    statuses: Object.keys(useCatalog.datasets).length,
+    failures: useCatalogFailures,
   },
   rows,
 };
@@ -332,6 +435,7 @@ const summary = {
   residualSkipCount: residualSkips.length,
   thinCount: report.thin.count,
   routesFail: routesSummary.fail,
+  researchUseFailures: useCatalogFailures,
   hardFailSlugs: hardFails.map((r) => r.slug),
   noAccessSlugs: noAccessLink.map((r) => r.slug),
   thinSlugs: thinRows.map((r) => r.slug),
@@ -346,6 +450,7 @@ const exitCode =
   duplicateSlugs.length === 0 &&
   duplicateTitles.length === 0 &&
   accessHardFails.length === 0 &&
+  useCatalogFailures.length === 0 &&
   routesSummary.fail === 0
     ? 0
     : 1;

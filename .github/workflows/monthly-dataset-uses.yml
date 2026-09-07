@@ -1,0 +1,103 @@
+name: Monthly dataset-use bibliography
+
+on:
+  schedule:
+    - cron: "17 4 5 * *"
+  workflow_dispatch:
+    inputs:
+      dataset_slugs:
+        description: "Optional comma-separated dataset slugs"
+        required: false
+        default: ""
+      dataset_limit:
+        description: "Optional maximum datasets for a resumable run; 0 means all"
+        required: false
+        default: "0"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: monthly-dataset-use-bibliography
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Discover verified dataset uses
+        env:
+          SCRATCH: ${{ github.workspace }}/content/automation/.scratch
+          DATASET_USE_APPLY: "true"
+          DATASET_USE_MAX: "12"
+          DATASET_USE_SLUGS: ${{ github.event.inputs.dataset_slugs || '' }}
+          DATASET_USE_LIMIT: ${{ github.event.inputs.dataset_limit || '0' }}
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          OPENALEX_MAILTO: ${{ vars.OPENALEX_MAILTO }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+        run: npm run discover:uses
+
+      - name: Verify bibliography and build
+        run: |
+          npm run discover:uses:test
+          npm run audit:content:test
+          npm run audit:content
+          npm run build
+
+      - name: Upload discovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dataset-use-discovery-${{ github.run_id }}
+          path: content/automation/.scratch/dataset-use-discovery-latest.*
+          if-no-files-found: warn
+
+      - name: Create review pull request
+        id: cpr
+        continue-on-error: true
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: refresh dataset-use bibliography"
+          title: "chore: refresh dataset-use bibliography (${{ github.run_id }})"
+          body: |
+            Monthly research-use discovery for the Indian Data Guide.
+
+            Automatically proposed catalog entries require direct catalog paper
+            links, DOI citation relationships, or exact dataset and wave evidence.
+            Broad scholarly matches and Google-grounded web results remain in the
+            attached workflow artifact until a reviewer confirms actual data use.
+
+            ### Review
+            1. Inspect changes in `src/data/datasetUses.json`.
+            2. Download `dataset-use-discovery-*` and inspect the candidate evidence.
+            3. Remove any source that does not demonstrate real dataset use.
+            4. Merge to publish through the existing GitHub Pages workflow.
+
+            No browser-side API calls or secrets are added to the site.
+          branch: codex/dataset-uses-${{ github.run_id }}
+          delete-branch: true
+          add-paths: src/data/datasetUses.json
+
+      - name: PR creation status
+        if: always()
+        run: |
+          echo "pull-request-number=${{ steps.cpr.outputs.pull-request-number }}"
+          echo "pull-request-url=${{ steps.cpr.outputs.pull-request-url }}"
+          if [ "${{ steps.cpr.outcome }}" != "success" ]; then
+            echo "::warning::Could not open a review PR. The discovery artifact is still available."
+          fi

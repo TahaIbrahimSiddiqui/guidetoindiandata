@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { AccessBadge } from "@/components/AccessBadge";
 import { AcademicBadgeList } from "@/components/AcademicBadge";
+import { DatasetResearchUses } from "@/components/DatasetResearchUses";
 import { RelatedDatasets } from "@/components/RelatedDatasets";
 import { InContentAd } from "@/components/ads/ContentWithAds";
 import { Badge } from "@/components/ui/badge";
@@ -548,6 +549,8 @@ export default async function DatasetPage({ params }: Props) {
           </CardContent>
         </Card>
       </section>
+
+      <DatasetResearchUses datasetSlug={dataset.slug} />
 
       {/* Academic identifiers */}
       {(dataset.dataDoi || dataset.paperDoi || dataset.recommendedCitation) && (
